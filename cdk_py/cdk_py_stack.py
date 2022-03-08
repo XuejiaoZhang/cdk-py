@@ -215,7 +215,7 @@ class CdkPyStack(core.Stack):
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
-                    "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+                   # "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
                 ],
             )
         )
@@ -230,7 +230,7 @@ class CdkPyStack(core.Stack):
                     "pip install -r requirements_dev.txt",
                     # when no tests are found, exit code 5 will cause a problem in the pipeline
                     # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
-                    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+                   # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
                 ],
             )
         )
