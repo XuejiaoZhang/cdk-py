@@ -29,7 +29,9 @@
     "config": {
       "owner": "XuejiaoZhang",
       "repo": "cdk-py",         
-      "connection_arn": "arn:aws:codestar-connections:us-west-2:320185343352:connection/40faa6b0-1477-4f1e-a2ff-9ea041586ab1"
+      "connection_arn": "arn:aws:codestar-connections:us-west-2:320185343352:connection/40faa6b0-1477-4f1e-a2ff-9ea041586ab1",
+      "branch_creation_pipeline": "Create-Branch",
+      "branch_deletion_pipeline": "Delete-Branch"
     },
     "@aws-cdk/core:newStyleStackSynthesis": "true"
   }

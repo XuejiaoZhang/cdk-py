@@ -9,7 +9,15 @@ aws_cdk.cloud-assembly-schema==1.116.0
 jsii==1.31.0
 aws_cdk.aws_iam==1.116.0
 aws_cdk.aws_s3==1.116.0
+aws_cdk.aws_logs==1.116.0
+aws_cdk.aws-apigateway==1.116.0
+aws_cdk.aws_lambda==1.116.0
+aws_cdk.aws-codebuild==1.116.0
+aws_cdk.aws_lambda_python==1.116.0
+aws_cdk.aws_sqs==1.116.0
 
 pygit2==1.9.0
 boto3~=1.17.73
+
+docker==5.0.3
 
