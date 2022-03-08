@@ -11,26 +11,57 @@ from aws_cdk import aws_codepipeline_actions as cpactions
 from aws_cdk import aws_codebuild
 
 from constructs import Construct
+from cdk_py.github_webhook_api_stack import GithubWebhookAPIStack
+from cdk_py.cdkpipeline_stack import CDKPipelineStack
 
 # class S3Bucket(Stack):
 #     def __init__(self, scope, id):
 #         super().__init__(scope, id)
 #         self.bucket = s3.Bucket(self, "Bucket")
 
-# class S3Bucket(core.Stack):
+# class GithubWebhookAPIStack(core.Stack):
 #     def __init__(self, scope, id):
 #         super().__init__(scope, id)
 
 #         s3.Bucket(self, id)
 
 
-# # TODO: APIGateway + Lambda + CodeBuild
-# class MyApplication(core.Stage):
-#     def __init__(self, scope, id, *, env=None, outdir=None):
-#         super().__init__(scope, id, env=env, outdir=outdir)
+# class CodeBuildProjectStack(core.Stack):
+#     def __init__(self, scope, id):
+#         super().__init__(scope, id)
 
-#         s3_bucket = S3Bucket(self, "MyFirstBucket-webhook")
-#         # bucket = s3.Bucket(self, "MyFirstBucket-webhook")
+#         s3.Bucket(self, id)
+
+
+# TODO: APIGateway + Lambda + CodeBuild
+class PipelineGeneratorApplication(core.Stage):
+    def __init__(
+        self,
+        scope: core.Construct,
+        id: str,
+        config: dict = None,
+        **kwargs,
+    ):
+        super().__init__(scope, id, **kwargs)
+        # GithubWebhookAPIStack(self, "GitHub-Webhook-API")
+
+        # branch_creation_pipeline = 'Create-Branch'
+        # branch_deletion_pipeline = 'Delete-Branch'  #TODO:pass to PipelineGeneratorApplication, then lambda env, and cdkpipeline
+        webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API", config=config)
+        CDKPipelineStack(self, config.get('branch_creation_pipeline'), branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
+        CDKPipelineStack(self, config.get('branch_deletion_pipeline'), branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
+
+
+        # webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API")
+        # # GithubWebhookAPIStack(self, "MyFirstBucket-webhook", synthesizer=core.DefaultStackSynthesizer())
+        # # CDKPipelineStack(self, "Create-Branch", config=config)
+
+
+        # CDKPipelineStack(self, "Create-Branch", branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
+        # CDKPipelineStack(self, "Delete-Branch", branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
+
+        # CodeBuildProjectStack(self, "Deletee-branch")
+        # bucket = s3.Bucket(self, "MyFirstBucket-webhook")
 
 # branch_name='feature-branch-pipeline-webhook'
 
@@ -59,7 +90,7 @@ from constructs import Construct
 #     }
 #   }
 # }
-class CdkPyStack(core.Stack):
+class PipelineGeneratorStack(core.Stack):
     def __init__(
         self,
         scope: core.Construct,
@@ -107,8 +138,8 @@ class CdkPyStack(core.Stack):
                     privileged=True,
                     # environment_variables={"branch_name": branch_name}
                 ),
-                build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk list -c branch_name=$BRANCH",
-                synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk synth -c branch_name=$BRANCH",
+                build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
+                synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
                         actions=["ssm:GetParameter"],
@@ -162,13 +193,6 @@ class CdkPyStack(core.Stack):
         )
 
 
-        # feature_app = MyApplication(self, "webhook",
-        #     # env=cdk.Environment(
-        #     #     account="123456789012",
-        #     #     region="eu-west-1"
-        #     # )
-        # )
-
         # TODO: run in parallel
         # wave = pipeline.add_wave("Testing")
 
@@ -206,37 +230,44 @@ class CdkPyStack(core.Stack):
 
         ## feature_stage = pipeline.add_application_stage(feature_app)
 
-        feature_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
-        feature_stage.add_actions(
+        testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
+        testing_stage.add_actions(
             pipelines.ShellScriptAction(
                 action_name="UnitTests",
-                run_order=feature_stage.next_sequential_run_order(),
+                run_order=testing_stage.next_sequential_run_order(),
                 additional_artifacts=[source_artifact],
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
-                    "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+                  #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
                 ],
             )
         )
 
-        feature_stage.add_actions(
+        testing_stage.add_actions(
             pipelines.ShellScriptAction(
                 action_name="InfrastructureTests",
-                run_order=feature_stage.next_sequential_run_order(),
+                run_order=testing_stage.next_sequential_run_order(),
                 additional_artifacts=[source_artifact],
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
                     # when no tests are found, exit code 5 will cause a problem in the pipeline
                     # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
-                    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+                #    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
                 ],
             )
         )
 
+        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", config=config
+            # env=cdk.Environment(
+            #     account="123456789012",
+            #     region="eu-west-1"
+            # )
+        )
+        pipeline.add_application_stage(pipeline_generator_stage)
 
-
+        ## feature_stage = pipeline.add_application_stage(feature_app)
 
 
         # 'MyApplication' is defined below. Call `addStage` as many times as

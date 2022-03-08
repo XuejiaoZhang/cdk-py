@@ -10,7 +10,10 @@ branch_name = ''
 CODEBUILD_INITIATOR_LIST = os.getenv('CODEBUILD_INITIATOR').split('/')
 if len(CODEBUILD_INITIATOR_LIST) >= 2:
 	if CODEBUILD_INITIATOR_LIST[0] == 'codepipeline':
-		branch_chars = CODEBUILD_INITIATOR_LIST[1].strip('ReadyForFeatureBranchPipeline')
+		if CODEBUILD_INITIATOR_LIST[1] == 'FeatureBranchPipelineGenerator':
+			branch_chars = 'generator' # TODO dev, master
+		else:
+			branch_chars = CODEBUILD_INITIATOR_LIST[1].strip('ReadyForFeatureBranchPipeline')
 
 
 if branch_chars:
