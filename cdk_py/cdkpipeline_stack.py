@@ -168,7 +168,7 @@ class CDKPipelineStack(core.Stack):
             stack_id = ''
         # The code that defines your stack goes here
         # branch_name = get_branch_name_from_queue(queue_url)
-        branch_name = "not_exist" # dev to be safe instead of master ? branch name not exist?
+        branch_name = "generator" # dev to be safe instead of master ? branch name not exist?
         codestar_connection_arn = config.get("connection_arn")
         repo_owner = config.get("owner")
         repo = config.get("repo")

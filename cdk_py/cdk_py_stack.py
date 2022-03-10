@@ -107,7 +107,7 @@ class CdkPyStack(core.Stack):
                     privileged=True,
                     # environment_variables={"branch_name": branch_name}
                 ),
-                build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk list -c branch_name=$BRANCH",
+                build_command="printenv; BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk list -c branch_name=$BRANCH",
                 synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk synth -c branch_name=$BRANCH",
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
