@@ -64,11 +64,22 @@ class CdkPyStack(core.Stack):
         self,
         scope: core.Construct,
         id: str,
-        branch_name: str,
+        feature_branch_name: str,
+        development_pipeline: bool,
         config: dict = None,
         **kwargs,
     ):
         super().__init__(scope, id, **kwargs)
+
+
+        if not feature_branch_name:
+            if development_pipeline == True:
+                branch_name = 'dev'
+            else:
+                branch_name = 'master'
+        else:
+            branch_name = feature_branch_name
+        # branch_name = dev
 
         # branch_name = core.CfnParameter(self, "branch_name")
         # branch_name = app.node.try_get_context("branch_name")
@@ -107,7 +118,9 @@ class CdkPyStack(core.Stack):
                     privileged=True,
                     # environment_variables={"branch_name": branch_name}
                 ),
-                build_command="printenv; BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk list -c branch_name=$BRANCH",
+                ## botocore.errorfactory.ParameterNotFound: An error occurred (ParameterNotFound) when calling the GetParameter operation: 
+                # "BRANCH=master"
+                build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk list -c branch_name=$BRANCH",
                 synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); cdk synth -c branch_name=$BRANCH",
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
@@ -204,7 +217,8 @@ class CdkPyStack(core.Stack):
         # )
         # wave.add_stage(it_stage)
 
-        ## feature_stage = pipeline.add_application_stage(feature_app)
+        # TODO: development_pipeline
+        # feature_stage = pipeline.add_application_stage(feature_app)
 
         feature_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
         feature_stage.add_actions(
@@ -215,7 +229,10 @@ class CdkPyStack(core.Stack):
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
-                    "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+                    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+                    # "pytest --cov=dags --cov-branch term-missing -vvvv -s tests", #TODO
+                   # "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+
                 ],
             )
         )
@@ -230,7 +247,7 @@ class CdkPyStack(core.Stack):
                     "pip install -r requirements_dev.txt",
                     # when no tests are found, exit code 5 will cause a problem in the pipeline
                     # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
-                    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+                    # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
                 ],
             )
         )

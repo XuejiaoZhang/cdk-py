@@ -5,14 +5,14 @@ sqs_client = boto3.client('sqs')
 
 #CODEBUILD_INITIATOR=codepipeline/featurebranchpipelinewebhookReadyForFeatureBranchPipeline
 
-def branch_name_check(branch_name, branch_prefox):
-    if branch_name.startswith(branch_prefox):
+def branch_name_check(branch_name, branch_prefix):
+    if branch_name.startswith(branch_prefix):
         return True
     else:
         return False
 
-branch_name = 'generator2'
-branch_prefox = 'feature-branch-pipeline-'
+# branch_name = 'generator2'
+branch_prefix = 'feature-branch-pipeline-'
 
 sqs_url = os.getenv('SQS_URL')
 if sqs_url:
@@ -43,8 +43,8 @@ if sqs_url:
 		branch_name = message.get('Body', '')
 		# print(branch_name)
 
-	if branch_name_check(branch_name, branch_prefox):
-		print(branch_name)
+		if branch_name_check(branch_name, branch_prefix):
+			print(branch_name)
 
 
 

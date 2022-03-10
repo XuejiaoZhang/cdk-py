@@ -39,6 +39,7 @@ class PipelineGeneratorApplication(core.Stage):
         self,
         scope: core.Construct,
         id: str,
+        branch_name: str,
         config: dict = None,
         **kwargs,
     ):
@@ -48,8 +49,8 @@ class PipelineGeneratorApplication(core.Stage):
         # branch_creation_pipeline = 'Create-Branch'
         # branch_deletion_pipeline = 'Delete-Branch'  #TODO:pass to PipelineGeneratorApplication, then lambda env, and cdkpipeline
         webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API", config=config)
-        CDKPipelineStack(self, config.get('branch_creation_pipeline'), branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
-        CDKPipelineStack(self, config.get('branch_deletion_pipeline'), branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
+        CDKPipelineStack(self, config.get('branch_creation_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
+        CDKPipelineStack(self, config.get('branch_deletion_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
 
 
         # webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API")
@@ -136,10 +137,19 @@ class PipelineGeneratorStack(core.Stack):
                 environment=aws_codebuild.BuildEnvironment(
                     build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
                     privileged=True,
-                    # environment_variables={"branch_name": branch_name}
                 ),
-                build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
-                synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
+                environment_variables={
+                    "BRANCH": aws_codebuild.BuildEnvironmentVariable(
+                        value=branch_name,
+                        # the properties below are optional
+                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
+                    ),
+                },
+                build_command="echo $BRANCH; cdk list -c branch_name=$BRANCH",
+                synth_command="echo $BRANCH; cdk synth -c branch_name=$BRANCH",
+
+                # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
+                # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
                         actions=["ssm:GetParameter"],
@@ -259,7 +269,7 @@ class PipelineGeneratorStack(core.Stack):
             )
         )
 
-        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", config=config
+        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", branch_name=branch_name, config=config
             # env=cdk.Environment(
             #     account="123456789012",
             #     region="eu-west-1"

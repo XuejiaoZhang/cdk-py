@@ -64,14 +64,14 @@ def handler(event, context):
     verified = verify_webhook(rawbodydata, hmac_header)
     
     if not verified:
-        print('Did not pass HMAC validation!')
+        msg = 'Did not pass HMAC validation!'
+        print(msg)
         return {
-        'statusCode': 401,
-        'body': json.dumps('Did not pass HMAC validation!')
+            'statusCode': 401,
+            'body': json.dumps(msg)
         }
     
-    
-    if verified:
+    else:
         print('Passed HMAC validation!')
         #
         # YOUR APP LOGIC GOES HERE!!!!
@@ -105,16 +105,17 @@ def handler(event, context):
                     print('Generate Pipeline for branch:', branch_name)
                     exec_code_pipeline(branch_name, branch_creation_pipeline)
                     
-                    msg = "Done feature pipeline generation for: "+branch_name
+                    msg = 'Done feature pipeline generation for: %s' % (branch_name)
+                    # print(msg)
                     
-                    return {
-                        'statusCode': 200,
-                        'body': json.dumps(msg)
-                    }
+                    # return {
+                    #     'statusCode': 200,
+                    #     'body': json.dumps(msg)
+                    # }
                 else:
-                    msg = 'Branch name %s does not match the prefix of feature pipeline naming convention: %s' % (branch_name, branch_prefox)
-                    print(msg)
-                    return
+                    msg = 'Branch name %s does not match the prefix %s' % (branch_name, branch_prefox)
+                    # print(msg)
+
                     # return {
                     #     'statusCode': 200,
                     #     'body': json.dumps(msg)
@@ -133,29 +134,33 @@ def handler(event, context):
                     exec_code_pipeline(branch_name, branch_deletion_pipeline)
                     
                     msg = "Done feature pipeline deletion for: "+branch_name
-                    
-                    return {
-                        'statusCode': 200,
-                        'body': json.dumps(msg)
-                    }
-                else:
-                    msg = 'Branch name %s does not match the prefix %s' % (branch_name, branch_prefox)
-                    print(msg)
-                    return
+                    # print(msg)
+
                     # return {
                     #     'statusCode': 200,
                     #     'body': json.dumps(msg)
-                    # }    
+                    # }
+                else:
+                    msg = 'Branch name %s does not match the prefix %s' % (branch_name, branch_prefox)
+                    # print(msg)
 
+                    # return {
+                    #     'statusCode': 200,
+                    #     'body': json.dumps(msg)
+                    # }
 
         # if not ref_type:
         #     if before and after:
         #         print('Push commit to branch:', ref.split("/")[-1])
         else:
-            print('Not one of the events: ["Branch creation", "Branch deletion", "Push to the tracking branchs"]')
+            msg = 'Not one of the events: ["Branch creation", "Branch deletion", "Push to the tracking branchs"]'
 
+    print(msg)
+    return {
+        'statusCode': 200,
+        'body': json.dumps(msg)
+    }
 
-        
         # branch_name = "webhook-test"
         # client = boto3.client('codebuild')
         # response = client.start_build(
@@ -170,11 +175,8 @@ def handler(event, context):
         #     ],
         # )        
         
-        return
-        # return {
-        # 'statusCode': 200,
-        # 'body': json.dumps(msg)
-        # }
+        
+
         
     
     
