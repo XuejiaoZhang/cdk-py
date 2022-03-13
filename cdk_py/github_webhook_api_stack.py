@@ -10,8 +10,8 @@ from aws_cdk import (
     # aws_certificatemanager,
     core,
     aws_logs,
-    aws_ssm,
-    aws_sqs
+    # aws_ssm,
+    # aws_sqs
 )
 
 from aws_cdk.aws_lambda_python import PythonFunction
@@ -26,6 +26,7 @@ class GithubWebhookAPIStack(core.Stack):
         self,
         scope: core.Construct,
         id: str,
+        pipeline_template: str,
         config: dict,
         # hosted_zone_id,
         # hosted_zone_name,
@@ -66,11 +67,14 @@ class GithubWebhookAPIStack(core.Stack):
                 actions=[
                     "ssm:PutParameter",
                     "ssm:GetParameter",
-                    "sqs:SendMessage",
+                    # "sqs:SendMessage",
                     "iam:PassRole",
+                    "codepipeline:CreatePipeline",
+                    "codepipeline:DeletePipeline",                    
+                    "codepipeline:ListPipelines",
                     "codepipeline:GetPipeline",
                     "codepipeline:UpdatePipeline",
-                    "codepipeline:StartPipelineExecution",
+                 #   "codepipeline:StartPipelineExecution",
                     "codestar-connections:PassConnection"
                 ],
                 resources=["*"],
@@ -170,10 +174,10 @@ class GithubWebhookAPIStack(core.Stack):
         #     self, id="api-authorizer", cognito_user_pools=[user_pool]
         # )
 
-        branch_creation_queue = aws_sqs.Queue(self, "branch_creation")
-        branch_deletion_queue = aws_sqs.Queue(self, "branch_deletion")
-        self.branch_creation_queue = branch_creation_queue.queue_url
-        self.branch_deletion_queue = branch_deletion_queue.queue_url
+        # branch_creation_queue = aws_sqs.Queue(self, "branch_creation")
+        # branch_deletion_queue = aws_sqs.Queue(self, "branch_deletion")
+        # self.branch_creation_queue = branch_creation_queue.queue_url
+        # self.branch_deletion_queue = branch_deletion_queue.queue_url
 
         # Create a lambda function that can act as a handler for API Gateway requests
         integration_handler_lambda_function = PythonFunction(
@@ -186,7 +190,7 @@ class GithubWebhookAPIStack(core.Stack):
             index="github_webhook.py",
             role=handler_role,
             runtime=aws_lambda.Runtime.PYTHON_3_8,
-            environment={"branch_creation_queue": self.branch_creation_queue, "branch_deletion_queue": self.branch_deletion_queue, "branch_creation_pipeline":config.get('branch_creation_pipeline', ''), "branch_deletion_pipeline":config.get('branch_deletion_pipeline', '')},
+            environment={"pipeline_template": pipeline_template},
             memory_size=1024,
             timeout=Duration.minutes(1),
         )

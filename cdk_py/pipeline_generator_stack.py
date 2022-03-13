@@ -2,7 +2,7 @@ from aws_cdk import (
     # Duration,
     core,
     # aws_sqs as sqs,
-    aws_s3 as s3,
+    # aws_s3 as s3,
     aws_iam,
 )
 from aws_cdk import aws_codepipeline as codepipeline
@@ -12,8 +12,9 @@ from aws_cdk import aws_codebuild
 
 from constructs import Construct
 from cdk_py.github_webhook_api_stack import GithubWebhookAPIStack
-from cdk_py.cdkpipeline_stack import CDKPipelineStack
-
+from cdk_py.cdk_py_stack import CdkPyStack
+# from cdk_py.cdkpipeline_stack import CDKPipelineStack
+ 
 # class S3Bucket(Stack):
 #     def __init__(self, scope, id):
 #         super().__init__(scope, id)
@@ -40,6 +41,7 @@ class PipelineGeneratorApplication(core.Stage):
         scope: core.Construct,
         id: str,
         branch_name: str,
+        pipeline_template: str,
         config: dict = None,
         **kwargs,
     ):
@@ -48,9 +50,18 @@ class PipelineGeneratorApplication(core.Stage):
 
         # branch_creation_pipeline = 'Create-Branch'
         # branch_deletion_pipeline = 'Delete-Branch'  #TODO:pass to PipelineGeneratorApplication, then lambda env, and cdkpipeline
-        webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API", config=config)
-        CDKPipelineStack(self, config.get('branch_creation_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
-        CDKPipelineStack(self, config.get('branch_deletion_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
+
+
+        # feature_branch_name = "not_exist_branch_just_for_template"
+
+
+
+        GithubWebhookAPIStack(self, "GitHub-Webhook-API", pipeline_template=pipeline_template, config=config)
+
+
+
+        # CDKPipelineStack(self, config.get('branch_creation_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
+        # CDKPipelineStack(self, config.get('branch_deletion_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
 
 
         # webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API")
@@ -97,6 +108,7 @@ class PipelineGeneratorStack(core.Stack):
         scope: core.Construct,
         id: str,
         branch_name: str,
+        pipeline_template: str,
         config: dict = None,
         **kwargs,
     ):
@@ -150,17 +162,17 @@ class PipelineGeneratorStack(core.Stack):
 
                 # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
                 # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
-                role_policy_statements=[
-                    aws_iam.PolicyStatement(
-                        actions=["ssm:GetParameter"],
-                        effect=aws_iam.Effect.ALLOW,
-                        resources=['*'
-                            # synth_dev_account_role_arn,
-                            # synth_qa_account_role_arn,
-                            # synth_prod_account_role_arn,
-                        ],
-                    )
-                ],
+                # role_policy_statements=[
+                #     aws_iam.PolicyStatement(
+                #         actions=["ssm:GetParameter"],
+                #         effect=aws_iam.Effect.ALLOW,
+                #         resources=['*'
+                #             # synth_dev_account_role_arn,
+                #             # synth_qa_account_role_arn,
+                #             # synth_prod_account_role_arn,
+                #         ],
+                #     )
+                # ],
                 # role_policy_statements=[
                 #     aws_iam.PolicyStatement(
                 #         actions=["sts:AssumeRole"],
@@ -269,7 +281,7 @@ class PipelineGeneratorStack(core.Stack):
             )
         )
 
-        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", branch_name=branch_name, config=config
+        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", branch_name=branch_name, pipeline_template=pipeline_template, config=config
             # env=cdk.Environment(
             #     account="123456789012",
             #     region="eu-west-1"
