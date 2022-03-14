@@ -38,6 +38,8 @@ config = app.node.try_get_context("config")
 
 pipeline_template = "feature-branch-pipeline-template"
 feature_branch_name = "feature-branch-pipeline-us02"
+feature_branch_name = "not-exist-for-template-usage"
+
 CdkPyStack(app, pipeline_template,
         feature_branch_name=feature_branch_name,
         development_pipeline=True,
