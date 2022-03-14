@@ -427,11 +427,11 @@ class CDKPipelineStack(core.Stack):
                         effect=aws_iam.Effect.ALLOW,
                         resources=["*"],
                     ),
-                    # aws_iam.PolicyStatement(
-                    #     actions=["ssm:GetParameter"],
-                    #     effect=aws_iam.Effect.ALLOW,
-                    #     resources=["*"],
-                    # ),
+                    aws_iam.PolicyStatement(
+                        actions=["ssm:GetParameter"],
+                        effect=aws_iam.Effect.ALLOW,
+                        resources=["*"],
+                    ),
                     aws_iam.PolicyStatement(
                         actions=["sqs:ReceiveMessage", "sqs:DeleteMessage"], ## Readonly? TODO
                         effect=aws_iam.Effect.ALLOW,
