@@ -251,7 +251,7 @@ class CdkPyStack(core.Stack):
 
 
 
-        deploy_stage = DeployApplication(self, "deploy-sample",
+        deploy_stage = DeployApplication(self, "revision-deploy-sample",
             #     account="123456789012",
             #     region="eu-west-1"
             # )
