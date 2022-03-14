@@ -94,7 +94,7 @@ class CdkPyStack(core.Stack):
         pipeline = pipelines.CdkPipeline(
             self,
             id,
-            # self_mutating=False,
+            self_mutating=False,
             cloud_assembly_artifact=cloud_assembly_artifact,
             pipeline_name=id,
             source_action=cpactions.CodeStarConnectionsSourceAction(
@@ -253,7 +253,7 @@ class CdkPyStack(core.Stack):
 
 
 
-        deploy_stage = DeployApplication(self, "revision2-deploy-sample",
+        deploy_stage = DeployApplication(self, "deploy-sample",
             #     account="123456789012",
             #     region="eu-west-1"
             # )
