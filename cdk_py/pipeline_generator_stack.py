@@ -281,7 +281,7 @@ class PipelineGeneratorStack(core.Stack):
             )
         )
 
-        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", branch_name=branch_name, pipeline_template=pipeline_template, config=config
+        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator-boto3", branch_name=branch_name, pipeline_template=pipeline_template, config=config
             # env=cdk.Environment(
             #     account="123456789012",
             #     region="eu-west-1"
