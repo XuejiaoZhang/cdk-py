@@ -240,34 +240,36 @@ class PipelineGeneratorStack(core.Stack):
 
         ## feature_stage = pipeline.add_application_stage(feature_app)
 
-        testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
-        testing_stage.add_actions(
-            pipelines.ShellScriptAction(
-                action_name="UnitTests",
-                run_order=testing_stage.next_sequential_run_order(),
-                additional_artifacts=[source_artifact],
-                commands=[
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                  #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-                ],
-            )
-        )
 
-        testing_stage.add_actions(
-            pipelines.ShellScriptAction(
-                action_name="InfrastructureTests",
-                run_order=testing_stage.next_sequential_run_order(),
-                additional_artifacts=[source_artifact],
-                commands=[
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                    # when no tests are found, exit code 5 will cause a problem in the pipeline
-                    # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
-                #    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-                ],
-            )
-        )
+        # TO uncomment back, to speed up testing
+        # testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
+        # testing_stage.add_actions(
+        #     pipelines.ShellScriptAction(
+        #         action_name="UnitTests",
+        #         run_order=testing_stage.next_sequential_run_order(),
+        #         additional_artifacts=[source_artifact],
+        #         commands=[
+        #             "pip install -r requirements.txt",
+        #             "pip install -r requirements_dev.txt",
+        #           #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+        #         ],
+        #     )
+        # )
+
+        # testing_stage.add_actions(
+        #     pipelines.ShellScriptAction(
+        #         action_name="InfrastructureTests",
+        #         run_order=testing_stage.next_sequential_run_order(),
+        #         additional_artifacts=[source_artifact],
+        #         commands=[
+        #             "pip install -r requirements.txt",
+        #             "pip install -r requirements_dev.txt",
+        #             # when no tests are found, exit code 5 will cause a problem in the pipeline
+        #             # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
+        #         #    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+        #         ],
+        #     )
+        # )
 
         pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", branch_name=branch_name, config=config
             # env=cdk.Environment(

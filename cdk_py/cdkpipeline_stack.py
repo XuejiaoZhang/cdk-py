@@ -151,29 +151,17 @@ class FeaturePipelineApplication(core.Stage):
         **kwargs,
     ):
         super().__init__(scope, id, **kwargs)
-        # GithubWebhookAPIStack(self, "GitHub-Webhook-API")
-
-        # branch_creation_pipeline = 'Create-Branch'
-        # branch_deletion_pipeline = 'Delete-Branch'  #TODO:pass to PipelineGeneratorApplication, then lambda env, and cdkpipeline
-        # webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API", config=config)
-        # CdkPyStack(self, stack_id,
-        #     feature_branch_name=branch_name,
-        #     development_pipeline=True,
-        #     config={**config},
-        # )
 
         if not branch_name:
             print('branch_name_queue:', branch_name_queue)
             branch_name = get_brance_name_from_sqs(branch_name)
             print('branch_name:', branch_name)
 
-        # feature_branch_name = branch_name?
         if branch_name: # and branch_name != 'dev' and branch_name != 'master':
             branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
             # stack_id = creation_or_deletion + branch_chars + "ReadyForFeatureBranchPipeline"
             stack_id = branch_chars + "ReadyForFeatureBranchPipeline"
             if creation_or_deletion == 'creation':
-                # print()
                 CdkPyStack(self, stack_id,
                     feature_branch_name=branch_name,
                     development_pipeline=True,
@@ -201,9 +189,6 @@ class CDKPipelineStack(core.Stack):
     ):
         super().__init__(scope, id, **kwargs)
 
-        # branch_name = core.CfnParameter(self, "branch_name")
-        # branch_name = app.node.try_get_context("branch_name")
-
 
         # config = app.node.try_get_context("config")
         # branch_name = app.node.try_get_context("branch_name")
@@ -216,24 +201,20 @@ class CDKPipelineStack(core.Stack):
             branch_name = get_brance_name_from_sqs(branch_name)
             print('branch_name:', branch_name)
 
-        # feature_branch_name = branch_name?
         if branch_name and branch_name != 'dev' and branch_name != 'master':
             branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
             # stack_id = creation_or_deletion + branch_chars + "ReadyForFeatureBranchPipeline"
             stack_id = branch_chars + "ReadyForFeatureBranchPipeline"
             if creation_or_deletion == 'creation':
-                # print()
                 CdkPyStack(self, stack_id,
                     feature_branch_name=branch_name,
                     development_pipeline=True,
                     config={**config},
                 )
 
-            # PipelineStack()
         else:
             stack_id = ''
 
-        # The code that defines your stack goes here
         # branch_name = get_branch_name_from_queue(queue_url)
         # branch_name = "dev" # dev to be safe instead of master ? branch name not exist?
         codestar_connection_arn = config.get("connection_arn")
@@ -256,7 +237,6 @@ class CDKPipelineStack(core.Stack):
                 owner=repo_owner,
                 repo=repo,   
                 branch=branch_name,
-                #branch=branch_name.value_as_string,
                 trigger_on_push=True,
                 output=source_artifact,
             ),
@@ -269,10 +249,8 @@ class CDKPipelineStack(core.Stack):
                 environment=aws_codebuild.BuildEnvironment(
                     build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
                     privileged=True,
-                    # environment_variables={"branch_name": branch_name}
                 ),
                 # build_command='echo synth',
-
                 environment_variables={
                     "SQS_URL": aws_codebuild.BuildEnvironmentVariable(
                         value=branch_name_queue,
@@ -296,7 +274,6 @@ class CDKPipelineStack(core.Stack):
                     ),
                 },
                 # synth_command="cdk synth -c branch_name=feature-branch-pipeline-us01", ?????
-                ## Option 1
                 build_command="#!/bin/bash echo $SQS_URL, $stack_id, $BRANCH, $creation_or_deletion; echo $BRANCH; if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then npm -v; npm install -g aws-cdk; cdk --version; pip install -r requirements.txt; cdk ls -c branch_name=$BRANCH; cdk synth -c branch_name=$BRANCH; cdk diff -c branch_name=$BRANCH; if [[ $creation_or_deletion == 'creation' ]]; then cdk deploy $stack_id -c branch_name=$BRANCH --require-approval never; fi; if [[ $creation_or_deletion == 'deletion' ]]; then cdk destroy $stack_id -c branch_name=$BRANCH -f; else echo 'Not match feature branch prefix'; fi; fi",
                 # build_command="echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion; export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH; bash scripts/feature_branch_pipeline_operation.sh",
                 # synth_command="echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion; export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH; bash scripts/feature_branch_pipeline_operation.sh"
@@ -401,71 +378,13 @@ class CDKPipelineStack(core.Stack):
 
 
 
-        feature_pipeline_stage = FeaturePipelineApplication(self, 'FB', branch_name=branch_name, creation_or_deletion=creation_or_deletion, config=config)
+        # feature_pipeline_stage = FeaturePipelineApplication(self, 'FB', branch_name=branch_name, creation_or_deletion=creation_or_deletion, config=config)
 
-        pipeline.add_application_stage(feature_pipeline_stage)
+        # pipeline.add_application_stage(feature_pipeline_stage)
 
-
-        # TODO: run in parallel
-        # wave = pipeline.add_wave("Testing")
-
-        # ut_stage = pipeline.add_stage("UT") # Empty stage since we are going to run tests only, not deploy resources
-        # ut_stage.add_actions(
-        #     pipelines.ShellScriptAction(
-        #         action_name="UnitTests",
-        #         run_order=feature_stage.next_sequential_run_order(),
-        #         additional_artifacts=[source_artifact],
-        #         commands=[
-        #             "pip install -r requirements.txt",
-        #             "pip install -r requirements_dev.txt",
-        #             "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-        #         ],
-        #     )
-        # )
-        # wave.add_stage(ut_stage)
-
-        # it_stage = pipeline.add_stage("IT")
-        # it_stage.add_actions(
-        #     pipelines.ShellScriptAction(
-        #         action_name="InfrastructureTests",
-        #         run_order=feature_stage.next_sequential_run_order(),
-        #         additional_artifacts=[source_artifact],
-        #         commands=[
-        #             "pip install -r requirements.txt",
-        #             "pip install -r requirements_dev.txt",
-        #             # when no tests are found, exit code 5 will cause a problem in the pipeline
-        #             # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
-        #             "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-        #         ],
-        #     )
-        # )
-        # wave.add_stage(it_stage)
-
-        ## feature_stage = pipeline.add_application_stage(feature_app)
-
-
-        # pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator", branch_name=branch_name, config=config
-        #     # env=cdk.Environment(
-        #     #     account="123456789012",
-        #     #     region="eu-west-1"
-        #     # )
-        # )
-        # pipeline.add_application_stage(pipeline_generator_stage)
 
         deploy_stage = pipeline.add_stage("Deplpy_Feature_Branch_Pipeline") # Empty stage since we are going to run tests only, not deploy resources
-        # testing_stage.add_actions(
-        #     pipelines.ShellScriptAction(
-        #         action_name="UnitTests",
-        #         run_order=testing_stage.next_sequential_run_order(),
-        #         additional_artifacts=[source_artifact],
-        #         commands=[
-        #             "pip install -r requirements.txt",
-        #             "pip install -r requirements_dev.txt",
-        #           #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-        #         ],
-        #     )
-        # )
-        #SQS_URL??????
+
 
         deploy_stage.add_actions(
             pipelines.ShellScriptAction(
@@ -479,7 +398,6 @@ class CDKPipelineStack(core.Stack):
                 environment_variables={
                     "SQS_URL": aws_codebuild.BuildEnvironmentVariable(
                         value=branch_name_queue,
-                        # the properties below are optional
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
                     ),
                     # "BRANCH": aws_codebuild.BuildEnvironmentVariable(
@@ -489,28 +407,17 @@ class CDKPipelineStack(core.Stack):
                     # ),
                     "creation_or_deletion": aws_codebuild.BuildEnvironmentVariable(
                         value=creation_or_deletion,
-                        # the properties below are optional
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
                     ),
                     "stack_id": aws_codebuild.BuildEnvironmentVariable(
                         value=stack_id,
-                        # the properties below are optional
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
                     ),
                 },
                 commands=[
-                   # "BRANCH=$(python )"
-                   # "if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then echo 'match'; else echo 'not match'; fi" 
-
                     "echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion",
                     "export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH;",
                     "bash scripts/feature_branch_pipeline_operation.sh"
-
-                    # "cat cdk.json",
-                    # - cdk ls; cdk synth; cdk diff; cdk deploy --require-approval never
-                   # "if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then npm -v; npm install -g aws-cdk; cdk --version; pip install -r requirements.txt; cdk ls -c branch_name=$BRANCH; cdk synth -c branch_name=$BRANCH; cdk diff -c branch_name=$BRANCH; if [[ $reation_or_deletion == 'deletion' ]]; then cdk deploy  -c branch_name=$BRANCH --require-approval never; fi; if [[ $reation_or_deletion == 'creation' ]]; then cdk destroy -c branch_name=$BRANCH -f; else echo 'Not match feature branch prefix'; fi; fi"
-                   # "if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then npm -v; npm install -g aws-cdk; cdk --version; pip install -r requirements.txt; cdk ls -c branch_name=$BRANCH; cdk synth $stack_id -c branch_name=$BRANCH; cdk diff -c branch_name=$BRANCH; if [[ $reation_or_deletion == 'deletion' ]]; then cdk deploy $stack_id -c branch_name=$BRANCH --require-approval never; fi; if [[ $reation_or_deletion == 'creation' ]]; then   cdk destroy $stack_id -c branch_name=$BRANCH -f; else echo 'Not match feature branch prefix'; fi; fi"
-
                 ],
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
@@ -541,13 +448,3 @@ class CDKPipelineStack(core.Stack):
                 ],
             )
         )
-
-        # pipeline_generator_stage = PipelineGeneratorApplication()
-        # pipeline.add_application_stage(pipeline_generator_stage)
-
-        ## feature_stage = pipeline.add_application_stage(feature_app)
-
-
-        # 'MyApplication' is defined below. Call `addStage` as many times as
-        # necessary with any account and region (may be different from the
-        # pipeline's).
