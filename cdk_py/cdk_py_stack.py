@@ -227,7 +227,7 @@ class CdkPyStack(core.Stack):
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
                     # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-                    # "pytest --cov=dags --cov-branch term-missing -vvvv -s tests", #TODO
+                    "pytest --cov=dags --cov-branch term-missing -vvvv -s tests", #TODO
                    # "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
 
                 ],
