@@ -14,7 +14,6 @@ branch_prefix = 'feature-branch-pipeline-'  # TO Confirm, put into config?
 feature_pipeline_suffix = "_FearurePipelineForTesting"
 pipeline_template = os.getenv("pipeline_template") # get from config
 
-ssm_client = boto3.client('ssm')
 codepipeline_client = boto3.client('codepipeline')
 
 def handler(event, context):
@@ -50,27 +49,27 @@ def handler(event, context):
         ref = body.get('ref', '')
         ref_type = body.get('ref_type', '')
         description = dict_haskey(body, 'description')
-        print('ref: %s, ref_type: %s, description: %s', (ref, ref_type, description))
+        print(f'ref: {ref}, ref_type: {ref_type}, description: {description}')
 
         if ref_type == 'branch':
             branch_name = ref
             if description:
                 if branch_name_check(branch_name, branch_prefix):
                     pipeline_name = branch_name + feature_pipeline_suffix
-                    print('Generating pipeline %s for branch: %s', (pipeline_name, branch_name))
+                    print(f'Generating pipeline {pipeline_name} for branch: {branch_name}')
                     create_feature_pipeline_from_template(branch_name, pipeline_template, pipeline_name)                  
-                    msg = 'Done feature pipeline generation for: %s' % (branch_name)
+                    msg = f'Done feature pipeline generation for: {branch_name}'
                 else:
-                    msg = 'Branch name %s does not match the prefix %s' % (branch_name, branch_prefix)
+                    msg = f'Branch name {branch_name} does not match the prefix {branch_prefix}'
 
             else:
                 if branch_name_check(branch_name, branch_prefix):
                     pipeline_name = branch_name + feature_pipeline_suffix
-                    print('Dropping Pipeline %s for branch: %s', (pipeline_name, branch_name))
+                    print(f'Dropping Pipeline {pipeline_name} for branch: {branch_name}')
                     delete_feature_pipeline(pipeline_name)
-                    msg = "Done feature pipeline deletion for: %s" % (branch_name)
+                    msg = f'Done feature pipeline deletion for: {branch_name}'
                 else:
-                    msg = 'Branch name %s does not match the prefix %s' % (branch_name, branch_prefix)
+                    msg = f'Branch name {branch_name} does not match the prefix {branch_prefix}'
 
         else:
             msg = 'Not one of the following events: ["Branch creation", "Branch deletion"]'

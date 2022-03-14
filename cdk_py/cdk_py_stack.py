@@ -12,25 +12,22 @@ from aws_cdk import aws_codebuild
 
 from constructs import Construct
 
-# class S3Bucket(Stack):
-#     def __init__(self, scope, id):
-#         super().__init__(scope, id)
-#         self.bucket = s3.Bucket(self, "Bucket")
 
-# class S3Bucket(core.Stack):
-#     def __init__(self, scope, id):
-#         super().__init__(scope, id)
 
-#         s3.Bucket(self, id)
+class S3Bucket(core.Stack):
+    def __init__(self, scope, id):
+        super().__init__(scope, id)
+
+        s3.Bucket(self, id)
 
 
 # # TODO: APIGateway + Lambda + CodeBuild
-# class MyApplication(core.Stage):
-#     def __init__(self, scope, id, *, env=None, outdir=None):
-#         super().__init__(scope, id, env=env, outdir=outdir)
+class DeployApplication(core.Stage):
+    def __init__(self, scope, id, *, env=None, outdir=None):
+        super().__init__(scope, id, env=env, outdir=outdir)
 
-#         s3_bucket = S3Bucket(self, "MyFirstBucket-webhook")
-#         # bucket = s3.Bucket(self, "MyFirstBucket-webhook")
+        s3_bucket = S3Bucket(self, "MyFirstBucket-webhook")
+        # bucket = s3.Bucket(self, "MyFirstBucket-webhook")
 
 # branch_name='feature-branch-pipeline-webhook'
 
@@ -254,6 +251,12 @@ class CdkPyStack(core.Stack):
 
 
 
+        deploy_stage = DeployApplication(self, "deploy-sample",
+            #     account="123456789012",
+            #     region="eu-west-1"
+            # )
+        )
+        pipeline.add_application_stage(deploy_stage)
 
 
         # 'MyApplication' is defined below. Call `addStage` as many times as
