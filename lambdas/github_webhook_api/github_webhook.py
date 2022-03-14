@@ -153,7 +153,7 @@ def dict_haskey(d, k):
 #     )
 
 
-def create_feature_pipeline_from_template(branch_name, pipeline_template)
+def create_feature_pipeline_from_template(branch_name, pipeline_template):
     codepipeline_client = boto3.client('codepipeline')
     response = codepipeline_client.get_pipeline(
         name=pipeline_template,
