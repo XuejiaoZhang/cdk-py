@@ -39,21 +39,18 @@ def get_brance_name_from_sqs(sqs_url):
         if response.get('Messages', []):
             message = response['Messages'][0]
             receipt_handle = message['ReceiptHandle']
-
-            # Delete received message from queue
-            sqs_client.delete_message(
-                QueueUrl=sqs_url,
-                ReceiptHandle=receipt_handle
-            )
-            print('Received and deleted message: %s' % message)
             branch_name = message.get('Body', '')
-            print(branch_name)
 
-        if branch_name_check(branch_name, branch_prefix):
-            return branch_name
-
+            if branch_name_check(branch_name, branch_prefix):
+                return branch_name, receipt_handle
 
 
+ def delete_msg_from_sqs(sqs_url, receipt_handle):
+        # Delete received message from queue
+        sqs_client.delete_message(
+            QueueUrl=sqs_url,
+            ReceiptHandle=receipt_handle
+        )
 
 # from cdk_py.codebuild_stack import CodeBuildStack
 
@@ -154,7 +151,7 @@ class FeaturePipelineApplication(core.Stage):
 
         if not branch_name:
             print('branch_name_queue:', branch_name_queue)
-            branch_name = get_brance_name_from_sqs(branch_name)
+            branch_name, receipt_handle = get_brance_name_from_sqs(branch_name)
             print('branch_name:', branch_name)
 
         if branch_name: # and branch_name != 'dev' and branch_name != 'master':
@@ -198,7 +195,7 @@ class CDKPipelineStack(core.Stack):
         # TODO
         if not branch_name:
             print('branch_name_queue:', branch_name_queue)
-            branch_name = get_brance_name_from_sqs(branch_name)
+            branch_name, receipt_handle = get_brance_name_from_sqs(branch_name)
             print('branch_name:', branch_name)
 
         if branch_name and branch_name != 'dev' and branch_name != 'master':
@@ -257,6 +254,7 @@ class CDKPipelineStack(core.Stack):
                         # the properties below are optional
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
                     ),
+                    # BRANCH Keeps dev
                     "BRANCH": aws_codebuild.BuildEnvironmentVariable(
                         value=branch_name,
                         # the properties below are optional
@@ -418,7 +416,7 @@ class CDKPipelineStack(core.Stack):
                 },
                 commands=[
                     "echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion",
-                    # "export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH;",
+                    "export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH;",
                     "bash scripts/feature_branch_pipeline_operation.sh"
                 ],
                 role_policy_statements=[
