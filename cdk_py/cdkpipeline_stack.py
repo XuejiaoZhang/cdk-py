@@ -45,12 +45,14 @@ def get_brance_name_from_sqs(sqs_url):
                 return branch_name, receipt_handle
 
 
- def delete_msg_from_sqs(sqs_url, receipt_handle):
-        # Delete received message from queue
-        sqs_client.delete_message(
-            QueueUrl=sqs_url,
-            ReceiptHandle=receipt_handle
-        )
+ # def delete_msg_from_sqs(sqs_url, receipt_handle):
+ #        # Delete received message from queue
+ #        sqs_client.delete_message(
+ #            QueueUrl=sqs_url,
+ #            ReceiptHandle=receipt_handle
+ #        )
+
+
 
 # from cdk_py.codebuild_stack import CodeBuildStack
 
