@@ -225,7 +225,7 @@ class CdkPyStack(core.Stack):
                 run_order=feature_stage.next_sequential_run_order(),
                 additional_artifacts=[source_artifact],
                 commands=[
-                    "cat tests/not_in_use_test_cdkpipeline_stack.py ",
+                    "echo ok",
                     # "pip install -r requirements.txt",
                     # "pip install -r requirements_dev.txt",
                     # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
