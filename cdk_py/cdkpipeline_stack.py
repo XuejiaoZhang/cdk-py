@@ -274,7 +274,7 @@ class CDKPipelineStack(core.Stack):
                     ),
                 },
                 # synth_command="cdk synth -c branch_name=feature-branch-pipeline-us01", ?????
-                build_command="#!/bin/bash echo $SQS_URL, $stack_id, $BRANCH, $creation_or_deletion; echo $BRANCH; if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then npm -v; npm install -g aws-cdk; cdk --version; pip install -r requirements.txt; cdk ls -c branch_name=$BRANCH; cdk synth -c branch_name=$BRANCH; cdk diff -c branch_name=$BRANCH; if [[ $creation_or_deletion == 'creation' ]]; then cdk deploy $stack_id -c branch_name=$BRANCH --require-approval never; fi; if [[ $creation_or_deletion == 'deletion' ]]; then cdk destroy $stack_id -c branch_name=$BRANCH -f; else echo 'Not match feature branch prefix'; fi; fi",
+                # build_command="#!/bin/bash echo $SQS_URL, $stack_id, $BRANCH, $creation_or_deletion; echo $BRANCH; if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then npm -v; npm install -g aws-cdk; cdk --version; pip install -r requirements.txt; cdk ls -c branch_name=$BRANCH; cdk synth -c branch_name=$BRANCH; cdk diff -c branch_name=$BRANCH; if [[ $creation_or_deletion == 'creation' ]]; then cdk deploy $stack_id -c branch_name=$BRANCH --require-approval never; fi; if [[ $creation_or_deletion == 'deletion' ]]; then cdk destroy $stack_id -c branch_name=$BRANCH -f; else echo 'Not match feature branch prefix'; fi; fi",
                 # build_command="echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion; export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH; bash scripts/feature_branch_pipeline_operation.sh",
                 # synth_command="echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion; export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH; bash scripts/feature_branch_pipeline_operation.sh"
                 # build_command="#!/bin/bash echo $SQS_URL, $BRANCH, $creation_or_deletion; export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH; if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then npm -v; npm install -g aws-cdk; cdk --version; pip install -r requirements.txt; export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH; cdk ls -c branch_name=$BRANCH; cdk synth -c branch_name=$BRANCH; cdk diff -c branch_name=$BRANCH; if [[ $creation_or_deletion == 'deletion' ]]; then cdk deploy --all -c branch_name=$BRANCH --require-approval never; fi; if [[ $creation_or_deletion == 'creation' ]]; then cdk destroy --all -c branch_name=$BRANCH -f; else echo 'Not match feature branch prefix'; fi; fi",
@@ -321,8 +321,8 @@ class CDKPipelineStack(core.Stack):
                     )
                 ],
 
-                # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
-                # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
+                build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
+                synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
                 # role_policy_statements=[
                 #     aws_iam.PolicyStatement(
                 #         actions=["ssm:GetParameter"],
