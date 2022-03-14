@@ -320,9 +320,11 @@ class CDKPipelineStack(core.Stack):
                         resources=["*"],
                     )
                 ],
+                build_command="echo $BRANCH; cdk list -c branch_name=$BRANCH",
+                synth_command="echo $BRANCH; cdk synth -c branch_name=$BRANCH",
 
-                build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
-                synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
+                # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
+                # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
                 # role_policy_statements=[
                 #     aws_iam.PolicyStatement(
                 #         actions=["ssm:GetParameter"],
@@ -400,11 +402,11 @@ class CDKPipelineStack(core.Stack):
                         value=branch_name_queue,
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
                     ),
-                    # "BRANCH": aws_codebuild.BuildEnvironmentVariable(
-                    #     value=branch_name,
-                    #     # the properties below are optional
-                    #     type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
-                    # ),
+                    "BRANCH": aws_codebuild.BuildEnvironmentVariable(
+                        value=branch_name,
+                        # the properties below are optional
+                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
+                    ),
                     "creation_or_deletion": aws_codebuild.BuildEnvironmentVariable(
                         value=creation_or_deletion,
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
@@ -416,7 +418,7 @@ class CDKPipelineStack(core.Stack):
                 },
                 commands=[
                     "echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion",
-                    "export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH;",
+                    # "export BRANCH=$(python scripts/get_branch_name_from_sqs.py); echo $BRANCH;",
                     "bash scripts/feature_branch_pipeline_operation.sh"
                 ],
                 role_policy_statements=[
