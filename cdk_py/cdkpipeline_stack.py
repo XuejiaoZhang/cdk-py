@@ -227,7 +227,7 @@ class CDKPipelineStack(core.Stack):
         pipeline = pipelines.CdkPipeline(
             self,
             id,
-            self_mutating=False,
+            #self_mutating=False,
             cloud_assembly_artifact=cloud_assembly_artifact,
             pipeline_name=id,
             source_action=cpactions.CodeStarConnectionsSourceAction(

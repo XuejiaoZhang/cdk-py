@@ -36,8 +36,9 @@ config = app.node.try_get_context("config")
 
 # branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
 
-
-branch_name = 'dev'
+branch_name = app.node.try_get_context("branch_name")
+if not branch_name:
+    branch_name = 'dev'
 PipelineGeneratorStack(app, 'FeatureBranchPipelineGenerator',
         branch_name=branch_name, # dev, master
         config={**config},
