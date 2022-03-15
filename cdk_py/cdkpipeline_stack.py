@@ -320,7 +320,7 @@ class CDKPipelineStack(core.Stack):
                 ],
                 # build_command="echo $BRANCH; BRANCH=$(python scripts/get_branch_name_from_sqs_not_delete.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
                 # synth_command="echo $BRANCH; BRANCH=$(python scripts/get_branch_name_from_sqs_not_delete.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
-                build_command="echo $BRANCH; cdk build",
+                build_command="echo $BRANCH; cdk list",
                 synth_command="echo $BRANCH; cdk synth"
                 # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
                 # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
