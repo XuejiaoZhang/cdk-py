@@ -66,6 +66,7 @@ class GithubWebhookAPIStack(core.Stack):
                 actions=[
                     "ssm:PutParameter",
                     "ssm:GetParameter",
+                    "ssm:DeleteParameter",
                     "sqs:SendMessage",
                     "iam:PassRole",
                     "codepipeline:GetPipeline",

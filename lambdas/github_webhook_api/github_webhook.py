@@ -93,8 +93,8 @@ def handler(event, context):
         print('after', after)
 
         if ref_type == 'branch':
+            branch_name = ref
             if description:
-                branch_name = ref
                 if branch_name_check(branch_name, branch_prefox): # TODO not
                     print('Save branch name is parameter store::', branch_name)
                     save_branch_name_in_ssm(branch_name)
@@ -123,7 +123,7 @@ def handler(event, context):
             
             else:
                 # print('Deleted branch:', ref)
-                if not branch_name_check(branch_name, branch_prefox): # TODO not
+                if branch_name_check(branch_name, branch_prefox): # TODO not
                     print('Delete branch name is parameter store::', branch_name)
                     delete_branch_name_in_ssm(branch_name)
                     # print('Calling CodeBuild for branch:', branch_name)
