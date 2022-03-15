@@ -133,43 +133,43 @@ def get_brance_name_from_sqs(sqs_url):
 #     return response
 
 
-class S3Bucket(core.Stack):
-    def __init__(self, scope, id):
-        super().__init__(scope, id)
+# class S3Bucket(core.Stack):
+#     def __init__(self, scope, id):
+#         super().__init__(scope, id)
 
-        aws_s3.Bucket(self, id)
+#         aws_s3.Bucket(self, id)
 
-class FeaturePipelineApplication(core.Stage):
-    def __init__(
-        self,
-        scope: core.Construct,
-        id: str,
-        branch_name: str,
-        creation_or_deletion: str,
-        config: dict = None,
-        **kwargs,
-    ):
-        super().__init__(scope, id, **kwargs)
+# class FeaturePipelineApplication(core.Stage):
+#     def __init__(
+#         self,
+#         scope: core.Construct,
+#         id: str,
+#         branch_name: str,
+#         creation_or_deletion: str,
+#         config: dict = None,
+#         **kwargs,
+#     ):
+#         super().__init__(scope, id, **kwargs)
 
-        if not branch_name:
-            print('branch_name_queue:', branch_name_queue)
-            branch_name, receipt_handle = get_brance_name_from_sqs(branch_name)
-            print('branch_name:', branch_name)
+#         if not branch_name:
+#             print('branch_name_queue:', branch_name_queue)
+#             branch_name, receipt_handle = get_brance_name_from_sqs(branch_name)
+#             print('branch_name:', branch_name)
 
-        if branch_name: # and branch_name != 'dev' and branch_name != 'master':
-            branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
-            # stack_id = creation_or_deletion + branch_chars + "ReadyForFeatureBranchPipeline"
-            stack_id = branch_chars + "ReadyForFeatureBranchPipeline"
-            if creation_or_deletion == 'creation':
-                CdkPyStack(self, stack_id,
-                    feature_branch_name=branch_name,
-                    development_pipeline=True,
-                    config={**config},
-                )
-            else:
-                S3Bucket(self, creation_or_deletion+"Featurebranch-tmp")
-        else:
-            S3Bucket(self, creation_or_deletion+"Featurebranch-tmp")
+#         if branch_name: # and branch_name != 'dev' and branch_name != 'master':
+#             branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
+#             # stack_id = creation_or_deletion + branch_chars + "ReadyForFeatureBranchPipeline"
+#             stack_id = branch_chars + "ReadyForFeatureBranchPipeline"
+#             if creation_or_deletion == 'creation':
+#                 CdkPyStack(self, stack_id,
+#                     feature_branch_name=branch_name,
+#                     development_pipeline=True,
+#                     config={**config},
+#                 )
+#             else:
+#                 S3Bucket(self, creation_or_deletion+"Featurebranch-tmp")
+#         else:
+#             S3Bucket(self, creation_or_deletion+"Featurebranch-tmp")
             # PipelineStack()
         # else:
         #     stack_id = ''
@@ -318,9 +318,10 @@ class CDKPipelineStack(core.Stack):
                         resources=["*"],
                     )
                 ],
-                build_command="echo $BRANCH; BRANCH=$(python scripts/get_branch_name_from_sqs_not_delete.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
-                synth_command="echo $BRANCH; BRANCH=$(python scripts/get_branch_name_from_sqs_not_delete.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
-
+                # build_command="echo $BRANCH; BRANCH=$(python scripts/get_branch_name_from_sqs_not_delete.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
+                # synth_command="echo $BRANCH; BRANCH=$(python scripts/get_branch_name_from_sqs_not_delete.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
+                build_command="echo build",
+                synth_command="echo synth"
                 # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
                 # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
                 # role_policy_statements=[

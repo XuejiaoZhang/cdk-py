@@ -11,16 +11,16 @@ if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then
 	echo "cdk ls"
 	cdk ls -c branch_name=$BRANCH; 
 	echo "cdk synth"
-
 	cdk synth -c branch_name=$BRANCH; 
 	echo "cdk diff"
 	cdk diff -c branch_name=$BRANCH; 
 	echo "cdk deploy"
+	stack_id="FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch/"$stack_id
+	echo "stack_id: "$stack_id
 	if [[ $creation_or_deletion == 'creation' ]]; then 
 		echo "creation"
 		# cdk deploy FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch -c branch_name=$BRANCH  --require-approval never #TODO
 		#stack_id=FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch
-		stack_id="FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch/featurebranchpipelinetest01ReadyForFeatureBranchPipeline"
 		#stack_id = branch_name + "-pipeline"
 		
 		cdk deploy $stack_id -c branch_name=$BRANCH  --require-approval never
