@@ -196,9 +196,7 @@ class CDKPipelineStack(core.Stack):
 
         # TODO
         if not branch_name:
-            print('branch_name_queue:', branch_name_queue)
             branch_name, receipt_handle = get_brance_name_from_sqs(branch_name)
-            print('branch_name:', branch_name)
 
         if branch_name and branch_name != 'dev' and branch_name != 'master':
             branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
@@ -379,10 +377,10 @@ class CDKPipelineStack(core.Stack):
 
 
 
-
         # feature_pipeline_stage = FeaturePipelineApplication(self, 'FB', branch_name=branch_name, creation_or_deletion=creation_or_deletion, config=config)
 
         # pipeline.add_application_stage(feature_pipeline_stage)
+
 
 
         deploy_stage = pipeline.add_stage("Deplpy_Feature_Branch_Pipeline") # Empty stage since we are going to run tests only, not deploy resources

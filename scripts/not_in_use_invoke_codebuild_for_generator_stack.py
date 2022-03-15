@@ -19,7 +19,7 @@ def codebuild_run(branch_name):
     )
 
 branch_name = 'dev'
-#branch_name = 'feature-branch-pipeline-us01'
+# branch_name = 'feature-branch-pipeline-test-01'
 
 print("CDK deploy branch:", branch_name)
 codebuild_run(branch_name)   
