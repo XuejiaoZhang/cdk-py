@@ -20,8 +20,8 @@ if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then
 		echo "creation"
 		# cdk deploy FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch -c branch_name=$BRANCH  --require-approval never #TODO
 		#stack_id=FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch
-		
-		stack_id = branch_name + "-pipeline"
+		stack_id="FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch/featurebranchpipelinetest01ReadyForFeatureBranchPipeline"
+		#stack_id = branch_name + "-pipeline"
 		
 		cdk deploy $stack_id -c branch_name=$BRANCH  --require-approval never
 	elif [[ $creation_or_deletion == 'deletion' ]]; then 
