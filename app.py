@@ -39,6 +39,8 @@ config = app.node.try_get_context("config")
 branch_name = app.node.try_get_context("branch_name")
 if not branch_name:
     branch_name = 'dev'
+
+branch_name = 'feature-branch-pipeline-test-01'
 PipelineGeneratorStack(app, 'FeatureBranchPipelineGenerator',
         branch_name=branch_name, # dev, master
         config={**config},
