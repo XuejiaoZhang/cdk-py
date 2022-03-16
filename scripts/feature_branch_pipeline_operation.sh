@@ -15,7 +15,7 @@ if [[ $BRANCH =~ ^feature-branch-pipeline- ]]; then
 	echo "cdk diff"
 	cdk diff -c branch_name=$BRANCH; 
 	echo "cdk deploy"
-	stack_id="FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch/"$stack_id
+	stack_id="FeatureBranchPipelineGenerator/pipelineGenerator/Create-Branch/"$stack_id  #TODO
 	echo "stack_id: "$stack_id
 	if [[ $creation_or_deletion == 'creation' ]]; then 
 		echo "creation"
