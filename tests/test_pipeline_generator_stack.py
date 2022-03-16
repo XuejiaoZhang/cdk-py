@@ -23,7 +23,7 @@ CDK_JSON = os.path.abspath(os.path.join(os.path.dirname(__file__), r"../cdk.json
 
 
 # - Functions/Classes --------------------------------------------------------------------------------------------------
-class TestPipelineGeneratorApplication(unittest.TestCase):
+class TestPPipelineGeneratorStack(unittest.TestCase):
 
     #@pytest.mark.skip(reason="not a unit test, requires authenticated API calls")
     def test_create_stack_ok(self):
@@ -47,7 +47,7 @@ class TestPipelineGeneratorApplication(unittest.TestCase):
         # print(cdk_json)
         
         # WHEN
-        stack = pipeline_generator_stack.PipelineGeneratorApplication(app, 
+        stack = pipeline_generator_stack.PipelineGeneratorStack(app, 
                                                         "test-pipeline-generator-stack",
                                                         branch_name="dev",
                                                         config=cdk_json["context"]["config"],
@@ -61,7 +61,7 @@ class TestPipelineGeneratorApplication(unittest.TestCase):
         stack_art_dict = stack_artifact.template
         
         # CHECK #TODO False
-        self.assertEqual(False, isinstance(stack, pipeline_generator_stack.PipelineGeneratorApplication))
+        self.assertEqual(False, isinstance(stack, pipeline_generator_stack.PipelineGeneratorStack))
         self.assertEqual(True, isinstance(stack, core.Stack))
         self.assertEqual(True, isinstance(stack_art_dict, dict))
 

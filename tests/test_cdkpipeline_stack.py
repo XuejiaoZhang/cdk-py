@@ -25,7 +25,7 @@ CDK_JSON = os.path.abspath(os.path.join(os.path.dirname(__file__), r"../cdk.json
 # - Functions/Classes --------------------------------------------------------------------------------------------------
 class TestCDKPipelineStack(unittest.TestCase):
 
-    @pytest.mark.skip(reason="not a unit test, requires authenticated API calls")
+    #@pytest.mark.skip(reason="not a unit test, requires authenticated API calls")
     def test_create_stack_ok(self):
 
         # GIVEN
