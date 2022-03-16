@@ -9,6 +9,7 @@ import json
 # - Third Party Imports ------------------------------------------------------------------------------------------------
 import pytest
 from aws_cdk import core
+from aws_cdk.core import DefaultStackSynthesizer
 
 # - Local Application/Library Specific Imports -------------------------------------------------------------------------
 FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), r"../cdk_py")) ## TODO
@@ -53,6 +54,7 @@ class TestGithubWebhookApiStack(unittest.TestCase):
                                                         # hosted_zone_id=r53stack.hosted_zone.hosted_zone_id,
                                                         # hosted_zone_name=r53stack.hosted_zone.zone_name,
                                                         # env={'account': dev_account,'region': region}
+                                                        synthesizer=DefaultStackSynthesizer(),
                                                         )
         
         # THEN
