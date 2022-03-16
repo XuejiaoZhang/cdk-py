@@ -106,6 +106,11 @@ class CdkPyStack(core.Stack):
                 action_name="UnitTests",
                 run_order=feature_stage.next_sequential_run_order(),
                 additional_artifacts=[source_artifact],
+                environment=aws_codebuild.BuildEnvironment(
+                    build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                    privileged=True,
+                    # environment_variables={"branch_name": branch_name}
+                ),                
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
@@ -123,6 +128,11 @@ class CdkPyStack(core.Stack):
                 action_name="InfrastructureTests",
                 run_order=feature_stage.next_sequential_run_order(),
                 additional_artifacts=[source_artifact],
+                environment=aws_codebuild.BuildEnvironment(
+                    build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                    privileged=True,
+                    # environment_variables={"branch_name": branch_name}
+                ),
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
