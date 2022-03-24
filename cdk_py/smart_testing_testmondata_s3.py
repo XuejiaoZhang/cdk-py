@@ -40,5 +40,5 @@ class SmartTestingTestmondataS3Stack(core.Stack):
         param = aws_ssm.StringParameter(
             self,
             "smart-testing-testmondata-bucket-name",
-            string_value=smart_testing_testmondata_s3.bucket_name,
+            string_value=self.smart_testing_testmondata_s3.bucket_name,
         )
