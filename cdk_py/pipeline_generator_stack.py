@@ -62,7 +62,7 @@ class PipelineGeneratorApplication(core.Stage):
         GithubWebhookAPIStack(self, "GitHub-Webhook-API", pipeline_template=pipeline_template, config=config)
 
 
-        smarttestingtestmondatas3 = SmartTestingTestmondataS3Stack(
+        self.smarttestingtestmondatas3 = SmartTestingTestmondataS3Stack(
             self,
             "smarttestingtestmondatas3stack",
             config=config,
