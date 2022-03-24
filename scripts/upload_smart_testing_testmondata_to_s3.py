@@ -4,7 +4,7 @@
 """
 Upload testmon database file to S3 bucket after running smart testing with testmon.
 """
-
+import os
 import boto3
 
 s3 = boto3.resource("s3")

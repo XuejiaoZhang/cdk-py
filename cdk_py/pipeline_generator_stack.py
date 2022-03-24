@@ -266,6 +266,8 @@ class PipelineGeneratorStack(core.Stack):
             #     region="eu-west-1"
             # )
         )
+        pipeline.add_application_stage(pipeline_generator_stage)
+
 
         testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
 
@@ -283,11 +285,12 @@ class PipelineGeneratorStack(core.Stack):
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
-                    "set -e; export BUCKET_NAME=$(python scripts/get_bucket_name_from_ssm.py);python scripts/download_smart_testing_testmondata_from_s3.py; pytest --testmon; python scripts/upload_smart_testing_testmondata_to_s3.py"
+                    "set -e; export BUCKET_NAME=$(python scripts/get_bucket_name_from_ssm.py);ls -al;python scripts/download_smart_testing_testmondata_from_s3.py; ls -al; pytest --testmon; ls -al; python scripts/upload_smart_testing_testmondata_to_s3.py"
                 ],
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
                         actions=[
+                            "S3:ListBucket",
                             "s3:PutObject",
                             "s3:GetObject"
                         ],
@@ -321,8 +324,13 @@ class PipelineGeneratorStack(core.Stack):
                 },
                 commands=[
                     # Not git repo
-                    "pylint $(git ls-files '*.py')",
-                    "#!bin/bash; score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p'); ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
+                    "pip install -r requirements.txt",
+                    "pip install -r requirements_dev.txt",
+                    "set -e; bash scripts/pylint_check.sh $THRESHOLD"
+               #     "pylint $(git ls-files '*.py')",
+                #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
+                #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
+                #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
                 ],
             )
         )
@@ -357,7 +365,7 @@ class PipelineGeneratorStack(core.Stack):
         # )
 
 
-        pipeline.add_application_stage(pipeline_generator_stage)
+        # pipeline.add_application_stage(pipeline_generator_stage)
 
         ## feature_stage = pipeline.add_application_stage(feature_app)
 
