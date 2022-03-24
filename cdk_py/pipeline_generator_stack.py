@@ -313,12 +313,12 @@ class PipelineGeneratorStack(core.Stack):
                     build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
                     privileged=True,
                 ),
-                environment_variables={
-                    "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
-                        value=config.get("smart_testing").get("threshold"),
-                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-                    ),
-                },
+                # environment_variables={
+                #     "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
+                #         value=config.get("smart_testing").get("threshold"),
+                #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+                #     ),
+                # },
                 commands=[
                     # Not git repo
                     "pylint $(git ls-files '*.py')t",
