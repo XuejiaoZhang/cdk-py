@@ -19,7 +19,7 @@ class SmartTestingTestmondataS3Stack(core.Stack):
         """
         super().__init__(scope, id, **kwargs)
 
-        smart_testing_testmondata_s3 = aws_s3.Bucket(
+        self.smart_testing_testmondata_s3 = aws_s3.Bucket(
             self,
             id="smart-testing-testmondata-bucket",
             bucket_name=f"smart-testing-testmondata-bucket-{self.account}",
