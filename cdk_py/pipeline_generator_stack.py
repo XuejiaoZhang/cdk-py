@@ -274,12 +274,12 @@ class PipelineGeneratorStack(core.Stack):
                 action_name="SmartTesting",
                 run_order=testing_stage.next_sequential_run_order(),
                 additional_artifacts=[source_artifact],
-                environment_variables={
-                    "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
-                        value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_name,
-                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-                    ),
-                },
+                # environment_variables={
+                #     "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
+                #         value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_name,
+                #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+                #     ),
+                # },
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
