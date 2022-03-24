@@ -283,9 +283,7 @@ class PipelineGeneratorStack(core.Stack):
                 commands=[
                     "pip install -r requirements.txt",
                     "pip install -r requirements_dev.txt",
-                    "set -e; python scripts/download_smart_testing_testmondata_from_s3.py"
-                    "ppytest --testmon",
-                    "set -e; python scripts/upload_smart_testing_testmondata_to_s3.py"
+                    "set -e; export BUCKET_NAME=$(python caedge_sim_gen/infrastructure/scripts/get_bucket_name_from_ssm.py);python scripts/download_smart_testing_testmondata_from_s3.py; pytest --testmon; python scripts/upload_smart_testing_testmondata_to_s3.py"
                 ],
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
@@ -296,7 +294,12 @@ class PipelineGeneratorStack(core.Stack):
                         effect=aws_iam.Effect.ALLOW,
                         resources=["*"]
                         #resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
-                    )
+                    ),
+                    aws_iam.PolicyStatement(
+                        actions=["ssm:GetParameter"],
+                        effect=aws_iam.Effect.ALLOW,
+                        resources=["*"],
+                    ),
                 ],
             )
         )
