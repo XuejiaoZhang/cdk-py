@@ -276,7 +276,7 @@ class PipelineGeneratorStack(core.Stack):
                 additional_artifacts=[source_artifact],
                 environment_variables={
                     "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
-                        value=pipeline_generator_stage.smarttestingtestmondatas3.branch_name,
+                        value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.branch_name,
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
                     ),
                 },
