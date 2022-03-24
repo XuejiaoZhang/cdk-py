@@ -19,7 +19,7 @@ class SmartTestingTestmondataS3Stack(core.Stack):
         """
         super().__init__(scope, id, **kwargs)
 
-        self.smart_testing_testmondata_s3 = aws_s3.Bucket(
+        smart_testing_testmondata_s3 = aws_s3.Bucket(
             self,
             id="smart-testing-testmondata-bucket",
             bucket_name=f"smart-testing-testmondata-bucket-{self.account}",
@@ -28,7 +28,7 @@ class SmartTestingTestmondataS3Stack(core.Stack):
             block_public_access=aws_s3.BlockPublicAccess.BLOCK_ALL,
         )
 
-        self.smart_testing_testmondata_s3.add_to_resource_policy(
+        smart_testing_testmondata_s3.add_to_resource_policy(
             aws_iam.PolicyStatement(
                 actions=["s3:GetObject", "s3:PutObject"],
                 resources=["*"],  ## TO Confrim : "arn:aws:s3:::examplebucket/shared/*"
@@ -40,5 +40,5 @@ class SmartTestingTestmondataS3Stack(core.Stack):
         param = aws_ssm.StringParameter(
             self,
             "smart-testing-testmondata-bucket-name",
-            string_value=self.smart_testing_testmondata_s3.bucket_name,
+            string_value=smart_testing_testmondata_s3.bucket_name,
         )

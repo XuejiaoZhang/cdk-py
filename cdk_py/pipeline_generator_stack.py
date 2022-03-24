@@ -59,10 +59,10 @@ class PipelineGeneratorApplication(core.Stage):
 
 
 
-        GithubWebhookAPIStack(self, "GitHub-Webhook-API", pipeline_template=pipeline_template, config=config)
+        #GithubWebhookAPIStack(self, "GitHub-Webhook-API", pipeline_template=pipeline_template, config=config)
 
 
-        self.smarttestingtestmondatas3 = SmartTestingTestmondataS3Stack(
+        smarttestingtestmondatas3 = SmartTestingTestmondataS3Stack(
             self,
             "smarttestingtestmondatas3stack",
             config=config,
@@ -303,6 +303,31 @@ class PipelineGeneratorStack(core.Stack):
                 ],
             )
         )
+
+        testing_stage.add_actions(
+            pipelines.ShellScriptAction(
+                action_name="StaticCodeAnalysis",
+                run_order=testing_stage.next_sequential_run_order(),
+                additional_artifacts=[source_artifact],
+                environment=aws_codebuild.BuildEnvironment(
+                    build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                    privileged=True,
+                ),
+                environment_variables={
+                    "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
+                        value=config.get("smart_testing").get("threshold"),
+                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+                    ),
+                },
+                commands=[
+                    # Not git repo
+                    "pylint $(git ls-files '*.py')t",
+                    "#!bin/bash; score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p'); ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?"0":"1"}'); if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi",
+                ],
+            )
+        )
+
+
         # testing_stage.add_actions(
         #     pipelines.ShellScriptAction(
         #         action_name="UnitTests",
