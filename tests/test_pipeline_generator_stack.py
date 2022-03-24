@@ -50,6 +50,7 @@ class TestPipelineGeneratorApplication(unittest.TestCase):
         stack = pipeline_generator_stack.PipelineGeneratorApplication(app, 
                                                         "test-pipeline-generator-stack",
                                                         branch_name="dev",
+                                                        pipeline_template="pipeline_template",
                                                         config=cdk_json["context"]["config"],
                                                         # hosted_zone_id=r53stack.hosted_zone.hosted_zone_id,
                                                         # hosted_zone_name=r53stack.hosted_zone.zone_name,

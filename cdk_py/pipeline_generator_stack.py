@@ -10,11 +10,14 @@ from aws_cdk import pipelines
 from aws_cdk import aws_codepipeline_actions as cpactions
 from aws_cdk import aws_codebuild
 
+from aws_cdk.core import DefaultStackSynthesizer
+
 from constructs import Construct
 from cdk_py.github_webhook_api_stack import GithubWebhookAPIStack
 from cdk_py.cdk_py_stack import CdkPyStack
 # from cdk_py.cdkpipeline_stack import CDKPipelineStack
- 
+from cdk_py.smart_testing_testmondata_s3 import SmartTestingTestmondataS3Stack
+
 # class S3Bucket(Stack):
 #     def __init__(self, scope, id):
 #         super().__init__(scope, id)
@@ -59,6 +62,12 @@ class PipelineGeneratorApplication(core.Stage):
         GithubWebhookAPIStack(self, "GitHub-Webhook-API", pipeline_template=pipeline_template, config=config)
 
 
+        smarttestingtestmondatas3 = SmartTestingTestmondataS3Stack(
+            self,
+            "smarttestingtestmondatas3stack",
+            config=config,
+            synthesizer=DefaultStackSynthesizer(),
+        )
 
         # CDKPipelineStack(self, config.get('branch_creation_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
         # CDKPipelineStack(self, config.get('branch_deletion_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
@@ -251,42 +260,74 @@ class PipelineGeneratorStack(core.Stack):
         # wave.add_stage(it_stage)
 
         ## feature_stage = pipeline.add_application_stage(feature_app)
-
-        testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
-        testing_stage.add_actions(
-            pipelines.ShellScriptAction(
-                action_name="UnitTests",
-                run_order=testing_stage.next_sequential_run_order(),
-                additional_artifacts=[source_artifact],
-                commands=[
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                  #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-                ],
-            )
-        )
-
-        testing_stage.add_actions(
-            pipelines.ShellScriptAction(
-                action_name="InfrastructureTests",
-                run_order=testing_stage.next_sequential_run_order(),
-                additional_artifacts=[source_artifact],
-                commands=[
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                    # when no tests are found, exit code 5 will cause a problem in the pipeline
-                    # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
-                #    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-                ],
-            )
-        )
-
         pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator-boto3", branch_name=branch_name, pipeline_template=pipeline_template, config=config
             # env=cdk.Environment(
             #     account="123456789012",
             #     region="eu-west-1"
             # )
         )
+
+        testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
+
+        testing_stage.add_actions(
+            pipelines.ShellScriptAction(
+                action_name="SmartTesting",
+                run_order=testing_stage.next_sequential_run_order(),
+                additional_artifacts=[source_artifact],
+                environment_variables={
+                    "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
+                        value=pipeline_generator_stage.smarttestingtestmondatas3.branch_name,
+                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+                    ),
+                },
+                commands=[
+                    "pip install -r requirements.txt",
+                    "pip install -r requirements_dev.txt",
+                    "set -e; python scripts/download_smart_testing_testmondata_from_s3.py"
+                    "ppytest --testmon",
+                    "set -e; python scripts/upload_smart_testing_testmondata_to_s3.py"
+                ],
+                role_policy_statements=[
+                    aws_iam.PolicyStatement(
+                        actions=[
+                            "s3:PutObject",
+                            "s3:GetObject"
+                        ],
+                        effect=aws_iam.Effect.ALLOW,
+                        resources=[toolchain_app.smarttestingtestmondatas3.bucket_arn],
+                    )
+                ],
+            )
+        )
+        # testing_stage.add_actions(
+        #     pipelines.ShellScriptAction(
+        #         action_name="UnitTests",
+        #         run_order=testing_stage.next_sequential_run_order(),
+        #         additional_artifacts=[source_artifact],
+        #         commands=[
+        #             "pip install -r requirements.txt",
+        #             "pip install -r requirements_dev.txt",
+        #           #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+        #         ],
+        #     )
+        # )
+
+        # testing_stage.add_actions(
+        #     pipelines.ShellScriptAction(
+        #         action_name="InfrastructureTests",
+        #         run_order=testing_stage.next_sequential_run_order(),
+        #         additional_artifacts=[source_artifact],
+        #         commands=[
+        #             "pip install -r requirements.txt",
+        #             "pip install -r requirements_dev.txt",
+        #             # when no tests are found, exit code 5 will cause a problem in the pipeline
+        #             # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
+        #         #    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
+        #         ],
+        #     )
+        # )
+
+
         pipeline.add_application_stage(pipeline_generator_stage)
 
         ## feature_stage = pipeline.add_application_stage(feature_app)
