@@ -28,7 +28,7 @@ class SmartTestingTestmondataS3Stack(core.Stack):
             block_public_access=aws_s3.BlockPublicAccess.BLOCK_ALL,
         )
 
-        smart_testing_testmondata_s3.add_to_resource_policy(
+        self.smart_testing_testmondata_s3.add_to_resource_policy(
             aws_iam.PolicyStatement(
                 actions=["s3:GetObject", "s3:PutObject"],
                 resources=["*"],  ## TO Confrim : "arn:aws:s3:::examplebucket/shared/*"
