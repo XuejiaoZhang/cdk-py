@@ -294,7 +294,8 @@ class PipelineGeneratorStack(core.Stack):
                             "s3:GetObject"
                         ],
                         effect=aws_iam.Effect.ALLOW,
-                        resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
+                        resources=["*"]
+                        #resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
                     )
                 ],
             )
