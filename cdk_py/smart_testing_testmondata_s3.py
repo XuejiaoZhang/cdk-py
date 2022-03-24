@@ -32,7 +32,7 @@ class SmartTestingTestmondataS3Stack(core.Stack):
             aws_iam.PolicyStatement(
                 actions=["s3:GetObject", "s3:PutObject"],
                 resources=["*"],  ## TO Confrim : "arn:aws:s3:::examplebucket/shared/*"
-                principals=[iam.AccountRootPrincipal()],
+                principals=[aws_iam.AccountRootPrincipal()],
             )
         )
 
