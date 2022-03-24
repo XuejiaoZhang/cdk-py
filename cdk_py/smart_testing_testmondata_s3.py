@@ -1,5 +1,6 @@
 from aws_cdk import (
     aws_s3,
+    aws_iam,
     core,
     aws_ssm,
 )
@@ -28,7 +29,7 @@ class SmartTestingTestmondataS3Stack(core.Stack):
         )
 
         smart_testing_testmondata_s3.add_to_resource_policy(
-            iam.PolicyStatement(
+            aws_iam.PolicyStatement(
                 actions=["s3:GetObject", "s3:PutObject"],
                 resources=["*"],  ## TO Confrim : "arn:aws:s3:::examplebucket/shared/*"
                 principals=[iam.AccountRootPrincipal()],
