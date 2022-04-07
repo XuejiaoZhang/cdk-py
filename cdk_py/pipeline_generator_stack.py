@@ -329,6 +329,10 @@ class PipelineGeneratorStack(core.Stack):
                         value="token",
                         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
                     ),
+                    "toekn2": aws_codebuild.BuildEnvironmentVariable(
+                        value="token2:token2",
+                        type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+                    ),
                     # NODE_AUTH_TOKEN: {
                     #     value: secretGithubAccessToken.secretValue,
                     #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
@@ -337,7 +341,8 @@ class PipelineGeneratorStack(core.Stack):
                 commands=[
                     # Not git repo
                     "echo $secret",
-                    "echo $token"
+                    "echo $token",
+                    "echo $token2"
                     # "pip install -r requirements.txt",
                     # "pip install -r requirements_dev.txt",
                     # "set -e; bash scripts/pylint_check.sh $THRESHOLD"
