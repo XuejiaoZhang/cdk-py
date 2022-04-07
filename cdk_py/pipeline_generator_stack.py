@@ -321,12 +321,17 @@ class PipelineGeneratorStack(core.Stack):
                         value=config.get("smart_testing").get("threshold"),
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
                     ),
+                    "secret": aws_codebuild.BuildEnvironmentVariable(
+                        value="github_webhook_secret:github_webhook_secret",
+                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+                    ),
                 },
                 commands=[
                     # Not git repo
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                    "set -e; bash scripts/pylint_check.sh $THRESHOLD"
+                    "echo $secret"
+#                     "pip install -r requirements.txt",
+#                     "pip install -r requirements_dev.txt",
+#                     "set -e; bash scripts/pylint_check.sh $THRESHOLD"
                #     "pylint $(git ls-files '*.py')",
                 #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
                 #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
