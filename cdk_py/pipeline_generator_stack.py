@@ -322,20 +322,36 @@ class PipelineGeneratorStack(core.Stack):
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
                     ),
                     "secret": aws_codebuild.BuildEnvironmentVariable(
-                        value="github_webhook_secret:github_webhook_secret",
-                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+                        value="github_webhook_secret:github_webhook_secret".secretValue,
+                        type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
                     ),
+                    "toekn": aws_codebuild.BuildEnvironmentVariable(
+                        value="token".secretValue,
+                        type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+                    ),
+                    # NODE_AUTH_TOKEN: {
+                    #     value: secretGithubAccessToken.secretValue,
+                    #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+                    #   },
                 },
                 commands=[
                     # Not git repo
-                    "echo $secret"
-#                     "pip install -r requirements.txt",
-#                     "pip install -r requirements_dev.txt",
-#                     "set -e; bash scripts/pylint_check.sh $THRESHOLD"
-               #     "pylint $(git ls-files '*.py')",
-                #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
-                #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
-                #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
+                    "echo $secret",
+                    "echo $token"
+                    # "pip install -r requirements.txt",
+                    # "pip install -r requirements_dev.txt",
+                    # "set -e; bash scripts/pylint_check.sh $THRESHOLD"
+                    #     "pylint $(git ls-files '*.py')",
+                    #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
+                    #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
+                    #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
+                ],
+                role_policy_statements=[
+                    aws_iam.PolicyStatement(
+                        actions=["secretsmanager:*"],
+                        effect=aws_iam.Effect.ALLOW,
+                        resources=["*"]
+                    )
                 ],
             )
         )
