@@ -325,11 +325,11 @@ class PipelineGeneratorStack(core.Stack):
                         value="github_webhook_secret:github_webhook_secret",
                         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
                     ),
-                    "toekn": aws_codebuild.BuildEnvironmentVariable(
+                    "token": aws_codebuild.BuildEnvironmentVariable(
                         value="token",
                         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
                     ),
-                    "toekn2": aws_codebuild.BuildEnvironmentVariable(
+                    "token2": aws_codebuild.BuildEnvironmentVariable(
                         value="token2:token2",
                         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
                     ),
@@ -353,7 +353,7 @@ class PipelineGeneratorStack(core.Stack):
                 ],
                 role_policy_statements=[
                     aws_iam.PolicyStatement(
-                        actions=["secretsmanager:*"],
+                        actions=["secretsmanager:GetSecretValue"],
                         effect=aws_iam.Effect.ALLOW,
                         resources=["*"]
                     )
