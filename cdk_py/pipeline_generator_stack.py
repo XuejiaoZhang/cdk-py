@@ -271,41 +271,41 @@ class PipelineGeneratorStack(core.Stack):
 
         testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
 
-        testing_stage.add_actions(
-            pipelines.ShellScriptAction(
-                action_name="SmartTesting",
-                run_order=testing_stage.next_sequential_run_order(),
-                additional_artifacts=[source_artifact],
-                # environment_variables={
-                #     "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
-                #         value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_name,
-                #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-                #     ),
-                # },
-                commands=[
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                    "set -e; export BUCKET_NAME=$(python scripts/get_bucket_name_from_ssm.py);ls -al;python scripts/download_smart_testing_testmondata_from_s3.py; ls -al; pytest --testmon; ls -al; python scripts/upload_smart_testing_testmondata_to_s3.py"
-                ],
-                role_policy_statements=[
-                    aws_iam.PolicyStatement(
-                        actions=[
-                            "S3:ListBucket",
-                            "s3:PutObject",
-                            "s3:GetObject"
-                        ],
-                        effect=aws_iam.Effect.ALLOW,
-                        resources=["*"]
-                        #resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
-                    ),
-                    aws_iam.PolicyStatement(
-                        actions=["ssm:GetParameter"],
-                        effect=aws_iam.Effect.ALLOW,
-                        resources=["*"],
-                    ),
-                ],
-            )
-        )
+#         testing_stage.add_actions(
+#             pipelines.ShellScriptAction(
+#                 action_name="SmartTesting",
+#                 run_order=testing_stage.next_sequential_run_order(),
+#                 additional_artifacts=[source_artifact],
+#                 # environment_variables={
+#                 #     "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
+#                 #         value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_name,
+#                 #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+#                 #     ),
+#                 # },
+#                 commands=[
+#                     "pip install -r requirements.txt",
+#                     "pip install -r requirements_dev.txt",
+#                     "set -e; export BUCKET_NAME=$(python scripts/get_bucket_name_from_ssm.py);ls -al;python scripts/download_smart_testing_testmondata_from_s3.py; ls -al; pytest --testmon; ls -al; python scripts/upload_smart_testing_testmondata_to_s3.py"
+#                 ],
+#                 role_policy_statements=[
+#                     aws_iam.PolicyStatement(
+#                         actions=[
+#                             "S3:ListBucket",
+#                             "s3:PutObject",
+#                             "s3:GetObject"
+#                         ],
+#                         effect=aws_iam.Effect.ALLOW,
+#                         resources=["*"]
+#                         #resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
+#                     ),
+#                     aws_iam.PolicyStatement(
+#                         actions=["ssm:GetParameter"],
+#                         effect=aws_iam.Effect.ALLOW,
+#                         resources=["*"],
+#                     ),
+#                 ],
+#             )
+#         )
 
         testing_stage.add_actions(
             pipelines.ShellScriptAction(
@@ -322,11 +322,11 @@ class PipelineGeneratorStack(core.Stack):
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
                     ),
                     "secret": aws_codebuild.BuildEnvironmentVariable(
-                        value="github_webhook_secret:github_webhook_secret".secretValue,
+                        value="github_webhook_secret:github_webhook_secret",
                         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
                     ),
                     "toekn": aws_codebuild.BuildEnvironmentVariable(
-                        value="token".secretValue,
+                        value="token",
                         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
                     ),
                     # NODE_AUTH_TOKEN: {
