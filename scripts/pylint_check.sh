@@ -8,12 +8,13 @@ set -e
 threshold=$1
 echo "Threshold: $threshold"
 # pylint *
-pylint cdk_py/
+# pylint cdk_py/
 
 pylint_output_file="pylint_output"
 echo "$pylint_output_file"
-pylint cdk_py/ > $pylint_output_file
+pylint * > $pylint_output_file
 cat $pylint_output_file
+
 score=$(cat $pylint_output_file |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p')
 # score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p')
 

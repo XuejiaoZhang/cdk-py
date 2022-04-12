@@ -1,25 +1,27 @@
 import boto3
 import os
-ssm_client = boto3.client('ssm')
 
-#CODEBUILD_INITIATOR=codepipeline/featurebranchpipelinewebhookReadyForFeatureBranchPipeline
+ssm_client = boto3.client("ssm")
 
-branch_chars = ''
-branch_name = ''
+# CODEBUILD_INITIATOR=codepipeline/featurebranchpipelinewebhookReadyForFeatureBranchPipeline
 
-CODEBUILD_INITIATOR_LIST = os.getenv('CODEBUILD_INITIATOR').split('/')
+branch_chars = ""
+branch_name = ""
+
+CODEBUILD_INITIATOR_LIST = os.getenv("CODEBUILD_INITIATOR").split("/")
 if len(CODEBUILD_INITIATOR_LIST) >= 2:
-	if CODEBUILD_INITIATOR_LIST[0] == 'codepipeline':
-		if CODEBUILD_INITIATOR_LIST[1] == 'FeatureBranchPipelineGenerator':
-			branch_chars = 'dev' # TODO dev, master
-		else:
-			branch_chars = CODEBUILD_INITIATOR_LIST[1].strip('ReadyForFeatureBranchPipeline')
+    if CODEBUILD_INITIATOR_LIST[0] == "codepipeline":
+        if CODEBUILD_INITIATOR_LIST[1] == "FeatureBranchPipelineGenerator":
+            branch_chars = "dev"  # TODO dev, master
+        else:
+            branch_chars = CODEBUILD_INITIATOR_LIST[1].strip(
+                "ReadyForFeatureBranchPipeline"
+            )
 
 
 if branch_chars:
     response = ssm_client.get_parameter(
         Name=branch_chars,
     )
-    branch_name = response.get('Parameter', {}).get('Value', '')
+    branch_name = response.get("Parameter", {}).get("Value", "")
 print(branch_name)
-

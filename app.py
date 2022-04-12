@@ -5,14 +5,13 @@ from aws_cdk import core
 
 from cdk_py.cdk_py_stack import CdkPyStack
 from cdk_py.pipeline_generator_stack import PipelineGeneratorStack
+
 # from pygit2 import Repository
 
 
 app = core.App()
 
 config = app.node.try_get_context("config")
-
-
 
 
 # def get_repo_current_branch():
@@ -25,7 +24,7 @@ config = app.node.try_get_context("config")
 
 # import subprocess
 # cmd = 'pwd; ls -al; git status'
-#cmd = 'pwd; ls -al .; git status'
+# cmd = 'pwd; ls -al .; git status'
 
 # process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
 # output, error = process.communicate()
@@ -47,20 +46,34 @@ pipeline_template = "feature-branch-pipeline-template"
 # )
 
 # branch_name = 'dev'
-branch_name = 'feature-branch-pipeline-us03-deploy-self-mutating-false'
-PipelineGeneratorStack(app, 'FeatureBranchPipelineGenerator-boto3',
-        branch_name=branch_name, # dev, master
-        pipeline_template=pipeline_template,
-        config={**config},
-    )
+branch_name = "feature-branch-pipeline-us03-deploy-self-mutating-false"
+PipelineGeneratorStack(
+    app,
+    "FeatureBranchPipelineGenerator-boto3",
+    branch_name=branch_name,  # dev, master
+    pipeline_template=pipeline_template,
+    config={**config},
+)
 
+PythonFunction(
+            app,
+            id="es",
+            function_name=f"es-handler",
+            entry=os.path.join(os.getcwd(), "lambdas/es"),  # TODO
+            index="lambda_function.py",
+            # role=handler_role,
+            runtime=aws_lambda.Runtime.PYTHON_3_8,
+            # environment={"pipeline_template": pipeline_template},
+            memory_size=1024,
+            timeout=Duration.minutes(1),
+        )
 
 # branch_name = "aa"
-#branch_name = core.CfnParameter(self, "branch_name")
+# branch_name = core.CfnParameter(self, "branch_name")
 
-#stack_id = branch_chars + "ReadyForFeatureBranchPipeline" # for feature-branch pipeline
+# stack_id = branch_chars + "ReadyForFeatureBranchPipeline" # for feature-branch pipeline
 
-# 
+#
 # CdkPyStack(app, "dev-pipeline",
 #     # If you don't specify 'env', this stack will be environment-agnostic.
 #     # Account/Region-dependent features and context lookups will not work,

@@ -1,12 +1,10 @@
 import boto3
 
-codepipeline_client = boto3.client('codepipeline')
+codepipeline_client = boto3.client("codepipeline")
 
-branch_name = 'devPipelineForTestingNNNNNNOO'
-response = codepipeline_client.delete_pipeline(
-    name=branch_name
-)
-print(response.get('ResponseMetadata').get('HTTPStatusCode'))
+branch_name = "devPipelineForTestingNNNNNNOO"
+response = codepipeline_client.delete_pipeline(name=branch_name)
+print(response.get("ResponseMetadata").get("HTTPStatusCode"))
 
 # print('-----------List---------------')
 # response = codepipeline_client.list_pipelines(maxResults=10)
@@ -23,8 +21,6 @@ print(response.get('ResponseMetadata').get('HTTPStatusCode'))
 # 	# print(pipelines)
 # 	for p in pipelines:
 # 		print(p.get('name'))
-
-
 
 
 # print('-----------create---------------')

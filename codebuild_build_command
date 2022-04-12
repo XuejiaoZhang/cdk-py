@@ -1,0 +1,55 @@
+version: 0.2
+
+env:
+  #variables:
+     # key: "value"
+     # key: "value"
+  #parameter-store:
+      #key: "github_sshaccess_aamani"
+     # key: "value"
+
+  secrets-manager:
+     keyPem: "CCP_TechnicalUser_Client-Key-Pem"
+     keyBundlw: "CCP_TechnicalUser_Client-Bundle-Pem"
+     keyToken: "CCP_Technical_User_Artifactory_Token:CCP_Technical_User_Artifactory_Token"
+     # key: secret-id:json-key:version-stage:version-id
+ 
+  #exported-variables:
+     # - variable
+     # - variable
+  git-credential-helper: yes
+#batch:
+  #fast-fail: true"
+  #build-list:
+  #build-matrix:
+  #build-graph:
+phases:
+  install:
+    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
+    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
+    runtime-versions:
+       python: 3.8
+      # name: version
+    commands:
+      - echo $keyPem
+      - echo $keyBundlw
+      - echo $keyToken
+      - mkdir -p ~/.ccp
+      - echo "$keyPem" > ~/.ccp/client.key.pem 
+      - echo "$keyBundlw" > ~/.ccp/client.bundle.pem
+      - chmod 600 ~/.ccp/client.key.pem 
+      - chmod 600 ~/.ccp/client.bundle.pem
+      - git config --global http."https://github.8675.ccp.continental.exchange".sslKey ~/.ccp/client.key.pem
+      - git config --global http."https://github.8675.ccp.continental.exchange".sslCert ~/.ccp/client.bundle.pem
+      - git config --global http."https://github.8675.ccp.continental.exchange".cookieFile /tmp/cookiefile
+      - git config --global http."https://github.8675.ccp.continental.exchange".sslCertPasswordProtected 0
+   
+
+      #- git submodule add https://uie69291:$keyToken@github.8675.ccp.continental.exchange/honda-simulation/submodules-repo.git submodulerepo
+      #- git submodule add https://uie80167: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@github.8675.ccp.continental.exchange/honda-simulation/submodulesrepo.git
+ 
+      - git remote add github https://uie80167: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@github.8675.ccp.continental.exchange/honda-simulation/main-test-repo.git
+      #- git remote add github https://uie80167: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@github.8675.ccp.continental.exchange/honda-simulation/fot2kpi-ws4.git
+      - git fetch github
+      - git branch
+      - git checkout -f github/main

@@ -15,6 +15,7 @@ from aws_cdk.core import DefaultStackSynthesizer
 from constructs import Construct
 from cdk_py.github_webhook_api_stack import GithubWebhookAPIStack
 from cdk_py.cdk_py_stack import CdkPyStack
+
 # from cdk_py.cdkpipeline_stack import CDKPipelineStack
 from cdk_py.smart_testing_testmondata_s3 import SmartTestingTestmondataS3Stack
 
@@ -54,13 +55,14 @@ class PipelineGeneratorApplication(core.Stage):
         # branch_creation_pipeline = 'Create-Branch'
         # branch_deletion_pipeline = 'Delete-Branch'  #TODO:pass to PipelineGeneratorApplication, then lambda env, and cdkpipeline
 
+        feature_branch_name = "not_exist_branch_just_for_template"
 
-        # feature_branch_name = "not_exist_branch_just_for_template"
-
-
-
-        #GithubWebhookAPIStack(self, "GitHub-Webhook-API", pipeline_template=pipeline_template, config=config)
-
+        GithubWebhookAPIStack(
+            self,
+            "GitHub-Webhook-API",
+            pipeline_template=pipeline_template,
+            config=config,
+        )
 
         smarttestingtestmondatas3 = SmartTestingTestmondataS3Stack(
             self,
@@ -72,11 +74,9 @@ class PipelineGeneratorApplication(core.Stage):
         # CDKPipelineStack(self, config.get('branch_creation_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
         # CDKPipelineStack(self, config.get('branch_deletion_pipeline'), branch_name=branch_name, branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
 
-
         # webhook_api_stack = GithubWebhookAPIStack(self, "GitHub-Webhook-API")
         # # GithubWebhookAPIStack(self, "MyFirstBucket-webhook", synthesizer=core.DefaultStackSynthesizer())
         # # CDKPipelineStack(self, "Create-Branch", config=config)
-
 
         # CDKPipelineStack(self, "Create-Branch", branch_name_queue=webhook_api_stack.branch_creation_queue, creation_or_deletion="creation", config=config)
         # CDKPipelineStack(self, "Delete-Branch", branch_name_queue=webhook_api_stack.branch_deletion_queue, creation_or_deletion="deletion", config=config)
@@ -84,10 +84,11 @@ class PipelineGeneratorApplication(core.Stage):
         # CodeBuildProjectStack(self, "Deletee-branch")
         # bucket = s3.Bucket(self, "MyFirstBucket-webhook")
 
+
 # branch_name='feature-branch-pipeline-webhook'
 
-#synth_dev_account_role_arn = f"arn:aws:iam::320185343352:role/synth-role"
-#synth_dev_account_role_arn = f"arn:aws:iam::{dev_account}:role/xxxx"
+# synth_dev_account_role_arn = f"arn:aws:iam::320185343352:role/synth-role"
+# synth_dev_account_role_arn = f"arn:aws:iam::{dev_account}:role/xxxx"
 
 
 # class MyCdkPipeline extends CdkPipeline {
@@ -145,9 +146,9 @@ class PipelineGeneratorStack(core.Stack):
                 action_name="GitHub",
                 connection_arn=codestar_connection_arn,
                 owner=repo_owner,
-                repo=repo,   
+                repo=repo,
                 branch=branch_name,
-                #branch=branch_name.value_as_string,
+                # branch=branch_name.value_as_string,
                 trigger_on_push=True,
                 output=source_artifact,
             ),
@@ -163,12 +164,11 @@ class PipelineGeneratorStack(core.Stack):
                     "BRANCH": aws_codebuild.BuildEnvironmentVariable(
                         value=branch_name,
                         # the properties below are optional
-                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
+                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
                     ),
                 },
                 build_command="echo $BRANCH; cdk list -c branch_name=$BRANCH",
                 synth_command="echo $BRANCH; cdk synth -c branch_name=$BRANCH",
-
                 # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
                 # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
                 # role_policy_statements=[
@@ -194,25 +194,20 @@ class PipelineGeneratorStack(core.Stack):
                 #     )
                 # ],
             ),
-
-
             #     # Defaults for all CodeBuild projects
             # code_build_defaults=pipelines.CodeBuildOptions(
             #     # Prepend commands and configuration to all projects
             #     # partial_build_spec=codebuild.BuildSpec.from_object({
             #     #     "version": "0.2"
             #     # }),
-
             #     # Control the build environment
             #     build_environment=aws_codebuild.BuildEnvironment(
             #         environment_variables = {"branch_name": branch_name}
             #     ),
-
             #     # Control Elastic Network Interface creation
             #     # vpc=vpc,
             #     # subnet_selection=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE),
             #     # security_groups=[my_security_group],
-
             #     # # Additional policy statements for the execution role
             #     # role_policy=[
             #     #     iam.PolicyStatement()
@@ -222,7 +217,6 @@ class PipelineGeneratorStack(core.Stack):
             # asset_publishing_code_build_defaults=pipelines.CodeBuildOptions(),
             # self_mutation_code_build_defaults=pipelines.CodeBuildOptions()
         )
-
 
         # TODO: run in parallel
         # wave = pipeline.add_wave("Testing")
@@ -260,7 +254,12 @@ class PipelineGeneratorStack(core.Stack):
         # wave.add_stage(it_stage)
 
         ## feature_stage = pipeline.add_application_stage(feature_app)
-        pipeline_generator_stage = PipelineGeneratorApplication(self, "pipelineGenerator-boto3", branch_name=branch_name, pipeline_template=pipeline_template, config=config
+        pipeline_generator_stage = PipelineGeneratorApplication(
+            self,
+            "pipelineGenerator-boto3",
+            branch_name=branch_name,
+            pipeline_template=pipeline_template,
+            config=config
             # env=cdk.Environment(
             #     account="123456789012",
             #     region="eu-west-1"
@@ -268,44 +267,41 @@ class PipelineGeneratorStack(core.Stack):
         )
         pipeline.add_application_stage(pipeline_generator_stage)
 
+        testing_stage = pipeline.add_stage(
+            "Testing"
+        )  # Empty stage since we are going to run tests only, not deploy resources
 
-        testing_stage = pipeline.add_stage("Testing") # Empty stage since we are going to run tests only, not deploy resources
-
-        testing_stage.add_actions(
-            pipelines.ShellScriptAction(
-                action_name="SmartTesting",
-                run_order=testing_stage.next_sequential_run_order(),
-                additional_artifacts=[source_artifact],
-                # environment_variables={
-                #     "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
-                #         value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_name,
-                #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-                #     ),
-                # },
-                commands=[
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                    "set -e; export BUCKET_NAME=$(python scripts/get_bucket_name_from_ssm.py);ls -al;python scripts/download_smart_testing_testmondata_from_s3.py; ls -al; pytest --testmon; ls -al; python scripts/upload_smart_testing_testmondata_to_s3.py"
-                ],
-                role_policy_statements=[
-                    aws_iam.PolicyStatement(
-                        actions=[
-                            "S3:ListBucket",
-                            "s3:PutObject",
-                            "s3:GetObject"
-                        ],
-                        effect=aws_iam.Effect.ALLOW,
-                        resources=["*"]
-                        #resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
-                    ),
-                    aws_iam.PolicyStatement(
-                        actions=["ssm:GetParameter"],
-                        effect=aws_iam.Effect.ALLOW,
-                        resources=["*"],
-                    ),
-                ],
-            )
-        )
+        # testing_stage.add_actions(
+        #     pipelines.ShellScriptAction(
+        #         action_name="SmartTesting",
+        #         run_order=testing_stage.next_sequential_run_order(),
+        #         additional_artifacts=[source_artifact],
+        #         # environment_variables={
+        #         #     "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
+        #         #         value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_name,
+        #         #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+        #         #     ),
+        #         # },
+        #         commands=[
+        #             "pip install -r requirements.txt",
+        #             "pip install -r requirements_dev.txt",
+        #             "set -e; export BUCKET_NAME=$(python scripts/get_bucket_name_from_ssm.py);ls -al;python scripts/download_smart_testing_testmondata_from_s3.py; ls -al; pytest --testmon; ls -al; python scripts/upload_smart_testing_testmondata_to_s3.py",
+        #         ],
+        #         role_policy_statements=[
+        #             aws_iam.PolicyStatement(
+        #                 actions=["S3:ListBucket", "s3:PutObject", "s3:GetObject"],
+        #                 effect=aws_iam.Effect.ALLOW,
+        #                 resources=["*"]
+        #                 # resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
+        #             ),
+        #             aws_iam.PolicyStatement(
+        #                 actions=["ssm:GetParameter"],
+        #                 effect=aws_iam.Effect.ALLOW,
+        #                 resources=["*"],
+        #             ),
+        #         ],
+        #     )
+        # )
 
         testing_stage.add_actions(
             pipelines.ShellScriptAction(
@@ -321,20 +317,42 @@ class PipelineGeneratorStack(core.Stack):
                         value=config.get("smart_testing").get("threshold"),
                         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
                     ),
+                    "secret": aws_codebuild.BuildEnvironmentVariable(
+                        value="github_webhook_secret:github_webhook_secret",
+                        type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+                    ),
+                    "toekn": aws_codebuild.BuildEnvironmentVariable(
+                        value="token",
+                        type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+                    ),
+                    # NODE_AUTH_TOKEN: {
+                    #     value: secretGithubAccessToken.secretValue,
+                    #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+                    #   },
                 },
+
                 commands=[
                     # Not git repo
-                    "pip install -r requirements.txt",
-                    "pip install -r requirements_dev.txt",
-                    "set -e; bash scripts/pylint_check.sh $THRESHOLD"
-               #     "pylint $(git ls-files '*.py')",
-                #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
-                #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
-                #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
+                    "echo $secret",
+                    "echo $token"
+                    # "pip install -r requirements.txt",
+                    # "pip install -r requirements_dev.txt",
+                    # "set -e; bash scripts/pylint_check.sh $THRESHOLD"
+                    #     "pylint $(git ls-files '*.py')",
+                    #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
+                    #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
+                    #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
                 ],
+                role_policy_statements=[
+                    aws_iam.PolicyStatement(
+                        actions=["secretsmanager:*"],
+                        effect=aws_iam.Effect.ALLOW,
+                        resources=["*"]
+                    )
+                ],
+
             )
         )
-
 
         # testing_stage.add_actions(
         #     pipelines.ShellScriptAction(
@@ -364,11 +382,9 @@ class PipelineGeneratorStack(core.Stack):
         #     )
         # )
 
-
         # pipeline.add_application_stage(pipeline_generator_stage)
 
         ## feature_stage = pipeline.add_application_stage(feature_app)
-
 
         # 'MyApplication' is defined below. Call `addStage` as many times as
         # necessary with any account and region (may be different from the

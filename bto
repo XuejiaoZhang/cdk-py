@@ -1,0 +1,60 @@
+[
+    {
+        "jobDefinitionName": "mtsjobdefstack-srr-test_srr_hardcoded-job-definition",
+        "jobDefinitionArn": "arn:aws:batch:eu-west-1:865197160877:job-definition/mtsjobdefstack-srr-test_srr_hardcoded-job-definition:1",
+        "revision": 1,
+        "status": "INACTIVE",
+        "type": "container",
+        "parameters": {},
+        "containerProperties": {
+            "image": "865197160877.dkr.ecr.eu-west-1.amazonaws.com/srr:test_srr_hardcoded",
+            "command": [
+                "/bin/bash",
+                "-c",
+                "/home/mts/runAll.sh"
+            ],
+            "jobRoleArn": "arn:aws:iam::865197160877:role/mtsauthstack-batch-job-role",
+            "executionRoleArn": "arn:aws:iam::865197160877:role/mtsauthstack-batch-job-role",
+            "volumes": [
+                {
+                    "name": "mts-stage1-efs",
+                    "efsVolumeConfiguration": {
+                        "fileSystemId": "fs-11422625",
+                        "rootDirectory": "/",
+                        "transitEncryption": "ENABLED",
+                        "authorizationConfig": {
+                            "accessPointId": "fsap-0a32dc8a24c6b3af7",
+                            "iam": "ENABLED"
+                        }
+                    }
+                },
+                {
+                    "host": {
+                        "sourcePath": "/mount/input"
+                    },
+                    "name": "instance_mount"
+                }
+            ],
+            "environment": [],
+            "mountPoints": [
+                {
+                    "containerPath": "/home/mts/sharedFolder/stage_1",
+                    "sourceVolume": "mts-stage1-efs"
+                },
+                {
+                    "containerPath": "/home/mts/sharedFolder/input",
+                    "sourceVolume": "instance_mount"
+                }
+            ],
+            "privileged": true,
+            "ulimits": [],
+            "resourceRequirements": [
+                {
+                    "value": "8",
+                    "type": "VCPU"
+                },
+                {
+                    "value": "16384",
+                    "type": "MEMORY"
+                }
+            ]

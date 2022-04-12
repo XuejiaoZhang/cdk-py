@@ -8,8 +8,8 @@ import os
 
 # Secret Secret Key used for verification
 # TODO: read from secret store
-SECRET = 'abcdefg' #??parameter store manually, how to persistently store? CDK gen, the same, showed in code?
-branch_prefix = 'feature-branch-pipeline-'
+SECRET = "abcdefg"  # ??parameter store manually, how to persistently store? CDK gen, the same, showed in code?
+branch_prefix = "feature-branch-pipeline-"
 # gen_pipeline = "FeatureBranchPipelineGenerator"
 # branch_creation_pipeline = 'Create-Branch'
 # branch_deletion_pipeline = 'Delete-Branch'
@@ -18,13 +18,12 @@ pipeline_template = os.getenv("pipeline_template")
 # branch_deletion_pipeline = os.getenv('branch_deletion_pipeline')
 # branch_creation_queue = os.getenv('branch_creation_queue')
 # branch_deletion_queue = os.getenv('branch_deletion_queue')
-#branch_creation_queue = "https://sqs.us-west-2.amazonaws.com/320185343352/pipelineGenerator-GitHub-Webhook-API-branchcreation210925B9-AfZJ8i5p6gYF"
+# branch_creation_queue = "https://sqs.us-west-2.amazonaws.com/320185343352/pipelineGenerator-GitHub-Webhook-API-branchcreation210925B9-AfZJ8i5p6gYF"
 
 # codebuild_client = boto3.client('codebuild')
-ssm_client = boto3.client('ssm')
-codepipeline_client = boto3.client('codepipeline')
+ssm_client = boto3.client("ssm")
+codepipeline_client = boto3.client("codepipeline")
 # sqs_client = boto3.client('sqs')
-
 
 
 def branch_name_check(branch_name, branch_prefix):
@@ -32,13 +31,17 @@ def branch_name_check(branch_name, branch_prefix):
         return True
     else:
         return False
-    
+
+
 def verify_webhook(data, hmac_header):
-    caculation = hmac.new(SECRET.encode('utf-8'), data.encode('utf-8'), hashlib.sha256)
-    received_hmac = re.sub(r'^sha256=', '', hmac_header)
-    hexdigest = hmac.new(SECRET.encode('utf-8'), data.encode('utf-8'), hashlib.sha256).hexdigest()
+    caculation = hmac.new(SECRET.encode("utf-8"), data.encode("utf-8"), hashlib.sha256)
+    received_hmac = re.sub(r"^sha256=", "", hmac_header)
+    hexdigest = hmac.new(
+        SECRET.encode("utf-8"), data.encode("utf-8"), hashlib.sha256
+    ).hexdigest()
     # print(hexdigest, received_hmac)
     return hexdigest == received_hmac
+
 
 def handler(event, context):
     # print('event', event)
@@ -52,42 +55,39 @@ def handler(event, context):
     # print(event['headers']['X-Hub-Signature-256'])
     # print('Completed the printout of the passed in values.')
 
-    rawbodydata = event.get('body', {})
+    rawbodydata = event.get("body", {})
     # print("body", body)
     msg = "Done"
     # rawbodydata = event['rawbody']
     body = json.loads(rawbodydata)
-    hmac_header = event['headers']['X-Hub-Signature-256']
-    
+    hmac_header = event["headers"]["X-Hub-Signature-256"]
+
     verified = verify_webhook(rawbodydata, hmac_header)
-    
+
     if not verified:
-        msg = 'Did not pass HMAC validation!'
+        msg = "Did not pass HMAC validation!"
         print(msg)
-        return {
-            'statusCode': 401,
-            'body': json.dumps(msg)
-        }
-    
+        return {"statusCode": 401, "body": json.dumps(msg)}
+
     else:
-        print('Passed HMAC validation!')
+        print("Passed HMAC validation!")
 
-        ref = body.get('ref', '')
-        ref_type = body.get('ref_type', '')
-        description = dict_haskey(body, 'description')
-        before = dict_haskey(body, 'before')
-        after = dict_haskey(body, 'after')     
-        # description = body.has_key('description')  
+        ref = body.get("ref", "")
+        ref_type = body.get("ref_type", "")
+        description = dict_haskey(body, "description")
+        before = dict_haskey(body, "before")
+        after = dict_haskey(body, "after")
+        # description = body.has_key('description')
         # # TODO: deal with push?
-        # before = body.has_key('before')  
-        # after = body.has_key('after')  
-        print('ref', ref)
-        print('ref_type', ref_type)
-        print('description', description)
-        print('before', before)
-        print('after', after)
+        # before = body.has_key('before')
+        # after = body.has_key('after')
+        print("ref", ref)
+        print("ref_type", ref_type)
+        print("description", description)
+        print("before", before)
+        print("after", after)
 
-        if ref_type == 'branch':
+        if ref_type == "branch":
             branch_name = ref
             if description:
                 if branch_name_check(branch_name, branch_prefix):
@@ -95,12 +95,17 @@ def handler(event, context):
                     # save_branch_name_in_ssm(branch_name)
                     # print('Send created branch name to SQS::', branch_name)
                     # send_branch_name_to_sqs(branch_creation_queue, branch_name)
-                    print('Generate pipeline for branch:', branch_name)
-                    create_feature_pipeline_from_template(branch_name, pipeline_template)
-                    
-                    msg = 'Done feature pipeline generation for: %s' % (branch_name)
+                    print("Generate pipeline for branch:", branch_name)
+                    create_feature_pipeline_from_template(
+                        branch_name, pipeline_template
+                    )
+
+                    msg = "Done feature pipeline generation for: %s" % (branch_name)
                 else:
-                    msg = 'Branch name %s does not match the prefix %s' % (branch_name, branch_prefix)
+                    msg = "Branch name %s does not match the prefix %s" % (
+                        branch_name,
+                        branch_prefix,
+                    )
 
             else:
                 if branch_name_check(branch_name, branch_prefix):
@@ -108,12 +113,15 @@ def handler(event, context):
                     # delete_branch_name_in_ssm(branch_name)
                     # print('Send deleted branch name to SQS::', branch_name)
                     # send_branch_name_to_sqs(branch_deletion_queue, branch_name)
-                    print('Drop Pipeline for branch:', branch_name)
+                    print("Drop Pipeline for branch:", branch_name)
                     delete_feature_pipeline(branch_name)
-                    
+
                     msg = "Done feature pipeline deletion for: %s" % (branch_name)
                 else:
-                    msg = 'Branch name %s does not match the prefix %s' % (branch_name, branch_prefix)
+                    msg = "Branch name %s does not match the prefix %s" % (
+                        branch_name,
+                        branch_prefix,
+                    )
 
         # if not ref_type:
         #     if before and after:
@@ -122,11 +130,7 @@ def handler(event, context):
             msg = 'Not one of the events: ["Branch creation", "Branch deletion"]'
 
     print(msg)
-    return {
-        'statusCode': 200,
-        'body': json.dumps(msg)
-    }
- 
+    return {"statusCode": 200, "body": json.dumps(msg)}
 
 
 def dict_haskey(d, k):
@@ -134,6 +138,7 @@ def dict_haskey(d, k):
         return True
     else:
         return False
+
 
 # def save_branch_name_in_ssm(branch_name):
 #     branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
@@ -154,29 +159,32 @@ def dict_haskey(d, k):
 
 
 def create_feature_pipeline_from_template(branch_name, pipeline_template):
-    codepipeline_client = boto3.client('codepipeline')
+    codepipeline_client = boto3.client("codepipeline")
     response = codepipeline_client.get_pipeline(
         name=pipeline_template,
     )
 
-    pipeline_describe = response.get('pipeline', {})
+    pipeline_describe = response.get("pipeline", {})
     # print(pipeline_describe)
 
-    pipeline_describe['name'] = branch_name + "_PipelineForTesting"
-    pipeline_describe['stages'][0]['actions'][0]['configuration']['BranchName'] = branch_name
+    pipeline_describe["name"] = branch_name + "_PipelineForTesting"
+    pipeline_describe["stages"][0]["actions"][0]["configuration"][
+        "BranchName"
+    ] = branch_name
 
-    response = codepipeline_client.create_pipeline(
-            pipeline=pipeline_describe
-    )
-    #print(response)
+    response = codepipeline_client.create_pipeline(pipeline=pipeline_describe)
+    # print(response)
+
 
 def delete_feature_pipeline(branch_name):
-    codepipeline_client = boto3.client('codepipeline')
+    codepipeline_client = boto3.client("codepipeline")
     pipeline_name = branch_name + "_PipelineForTesting"
-    response = codepipeline_client.delete_pipeline(
-        name=pipeline_name
+    response = codepipeline_client.delete_pipeline(name=pipeline_name)
+    print(
+        "delete_feature_pipeline %s %s",
+        (pipeline_name, response.get("ResponseMetadata").get("HTTPStatusCode")),
     )
-    print("delete_feature_pipeline %s %s", (pipeline_name, response.get('ResponseMetadata').get('HTTPStatusCode')))
+
 
 # def send_branch_name_to_sqs(sqs_url, branch_name):
 #     # Send message to SQS queue

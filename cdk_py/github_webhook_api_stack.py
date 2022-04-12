@@ -21,6 +21,7 @@ from aws_cdk.aws_apigateway import IntegrationResponse, MethodResponse
 import os
 import json
 
+
 class GithubWebhookAPIStack(core.Stack):
     def __init__(
         self,
@@ -70,12 +71,12 @@ class GithubWebhookAPIStack(core.Stack):
                     # "sqs:SendMessage",
                     "iam:PassRole",
                     "codepipeline:CreatePipeline",
-                    "codepipeline:DeletePipeline",                    
+                    "codepipeline:DeletePipeline",
                     "codepipeline:ListPipelines",
                     "codepipeline:GetPipeline",
                     "codepipeline:UpdatePipeline",
-                 #   "codepipeline:StartPipelineExecution",
-                    "codestar-connections:PassConnection"
+                    #   "codepipeline:StartPipelineExecution",
+                    "codestar-connections:PassConnection",
                 ],
                 resources=["*"],
             )
@@ -184,9 +185,7 @@ class GithubWebhookAPIStack(core.Stack):
             self,
             id="githubWebhookApiHandler",
             function_name=f"{id}-handler",
-            entry=os.path.join(
-                os.getcwd(), "lambdas/github_webhook_api" # TODO
-            ),
+            entry=os.path.join(os.getcwd(), "lambdas/github_webhook_api"),  # TODO
             index="github_webhook.py",
             role=handler_role,
             runtime=aws_lambda.Runtime.PYTHON_3_8,
@@ -200,13 +199,13 @@ class GithubWebhookAPIStack(core.Stack):
             value=integration_handler_lambda_function.function_arn,
             export_name=f"{id}-github-webhook-api-handler-lambda-arn",
         )
-        
+
         # Use VPC created by WS1
         # internet_vpc = config.get("internet_vpc")
         # vpc_details = aws_ec2.Vpc.from_lookup(self, "VPC", vpc_name=internet_vpc)
         # subnet_id_list = vpc_details.private_subnets
         # subnet_details = aws_ec2.SubnetSelection(subnets = subnet_id_list)
-            
+
         # # Create a lambda function for kpireport that can act as a handler for API Gateway requests
         # integration_handler_lambda_function_kpireport = PythonFunction(
         #     self,
@@ -307,13 +306,9 @@ class GithubWebhookAPIStack(core.Stack):
             "POST",
             lambda_integration,
             # method_responses=[MethodResponse(status_code="200")],
-
-        #     authorizer=authorizer,
-        #     authorization_type=aws_apigateway.AuthorizationType.COGNITO,
+            #     authorizer=authorizer,
+            #     authorization_type=aws_apigateway.AuthorizationType.COGNITO,
         )
-
-
-
 
         # dags_resource.add_method(
         #     "GET",
