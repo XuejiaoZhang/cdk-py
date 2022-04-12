@@ -57,9 +57,19 @@ PipelineGeneratorStack(
     config={**config},
 )
 
-PythonFunction(
-            app,
-            id="es",
+class LambdaStack(core.Stack):
+    def __init__(
+        self,
+        scope: core.Construct,
+        id: str,
+        config: dict = None,
+        **kwargs,
+    ):
+        super().__init__(scope, id, **kwargs)
+
+		PythonFunction(
+            self,
+            id="es-lambd",
             function_name=f"es-handler",
             entry=os.path.join(os.getcwd(), "lambdas/es"),  # TODO
             index="lambda_function.py",
@@ -69,6 +79,9 @@ PythonFunction(
             memory_size=1024,
             timeout=Duration.minutes(1),
         )
+
+
+LambdaStack(app, "es", config={**config})
 
 # branch_name = "aa"
 # branch_name = core.CfnParameter(self, "branch_name")
