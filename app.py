@@ -67,7 +67,7 @@ class LambdaStack(core.Stack):
     ):
         super().__init__(scope, id, **kwargs)
 
-		PythonFunction(
+        PythonFunction(
             self,
             id="es-lambd",
             function_name=f"es-handler",
