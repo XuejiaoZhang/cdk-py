@@ -15,6 +15,6 @@ def codebuild_run(branch_name):
 
 
 branch_name = "dev"
-branch_name = "feature-branch-pipeline-us03-deploy-self-mutating-false"
+branch_name = "feature-branch-pipeline-us03-deploy-self-mutating-false-01"
 print("CDK deploy branch:", branch_name)
 codebuild_run(branch_name)

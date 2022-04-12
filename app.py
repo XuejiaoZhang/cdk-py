@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 import os
 import re
-from aws_cdk import core
+from aws_cdk import core, aws_lambda
+from aws_cdk.core import Duration
 
 from cdk_py.cdk_py_stack import CdkPyStack
 from cdk_py.pipeline_generator_stack import PipelineGeneratorStack
+from aws_cdk.aws_lambda_python import PythonFunction
 
 # from pygit2 import Repository
 
