@@ -81,7 +81,12 @@ class LambdaStack(core.Stack):
         )
 
 
-LambdaStack(app, "es", config={**config})
+#LambdaStack(app, "es", config={**config})
+
+
+from cdk_py.batch_job_event_to_es_stack import BatchJobEventToESStack
+accounts = config.get("accounts")
+BatchJobEventToESStack(app, "batch-job-ui", config={**config}, env=accounts.get("test"))
 
 # branch_name = "aa"
 # branch_name = core.CfnParameter(self, "branch_name")

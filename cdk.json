@@ -34,6 +34,12 @@
       "branch_deletion_pipeline": "Delete-Branch",
       "smart_testing": {
         "threshold": 2
+      },
+      "accounts": {
+        "test": {
+          "account": "320185343352",
+          "region": "us-west-2"
+        }
       }
     },
     "@aws-cdk/core:newStyleStackSynthesis": "true"
