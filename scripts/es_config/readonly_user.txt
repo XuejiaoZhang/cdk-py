@@ -1,0 +1,5 @@
+[{
+	"op": "add",
+	"path": "/backend_roles",
+	"value":["LAMBDA_CW_LOGS_ROLE_ARN"]
+}]

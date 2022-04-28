@@ -6,7 +6,9 @@ from aws_cdk import (
     aws_events as events,
     aws_events_targets as targets,
     core,
-    # aws_logs
+    aws_s3,
+    aws_dynamodb,
+    aws_kms
 )
 
 from aws_cdk.aws_lambda_python import PythonFunction
@@ -37,14 +39,66 @@ class BatchJobEventToESStack(core.Stack):
         """
         super().__init__(scope, id, **kwargs)
 
+
+        key = aws_kms.Key(self, "MyKey",
+            pending_window=Duration.days(10)
+        )
+
+        # 01) S3 - KMS
+        # from KMS/KMS_MANAGED to S3_MANAGED
+
+        # encryption (Optional[BucketEncryption]) – The kind of server-side encryption to apply to this bucket. 
+            # If you choose KMS, you can specify a KMS key via encryptionKey. 
+            # If encryption key is not specified, a key will automatically be created. 
+            # Default: - Kms if encryptionKey is specified, or Unencrypted otherwise.
+
+        # encryption_key (Optional[IKey]) – External KMS key to use for bucket encryption. 
+            # The ‘encryption’ property must be either not specified or set to “Kms”. 
+            # An error will be emitted if encryption is set to “Unencrypted” or “Managed”.
+            # Default: - If encryption is set to “Kms” and this property is undefined, a new KMS key will be created and associated with this bucket.
+        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+            encryption=aws_s3.BucketEncryption.KMS,
+            encryption_key=key
+            )
+        # 02) Dynamodb - KMS
+        # from CUSTOMER_MANAGED/AWS_MANAGED to DEFAULT
+        # encryption_key  – This property can only be set if encryption is set to TableEncryption.CUSTOMER_MANAGED
+        aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
+            encryption=aws_dynamodb.TableEncryption.CUSTOMER_MANAGED,
+            partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
+            encryption_key=key
+            )
+
+        # # -----------
+        # aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+        #     encryption=aws_s3.BucketEncryption.KMS_MANAGED,
+        #     )
+
+        # aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
+        #     partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
+        #     encryption=aws_dynamodb.TableEncryption.AWS_MANAGED,
+        #     )
+
+        # # -----------
+
+        # aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+        #     encryption=aws_s3.BucketEncryption.S3_MANAGED,
+        #     )
+
+        # aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
+        #     partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
+        #     encryption=aws_dynamodb.TableEncryption.Default,
+        #     )
+
+
         # 1) create OpeanSearch Domain
 
         # Use VPC created by WS1
         #internet_vpc = config.get("internet_vpc") #TODO
         internet_vpc = "vpc-404ee838"
         vpc = ec2.Vpc.from_lookup(self, "VPC", vpc_id=internet_vpc)
-        subnet_id_list = vpc.private_subnets
-        subnet_details = ec2.SubnetSelection(subnets = subnet_id_list)
+        # subnet_id_list = vpc.private_subnets
+        # subnet_details = ec2.SubnetSelection(subnets = subnet_id_list)
 
         vpc_private = ec2.Vpc.from_vpc_attributes(self, "VPC-private", vpc_id=internet_vpc, private_subnet_ids=["subnet-77390a0e", "subnet-60fba62b"], availability_zones=["us-west-2a", "us-west-2b"])
 
@@ -53,22 +107,22 @@ class BatchJobEventToESStack(core.Stack):
                                         vpc=vpc,
                                         allow_all_outbound=True,
                                         security_group_name='lambda-es-sg')
-        lambda_es_sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(80))
+        # lambda_es_sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(80))
         lambda_es_sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(443))
-        lambda_es_sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(22))
-        lambda_es_sg.add_ingress_rule(lambda_es_sg, ec2.Port.all_tcp())
+        # lambda_es_sg.add_ingress_rule(ec2.Peer.any_ipv4(), ec2.Port.tcp(22))
+        # lambda_es_sg.add_ingress_rule(lambda_es_sg, ec2.Port.all_tcp())
 
-        subnet_private = ec2.PrivateSubnet.from_subnet_id(
-            self,
-            "subnet_pri",
-            subnet_id="subnet-77390a0e"
-        )
+        # subnet_private = ec2.PrivateSubnet.from_subnet_id(
+        #     self,
+        #     "subnet_pri",
+        #     subnet_id="subnet-77390a0e"
+        # )
 
-        security_group = ec2.SecurityGroup.from_lookup(
-          self,
-          "SG",
-          security_group_id="sg-25c4966d"
-        )
+        # security_group = ec2.SecurityGroup.from_lookup(
+        #   self,
+        #   "SG",
+        #   security_group_id="sg-25c4966d"
+        # )
 
 
         # ES and Dashboards specific constants 
@@ -79,7 +133,7 @@ class BatchJobEventToESStack(core.Stack):
         DOMAIN_DATA_NODE_INSTANCE_COUNT=2
         DOMAIN_INSTANCE_VOLUME_SIZE=10
         DOMAIN_AZ_COUNT=2
-        ## By default monitoring stack will be setup without dedicated master node, to have dedicated master node in stack do change the number of nodes and type (if needed)
+        ## By default without dedicated master node, to have dedicated master node in stack do change the number of nodes and type (if needed)
         ## Maximum Master Instance count supported by service is 5, so either have 3 or 5 dedicated node for master
         DOMAIN_MASTER_NODE_INSTANCE_TYPE='c6g.large.elasticsearch'
         DOMAIN_MASTER_NODE_INSTANCE_COUNT=0
@@ -93,7 +147,7 @@ class BatchJobEventToESStack(core.Stack):
         # vpc = ec2.Vpc(self, "Monitoring VPC", max_azs=3)
 
 
-        domain = es.Domain(self, 'es-service-monitor', 
+        domain = es.Domain(self, 'es-service-monitor',  # TODO: modify name: batch-job-history-domain
             version=es.ElasticsearchVersion.V7_10, # Upgrade when CDK upgrades
             domain_name=DOMAIN_NAME,
             removal_policy=core.RemovalPolicy.DESTROY,
