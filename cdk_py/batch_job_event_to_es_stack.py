@@ -56,28 +56,28 @@ class BatchJobEventToESStack(core.Stack):
             # The ‘encryption’ property must be either not specified or set to “Kms”. 
             # An error will be emitted if encryption is set to “Unencrypted” or “Managed”.
             # Default: - If encryption is set to “Kms” and this property is undefined, a new KMS key will be created and associated with this bucket.
-        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
-            encryption=aws_s3.BucketEncryption.KMS,
-            encryption_key=key
-            )
-        # 02) Dynamodb - KMS
-        # from CUSTOMER_MANAGED/AWS_MANAGED to DEFAULT
-        # encryption_key  – This property can only be set if encryption is set to TableEncryption.CUSTOMER_MANAGED
-        aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
-            encryption=aws_dynamodb.TableEncryption.CUSTOMER_MANAGED,
-            partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
-            encryption_key=key
-            )
+        # aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+        #     encryption=aws_s3.BucketEncryption.KMS,
+        #     encryption_key=key
+        #     )
+        # # 02) Dynamodb - KMS
+        # # from CUSTOMER_MANAGED/AWS_MANAGED to DEFAULT
+        # # encryption_key  – This property can only be set if encryption is set to TableEncryption.CUSTOMER_MANAGED
+        # aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
+        #     encryption=aws_dynamodb.TableEncryption.CUSTOMER_MANAGED,
+        #     partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
+        #     encryption_key=key
+        #     )
 
         # # -----------
-        # aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
-        #     encryption=aws_s3.BucketEncryption.KMS_MANAGED,
-        #     )
+        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+            encryption=aws_s3.BucketEncryption.KMS_MANAGED,
+            )
 
-        # aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
-        #     partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
-        #     encryption=aws_dynamodb.TableEncryption.AWS_MANAGED,
-        #     )
+        aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
+            partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
+            encryption=aws_dynamodb.TableEncryption.AWS_MANAGED,
+            )
 
         # # -----------
 
