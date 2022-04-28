@@ -70,25 +70,25 @@ class BatchJobEventToESStack(core.Stack):
         #     )
 
         # # -----------
-        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
-            encryption=aws_s3.BucketEncryption.KMS_MANAGED,
-            )
-
-        aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
-            partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
-            encryption=aws_dynamodb.TableEncryption.AWS_MANAGED,
-            )
-
-        # # -----------
-
         # aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
-        #     encryption=aws_s3.BucketEncryption.S3_MANAGED,
+        #     encryption=aws_s3.BucketEncryption.KMS_MANAGED,
         #     )
 
         # aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
         #     partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
-        #     encryption=aws_dynamodb.TableEncryption.Default,
+        #     encryption=aws_dynamodb.TableEncryption.AWS_MANAGED,
         #     )
+
+        # # -----------
+
+        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+            encryption=aws_s3.BucketEncryption.S3_MANAGED,
+            )
+
+        aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
+            partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
+            encryption=aws_dynamodb.TableEncryption.DEFAULT,
+            )
 
 
         # 1) create OpeanSearch Domain
