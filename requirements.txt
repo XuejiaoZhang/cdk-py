@@ -15,6 +15,11 @@ aws_cdk.aws_lambda==1.116.0
 aws_cdk.aws-codebuild==1.116.0
 aws_cdk.aws_lambda_python==1.116.0
 aws_cdk.aws_sqs==1.116.0
+aws_cdk.aws_elasticsearch==1.116.0
+aws_cdk.aws_ec2==1.116.0
+aws_cdk.aws_lambda==1.116.0
+aws_cdk.aws_dynamodb===1.116.0
+aws_cdk.aws_kms===1.116.0
 
 pygit2==1.9.0
 boto3~=1.17.73

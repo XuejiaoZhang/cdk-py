@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 import os
 import re
-from aws_cdk import core
+from aws_cdk import core, aws_lambda
+from aws_cdk.core import Duration
 
 from cdk_py.cdk_py_stack import CdkPyStack
 from cdk_py.pipeline_generator_stack import PipelineGeneratorStack
+from aws_cdk.aws_lambda_python import PythonFunction
+
 # from pygit2 import Repository
 
 
 app = core.App()
 
 config = app.node.try_get_context("config")
-
-
 
 
 # def get_repo_current_branch():
@@ -25,7 +26,7 @@ config = app.node.try_get_context("config")
 
 # import subprocess
 # cmd = 'pwd; ls -al; git status'
-#cmd = 'pwd; ls -al .; git status'
+# cmd = 'pwd; ls -al .; git status'
 
 # process = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
 # output, error = process.communicate()
@@ -37,88 +38,120 @@ config = app.node.try_get_context("config")
 # branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
 
 pipeline_template = "feature-branch-pipeline-template"
-feature_branch_name = "feature-branch-pipeline-us02"
-feature_branch_name = "not-exist-for-template-usage"
+# feature_branch_name = "feature-branch-pipeline-us02"
+# feature_branch_name = "not-exist-for-template-usage"
 
-CdkPyStack(app, pipeline_template,
-        feature_branch_name=feature_branch_name,
-        development_pipeline=True,
-        config={**config},
+# CdkPyStack(app, pipeline_template,
+#         feature_branch_name=feature_branch_name,
+#         development_pipeline=True,
+#         config={**config},
+# )
+
+# branch_name = 'dev'
+branch_name = "feature-branch-pipeline-us03-deploy-self-mutating-false"
+PipelineGeneratorStack(
+    app,
+    "FeatureBranchPipelineGenerator-boto3",
+    branch_name=branch_name,  # dev, master
+    pipeline_template=pipeline_template,
+    config={**config},
 )
 
-branch_name = 'dev'
+class LambdaStack(core.Stack):
+    def __init__(
+        self,
+        scope: core.Construct,
+        id: str,
+        config: dict = None,
+        **kwargs,
+    ):
+        super().__init__(scope, id, **kwargs)
 
-PipelineGeneratorStack(app, 'FeatureBranchPipelineGenerator',
-        branch_name=branch_name, # dev, master
-        pipeline_template=pipeline_template,
-        config={**config},
-    )
+        PythonFunction(
+            self,
+            id="es-lambd",
+            function_name=f"es-handler",
+            entry=os.path.join(os.getcwd(), "lambdas/es"),  # TODO
+            index="lambda_function.py",
+            # role=handler_role,
+            runtime=aws_lambda.Runtime.PYTHON_3_8,
+            # environment={"pipeline_template": pipeline_template},
+            memory_size=1024,
+            timeout=Duration.minutes(1),
+        )
 
+
+#LambdaStack(app, "es", config={**config})
+
+
+from cdk_py.batch_job_event_to_es_stack import BatchJobEventToESStack
+accounts = config.get("accounts")
+BatchJobEventToESStack(app, "batch-job-ui", config={**config}, env=accounts.get("test"))
 
 # branch_name = "aa"
-#branch_name = core.CfnParameter(self, "branch_name")
+# branch_name = core.CfnParameter(self, "branch_name")
 
-#stack_id = branch_chars + "ReadyForFeatureBranchPipeline" # for feature-branch pipeline
+# stack_id = branch_chars + "ReadyForFeatureBranchPipeline" # for feature-branch pipeline
 
-# 
-CdkPyStack(app, "dev-pipeline",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
+#
+# CdkPyStack(app, "dev-pipeline",
+#     # If you don't specify 'env', this stack will be environment-agnostic.
+#     # Account/Region-dependent features and context lookups will not work,
+#     # but a single synthesized template can be deployed anywhere.
 
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
+#     # Uncomment the next line to specialize this stack for the AWS Account
+#     # and Region that are implied by the current CLI configuration.
 
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
+#     #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
 
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
+#     # Uncomment the next line if you know exactly what Account and Region you
+#     # want to deploy the stack to. */
 
-    #env=cdk.Environment(account='123456789012', region='us-east-1'),
+#     #env=cdk.Environment(account='123456789012', region='us-east-1'),
 
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-        # branch_name=branch_name,
-        feature_branch_name='',
-        development_pipeline=True,
-        config={**config},
-        # synthesizer=core.DefaultStackSynthesizer(
-        #     deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-my-role-${AWS::AccountId}-${AWS::Region}",
-        #     cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-my-exec-role-${AWS::AccountId}-${AWS::Region}",  # noqa
-        # ),
-      #  synthesizer=DefaultStackSynthesizer(
-      #   deploy_role_arn="arn:aws:iam::320185343352:role/cdk-deploy-webhook",
-      #   cloud_formation_execution_role="arn:aws:iam::320185343352:role/cdk-cfn-my-exec-webhook",
-      # ),
-    )
+#     # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
+#         # branch_name=branch_name,
+#         feature_branch_name='',
+#         development_pipeline=True,
+#         config={**config},
+#         # synthesizer=core.DefaultStackSynthesizer(
+#         #     deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-my-role-${AWS::AccountId}-${AWS::Region}",
+#         #     cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-my-exec-role-${AWS::AccountId}-${AWS::Region}",  # noqa
+#         # ),
+#       #  synthesizer=DefaultStackSynthesizer(
+#       #   deploy_role_arn="arn:aws:iam::320185343352:role/cdk-deploy-webhook",
+#       #   cloud_formation_execution_role="arn:aws:iam::320185343352:role/cdk-cfn-my-exec-webhook",
+#       # ),
+#     )
 
-CdkPyStack(app, "prod-pipeline",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
+# CdkPyStack(app, "prod-pipeline",
+#     # If you don't specify 'env', this stack will be environment-agnostic.
+#     # Account/Region-dependent features and context lookups will not work,
+#     # but a single synthesized template can be deployed anywhere.
 
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
+#     # Uncomment the next line to specialize this stack for the AWS Account
+#     # and Region that are implied by the current CLI configuration.
 
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
+#     #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
 
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
+#     # Uncomment the next line if you know exactly what Account and Region you
+#     # want to deploy the stack to. */
 
-    #env=cdk.Environment(account='123456789012', region='us-east-1'),
+#     #env=cdk.Environment(account='123456789012', region='us-east-1'),
 
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-        feature_branch_name='',
-        development_pipeline=False,
-        config={**config},
-        # synthesizer=core.DefaultStackSynthesizer(
-        #     deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-my-role-${AWS::AccountId}-${AWS::Region}",
-        #     cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-my-exec-role-${AWS::AccountId}-${AWS::Region}",  # noqa
-        # ),
-      #  synthesizer=DefaultStackSynthesizer(
-      #   deploy_role_arn="arn:aws:iam::320185343352:role/cdk-deploy-webhook",
-      #   cloud_formation_execution_role="arn:aws:iam::320185343352:role/cdk-cfn-my-exec-webhook",
-      # ),
-    )
+#     # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
+#         feature_branch_name='',
+#         development_pipeline=False,
+#         config={**config},
+#         # synthesizer=core.DefaultStackSynthesizer(
+#         #     deploy_role_arn="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-deploy-my-role-${AWS::AccountId}-${AWS::Region}",
+#         #     cloud_formation_execution_role="arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-${Qualifier}-cfn-my-exec-role-${AWS::AccountId}-${AWS::Region}",  # noqa
+#         # ),
+#       #  synthesizer=DefaultStackSynthesizer(
+#       #   deploy_role_arn="arn:aws:iam::320185343352:role/cdk-deploy-webhook",
+#       #   cloud_formation_execution_role="arn:aws:iam::320185343352:role/cdk-cfn-my-exec-webhook",
+#       # ),
+#     )
 
 
 app.synth()

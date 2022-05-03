@@ -15,6 +15,7 @@
     ]
   },
   "context": {
+    "@aws-cdk/aws-kms:defaultKeyPolicies": true,
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
     "@aws-cdk/core:stackRelativeExports": true,
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
@@ -31,7 +32,16 @@
       "repo": "cdk-py",         
       "connection_arn": "arn:aws:codestar-connections:us-west-2:320185343352:connection/40faa6b0-1477-4f1e-a2ff-9ea041586ab1",
       "branch_creation_pipeline": "Create-Branch",
-      "branch_deletion_pipeline": "Delete-Branch"
+      "branch_deletion_pipeline": "Delete-Branch",
+      "smart_testing": {
+        "threshold": 2
+      },
+      "accounts": {
+        "test": {
+          "account": "320185343352",
+          "region": "us-west-2"
+        }
+      }
     },
     "@aws-cdk/core:newStyleStackSynthesis": "true"
   }

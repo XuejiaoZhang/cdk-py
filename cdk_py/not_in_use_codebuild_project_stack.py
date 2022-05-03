@@ -40,38 +40,35 @@ class CodeBuildProjectStack(core.Stack):
         """
         super().__init__(scope, id, **kwargs)
 
-
-
         project = codebuild.Project(
             self,
             "BranchPipelineCreation",
             # You'll need to configure this first. See:
             # https://docs.aws.amazon.com/cdk/api/latest/docs/aws-codebuild-readme.html#githubsource-and-githubenterprisesource
             source=codebuild.Source.git_hub(
-                owner=repo_owner, repo=repo, branch=branch_name, connection_arn=codestar_connection_arn
+                owner=repo_owner,
+                repo=repo,
+                branch=branch_name,
+                connection_arn=codestar_connection_arn,
             ),
-
             # source_action=cpactions.CodeStarConnectionsSourceAction(
             #     action_name="GitHub",
             #     connection_arn=codestar_connection_arn,
             #     owner=repo_owner,
-            #     repo=repo,   
+            #     repo=repo,
             #     branch=branch_name,
             #     #branch=branch_name.value_as_string,
             #     trigger_on_push=True,
             #     output=source_artifact,
             # ),
-            build_spec=codebuild.BuildSpec.from_object({
-                "version": "0.2",
-                "phases": {
-                    "build": {
-                        "commands": ["ls -al"]
-                    }
-                },
-                # "cache": {
-                #     "paths": ["/root/cachedir/**/*"
-                #     ]
-                # }
-            })
+            build_spec=codebuild.BuildSpec.from_object(
+                {
+                    "version": "0.2",
+                    "phases": {"build": {"commands": ["ls -al"]}},
+                    # "cache": {
+                    #     "paths": ["/root/cachedir/**/*"
+                    #     ]
+                    # }
+                }
+            ),
         )
-

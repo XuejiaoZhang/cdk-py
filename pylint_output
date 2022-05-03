@@ -1,0 +1,909 @@
+************* Module 2
+2:1:0: C0103: Module name "2" doesn't conform to snake_case naming style (invalid-name)
+2:1:0: C0114: Missing module docstring (missing-module-docstring)
+2:1:0: W0104: Statement seems to have no effect (pointless-statement)
+************* Module README
+README.md:4:11: E0001: invalid syntax (<unknown>, line 4) (syntax-error)
+************* Module a
+a.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+a.py:3:0: C0103: Constant name "a" doesn't conform to UPPER_CASE naming style (invalid-name)
+a.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+a.py:3:0: C0103: Constant name "a" doesn't conform to UPPER_CASE naming style (invalid-name)
+************* Module app
+app.py:63:1: C0303: Trailing whitespace (trailing-whitespace)
+app.py:72:0: C0301: Line too long (109/100) (line-too-long)
+app.py:85:0: C0301: Line too long (149/100) (line-too-long)
+app.py:86:0: C0301: Line too long (174/100) (line-too-long)
+app.py:102:0: C0301: Line too long (109/100) (line-too-long)
+app.py:114:0: C0301: Line too long (149/100) (line-too-long)
+app.py:115:0: C0301: Line too long (174/100) (line-too-long)
+app.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+app.py:39:0: C0103: Constant name "pipeline_template" doesn't conform to UPPER_CASE naming style (invalid-name)
+app.py:50:0: C0103: Constant name "branch_name" doesn't conform to UPPER_CASE naming style (invalid-name)
+app.py:2:0: W0611: Unused import os (unused-import)
+app.py:3:0: W0611: Unused import re (unused-import)
+app.py:6:0: W0611: Unused CdkPyStack imported from cdk_py.cdk_py_stack (unused-import)
+************* Module b
+b.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+************* Module bucekt
+bucekt.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+************* Module cdk
+cdk.json:31:23: C0303: Trailing whitespace (trailing-whitespace)
+cdk.json:32:0: C0301: Line too long (126/100) (line-too-long)
+cdk.json:1:0: C0114: Missing module docstring (missing-module-docstring)
+cdk.json:1:0: W0104: Statement seems to have no effect (pointless-statement)
+cdk.json:18:62: E0602: Undefined variable 'true' (undefined-variable)
+cdk.json:19:42: E0602: Undefined variable 'true' (undefined-variable)
+cdk.json:20:46: E0602: Undefined variable 'true' (undefined-variable)
+cdk.json:21:49: E0602: Undefined variable 'true' (undefined-variable)
+cdk.json:22:65: E0602: Undefined variable 'true' (undefined-variable)
+cdk.json:23:73: E0602: Undefined variable 'true' (undefined-variable)
+cdk.json:24:49: E0602: Undefined variable 'true' (undefined-variable)
+cdk.out/__init__.py:1:0: F0010: error while code parsing: Unable to load file cdk.out/__init__.py:
+[Errno 2] No such file or directory: 'cdk.out/__init__.py' (parse-error)
+************* Module cdk_py.smart_testing_testmondata_s3
+cdk_py/smart_testing_testmondata_s3.py:26:13: W0511: TODO: Change to KMS_MANAGED encryption once the policies are provided (fixme)
+cdk_py/smart_testing_testmondata_s3.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cdk_py/smart_testing_testmondata_s3.py:9:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/smart_testing_testmondata_s3.py:13:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/smart_testing_testmondata_s3.py:14:8: W0613: Unused argument 'config' (unused-argument)
+cdk_py/smart_testing_testmondata_s3.py:43:8: W0612: Unused variable 'param' (unused-variable)
+************* Module cdk_py.github_webhook_api_stack
+cdk_py/github_webhook_api_stack.py:64:9: W0511: TODO (fixme)
+cdk_py/github_webhook_api_stack.py:84:9: W0511: TODO: existing policies in AWSLambdaBasicExecutionRole (fixme)
+cdk_py/github_webhook_api_stack.py:188:59: W0511: TODO (fixme)
+cdk_py/github_webhook_api_stack.py:73:50: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/github_webhook_api_stack.py:98:0: C0301: Line too long (112/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:203:0: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/github_webhook_api_stack.py:209:0: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/github_webhook_api_stack.py:210:0: C0301: Line too long (101/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:233:0: C0301: Line too long (110/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:284:0: C0301: Line too long (131/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:285:0: C0301: Line too long (132/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:286:0: C0301: Line too long (425/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:288:0: C0301: Line too long (305/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:293:0: C0301: Line too long (131/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:294:0: C0301: Line too long (422/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:436:0: C0301: Line too long (122/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:443:0: C0301: Line too long (128/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:446:0: C0301: Line too long (168/100) (line-too-long)
+cdk_py/github_webhook_api_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cdk_py/github_webhook_api_stack.py:24:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/github_webhook_api_stack.py:28:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/github_webhook_api_stack.py:30:8: W0613: Unused argument 'config' (unused-argument)
+cdk_py/github_webhook_api_stack.py:20:0: W0611: Unused IntegrationResponse imported from aws_cdk.aws_apigateway (unused-import)
+cdk_py/github_webhook_api_stack.py:20:0: W0611: Unused MethodResponse imported from aws_cdk.aws_apigateway (unused-import)
+cdk_py/github_webhook_api_stack.py:22:0: W0611: Unused import json (unused-import)
+cdk_py/github_webhook_api_stack.py:21:0: C0411: standard import "import os" should be placed before "from aws_cdk import aws_iam, aws_lambda, aws_apigateway, core, aws_logs" (wrong-import-order)
+cdk_py/github_webhook_api_stack.py:22:0: C0411: standard import "import json" should be placed before "from aws_cdk import aws_iam, aws_lambda, aws_apigateway, core, aws_logs" (wrong-import-order)
+************* Module cdk_py.pipeline_generator_stack
+cdk_py/pipeline_generator_stack.py:40:1: W0511: TODO: APIGateway + Lambda + CodeBuild (fixme)
+cdk_py/pipeline_generator_stack.py:55:9: W0511: branch_deletion_pipeline = 'Delete-Branch'  #TODO:pass to PipelineGeneratorApplication, then lambda env, and cdkpipeline (fixme)
+cdk_py/pipeline_generator_stack.py:227:9: W0511: TODO: run in parallel (fixme)
+cdk_py/pipeline_generator_stack.py:239:9: W0511: "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/pipeline_generator_stack.py:256:9: W0511: "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/pipeline_generator_stack.py:347:9: W0511: #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/pipeline_generator_stack.py:362:9: W0511: #    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/pipeline_generator_stack.py:55:0: C0301: Line too long (130/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:62:0: C0301: Line too long (110/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:72:0: C0301: Line too long (204/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:73:0: C0301: Line too long (204/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:77:0: C0301: Line too long (108/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:81:0: C0301: Line too long (156/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:82:0: C0301: Line too long (156/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:148:26: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/pipeline_generator_stack.py:172:0: C0301: Line too long (134/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:173:0: C0301: Line too long (135/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:230:0: C0301: Line too long (118/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:239:0: C0301: Line too long (102/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:255:0: C0301: Line too long (123/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:256:0: C0301: Line too long (112/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:263:0: C0301: Line too long (172/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:272:0: C0301: Line too long (126/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:281:0: C0301: Line too long (124/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:288:0: C0301: Line too long (254/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:299:0: C0301: Line too long (128/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:331:0: C0301: Line too long (113/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:332:0: C0301: Line too long (153/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:333:0: C0301: Line too long (145/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:347:0: C0301: Line too long (103/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:361:0: C0301: Line too long (123/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:362:0: C0301: Line too long (113/100) (line-too-long)
+cdk_py/pipeline_generator_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cdk_py/pipeline_generator_stack.py:41:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/pipeline_generator_stack.py:45:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/pipeline_generator_stack.py:42:4: R0913: Too many arguments (6/5) (too-many-arguments)
+cdk_py/pipeline_generator_stack.py:46:8: W0613: Unused argument 'branch_name' (unused-argument)
+cdk_py/pipeline_generator_stack.py:47:8: W0613: Unused argument 'pipeline_template' (unused-argument)
+cdk_py/pipeline_generator_stack.py:65:8: W0612: Unused variable 'smarttestingtestmondatas3' (unused-variable)
+cdk_py/pipeline_generator_stack.py:114:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/pipeline_generator_stack.py:118:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/pipeline_generator_stack.py:115:4: R0913: Too many arguments (6/5) (too-many-arguments)
+cdk_py/pipeline_generator_stack.py:15:0: W0611: Unused Construct imported from constructs (unused-import)
+cdk_py/pipeline_generator_stack.py:16:0: W0611: Unused GithubWebhookAPIStack imported from cdk_py.github_webhook_api_stack (unused-import)
+cdk_py/pipeline_generator_stack.py:17:0: W0611: Unused CdkPyStack imported from cdk_py.cdk_py_stack (unused-import)
+************* Module cdk_py.not_in_use_cdkpipeline_stack
+cdk_py/not_in_use_cdkpipeline_stack.py:79:1: W0511: TODO: APIGateway + Lambda + CodeBuild (fixme)
+cdk_py/not_in_use_cdkpipeline_stack.py:157:9: W0511: branch_deletion_pipeline = 'Delete-Branch'  #TODO:pass to PipelineGeneratorApplication, then lambda env, and cdkpipeline (fixme)
+cdk_py/not_in_use_cdkpipeline_stack.py:213:9: W0511: TODO (fixme)
+cdk_py/not_in_use_cdkpipeline_stack.py:409:9: W0511: TODO: run in parallel (fixme)
+cdk_py/not_in_use_cdkpipeline_stack.py:421:9: W0511: "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/not_in_use_cdkpipeline_stack.py:438:9: W0511: "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/not_in_use_cdkpipeline_stack.py:464:9: W0511: #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/not_in_use_cdkpipeline_stack.py:85:0: C0301: Line too long (106/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:157:0: C0301: Line too long (130/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:257:26: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/not_in_use_cdkpipeline_stack.py:263:0: C0301: Line too long (121/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:300:0: C0301: Line too long (623/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:301:0: C0301: Line too long (217/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:302:0: C0301: Line too long (216/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:303:0: C0301: Line too long (742/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:305:0: C0301: Line too long (697/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:308:116: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/not_in_use_cdkpipeline_stack.py:308:0: C0301: Line too long (116/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:312:0: C0301: Line too long (101/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:315:0: C0301: Line too long (610/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:347:0: C0301: Line too long (134/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:348:0: C0301: Line too long (135/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:404:0: C0301: Line too long (154/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:412:0: C0301: Line too long (118/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:421:0: C0301: Line too long (102/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:437:0: C0301: Line too long (123/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:438:0: C0301: Line too long (112/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:447:0: C0301: Line too long (131/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:455:0: C0301: Line too long (148/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:464:0: C0301: Line too long (103/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:503:114: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/not_in_use_cdkpipeline_stack.py:503:0: C0301: Line too long (114/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:511:0: C0301: Line too long (508/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:512:0: C0301: Line too long (539/100) (line-too-long)
+cdk_py/not_in_use_cdkpipeline_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cdk_py/not_in_use_cdkpipeline_stack.py:23:0: C0116: Missing function or method docstring (missing-function-docstring)
+cdk_py/not_in_use_cdkpipeline_stack.py:24:4: R1703: The if statement can be replaced with 'return bool(test)' (simplifiable-if-statement)
+cdk_py/not_in_use_cdkpipeline_stack.py:24:4: R1705: Unnecessary "else" after "return" (no-else-return)
+cdk_py/not_in_use_cdkpipeline_stack.py:29:0: C0116: Missing function or method docstring (missing-function-docstring)
+cdk_py/not_in_use_cdkpipeline_stack.py:48:18: C0209: Formatting a regular string which could be a f-string (consider-using-f-string)
+cdk_py/not_in_use_cdkpipeline_stack.py:29:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
+cdk_py/not_in_use_cdkpipeline_stack.py:137:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/not_in_use_cdkpipeline_stack.py:138:30: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/not_in_use_cdkpipeline_stack.py:143:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/not_in_use_cdkpipeline_stack.py:147:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/not_in_use_cdkpipeline_stack.py:144:4: R0913: Too many arguments (6/5) (too-many-arguments)
+cdk_py/not_in_use_cdkpipeline_stack.py:166:40: E0602: Undefined variable 'branch_name_queue' (undefined-variable)
+cdk_py/not_in_use_cdkpipeline_stack.py:191:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/not_in_use_cdkpipeline_stack.py:195:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/not_in_use_cdkpipeline_stack.py:192:4: R0913: Too many arguments (7/5) (too-many-arguments)
+cdk_py/not_in_use_cdkpipeline_stack.py:192:4: R0914: Too many local variables (18/15) (too-many-locals)
+cdk_py/not_in_use_cdkpipeline_stack.py:1:0: W0611: Unused aws_sqs imported from aws_cdk (unused-import)
+cdk_py/not_in_use_cdkpipeline_stack.py:13:0: W0611: Unused Construct imported from constructs (unused-import)
+cdk_py/not_in_use_cdkpipeline_stack.py:15:0: W0611: Unused import os (unused-import)
+cdk_py/not_in_use_cdkpipeline_stack.py:15:0: C0411: standard import "import os" should be placed before "from aws_cdk import core, aws_sqs, aws_s3, aws_iam" (wrong-import-order)
+cdk_py/not_in_use_cdkpipeline_stack.py:16:0: C0411: standard import "import re" should be placed before "from aws_cdk import core, aws_sqs, aws_s3, aws_iam" (wrong-import-order)
+************* Module cdk_py.not_in_use_codebuild_project_stack
+cdk_py/not_in_use_codebuild_project_stack.py:51:0: C0301: Line too long (103/100) (line-too-long)
+cdk_py/not_in_use_codebuild_project_stack.py:58:28: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/not_in_use_codebuild_project_stack.py:77:0: C0305: Trailing newlines (trailing-newlines)
+cdk_py/not_in_use_codebuild_project_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cdk_py/not_in_use_codebuild_project_stack.py:22:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/not_in_use_codebuild_project_stack.py:26:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/not_in_use_codebuild_project_stack.py:50:19: E1123: Unexpected keyword argument 'branch' in classmethod call (unexpected-keyword-arg)
+cdk_py/not_in_use_codebuild_project_stack.py:50:19: E1123: Unexpected keyword argument 'connection_arn' in classmethod call (unexpected-keyword-arg)
+cdk_py/not_in_use_codebuild_project_stack.py:51:22: E0602: Undefined variable 'repo_owner' (undefined-variable)
+cdk_py/not_in_use_codebuild_project_stack.py:51:39: E0602: Undefined variable 'repo' (undefined-variable)
+cdk_py/not_in_use_codebuild_project_stack.py:51:52: E0602: Undefined variable 'branch_name' (undefined-variable)
+cdk_py/not_in_use_codebuild_project_stack.py:51:80: E0602: Undefined variable 'codestar_connection_arn' (undefined-variable)
+cdk_py/not_in_use_codebuild_project_stack.py:27:8: W0613: Unused argument 'config' (unused-argument)
+cdk_py/not_in_use_codebuild_project_stack.py:45:8: W0612: Unused variable 'project' (unused-variable)
+************* Module cdk_py.cdk_py_stack
+cdk_py/cdk_py_stack.py:24:1: W0511: # TODO: APIGateway + Lambda + CodeBuild (fixme)
+cdk_py/cdk_py_stack.py:183:9: W0511: TODO: run in parallel (fixme)
+cdk_py/cdk_py_stack.py:195:9: W0511: "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/cdk_py_stack.py:212:9: W0511: "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/cdk_py_stack.py:218:9: W0511: TODO: development_pipeline (fixme)
+cdk_py/cdk_py_stack.py:231:21: W0511: "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/cdk_py_stack.py:232:21: W0511: "pytest --cov=dags --cov-branch term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/cdk_py_stack.py:233:20: W0511: "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/cdk_py_stack.py:249:21: W0511: "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO (fixme)
+cdk_py/cdk_py_stack.py:104:26: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/cdk_py_stack.py:119:138: C0303: Trailing whitespace (trailing-whitespace)
+cdk_py/cdk_py_stack.py:119:0: C0301: Line too long (138/100) (line-too-long)
+cdk_py/cdk_py_stack.py:121:0: C0301: Line too long (118/100) (line-too-long)
+cdk_py/cdk_py_stack.py:122:0: C0301: Line too long (119/100) (line-too-long)
+cdk_py/cdk_py_stack.py:186:0: C0301: Line too long (118/100) (line-too-long)
+cdk_py/cdk_py_stack.py:195:0: C0301: Line too long (102/100) (line-too-long)
+cdk_py/cdk_py_stack.py:211:0: C0301: Line too long (123/100) (line-too-long)
+cdk_py/cdk_py_stack.py:212:0: C0301: Line too long (112/100) (line-too-long)
+cdk_py/cdk_py_stack.py:221:0: C0301: Line too long (126/100) (line-too-long)
+cdk_py/cdk_py_stack.py:231:0: C0301: Line too long (112/100) (line-too-long)
+cdk_py/cdk_py_stack.py:233:0: C0301: Line too long (101/100) (line-too-long)
+cdk_py/cdk_py_stack.py:248:0: C0301: Line too long (121/100) (line-too-long)
+cdk_py/cdk_py_stack.py:249:0: C0301: Line too long (112/100) (line-too-long)
+cdk_py/cdk_py_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+cdk_py/cdk_py_stack.py:17:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/cdk_py_stack.py:18:30: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/cdk_py_stack.py:25:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/cdk_py_stack.py:26:30: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/cdk_py_stack.py:29:8: W0612: Unused variable 's3_bucket' (unused-variable)
+cdk_py/cdk_py_stack.py:59:0: C0115: Missing class docstring (missing-class-docstring)
+cdk_py/cdk_py_stack.py:63:8: W0622: Redefining built-in 'id' (redefined-builtin)
+cdk_py/cdk_py_stack.py:60:4: R0913: Too many arguments (6/5) (too-many-arguments)
+cdk_py/cdk_py_stack.py:60:4: R0914: Too many local variables (16/15) (too-many-locals)
+cdk_py/cdk_py_stack.py:73:15: C0121: Comparison 'development_pipeline == True' should be 'development_pipeline is True' if checking for the singleton value True, or 'development_pipeline' if testing for truthiness (singleton-comparison)
+cdk_py/cdk_py_stack.py:13:0: W0611: Unused Construct imported from constructs (unused-import)
+************* Module lambdas.github_webhook_api.github_webhook
+lambdas/github_webhook_api/github_webhook.py:9:0: C0301: Line too long (128/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook.py:12:18: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook.py:23:0: C0301: Line too long (106/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook.py:37:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook.py:60:104: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook.py:60:0: C0301: Line too long (104/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook.py:82:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+lambdas/github_webhook_api/github_webhook.py:13:0: C0103: Constant name "branch_prefix" doesn't conform to UPPER_CASE naming style (invalid-name)
+lambdas/github_webhook_api/github_webhook.py:14:0: C0103: Constant name "feature_pipeline_suffix" doesn't conform to UPPER_CASE naming style (invalid-name)
+lambdas/github_webhook_api/github_webhook.py:19:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook.py:38:4: R1705: Unnecessary "else" after "return" (no-else-return)
+lambdas/github_webhook_api/github_webhook.py:19:19: W0613: Unused argument 'context' (unused-argument)
+lambdas/github_webhook_api/github_webhook.py:84:35: W0621: Redefining name 'branch_prefix' from outer scope (line 13) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook.py:84:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook.py:85:4: R1703: The if statement can be replaced with 'return bool(test)' (simplifiable-if-statement)
+lambdas/github_webhook_api/github_webhook.py:85:4: R1705: Unnecessary "else" after "return" (no-else-return)
+lambdas/github_webhook_api/github_webhook.py:90:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook.py:91:4: W0612: Unused variable 'caculation' (unused-variable)
+lambdas/github_webhook_api/github_webhook.py:97:16: C0103: Argument name "d" doesn't conform to snake_case naming style (invalid-name)
+lambdas/github_webhook_api/github_webhook.py:97:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook.py:98:4: R1703: The if statement can be replaced with 'return bool(test)' (simplifiable-if-statement)
+lambdas/github_webhook_api/github_webhook.py:98:4: R1705: Unnecessary "else" after "return" (no-else-return)
+lambdas/github_webhook_api/github_webhook.py:103:55: W0621: Redefining name 'pipeline_template' from outer scope (line 15) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook.py:104:4: W0621: Redefining name 'codepipeline_client' from outer scope (line 17) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook.py:103:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook.py:121:4: W0621: Redefining name 'codepipeline_client' from outer scope (line 17) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook.py:120:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook.py:122:4: W0612: Unused variable 'response' (unused-variable)
+lambdas/github_webhook_api/github_webhook.py:4:0: W0611: Unused import base64 (unused-import)
+lambdas/github_webhook_api/github_webhook.py:7:0: C0411: standard import "import os" should be placed before "import boto3" (wrong-import-order)
+************* Module lambdas.github_webhook_api.github_webhook_bak
+lambdas/github_webhook_api/github_webhook_bak.py:10:1: W0511: TODO: read from secret store (fixme)
+lambdas/github_webhook_api/github_webhook_bak.py:81:9: W0511: # TODO: deal with push? (fixme)
+lambdas/github_webhook_api/github_webhook_bak.py:11:0: C0301: Line too long (109/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook_bak.py:21:0: C0301: Line too long (148/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook_bak.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:47:0: C0301: Line too long (106/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook_bak.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:63:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:71:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:79:42: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:80:51: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:82:41: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:83:39: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:100:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:103:0: C0301: Line too long (102/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook_bak.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:116:0: C0301: Line too long (102/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook_bak.py:129:0: C0303: Trailing whitespace (trailing-whitespace)
+lambdas/github_webhook_api/github_webhook_bak.py:179:0: C0301: Line too long (115/100) (line-too-long)
+lambdas/github_webhook_api/github_webhook_bak.py:203:0: C0304: Final newline missing (missing-final-newline)
+lambdas/github_webhook_api/github_webhook_bak.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+lambdas/github_webhook_api/github_webhook_bak.py:12:0: C0103: Constant name "branch_prefix" doesn't conform to UPPER_CASE naming style (invalid-name)
+lambdas/github_webhook_api/github_webhook_bak.py:30:35: W0621: Redefining name 'branch_prefix' from outer scope (line 12) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook_bak.py:30:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook_bak.py:31:4: R1703: The if statement can be replaced with 'return bool(test)' (simplifiable-if-statement)
+lambdas/github_webhook_api/github_webhook_bak.py:31:4: R1705: Unnecessary "else" after "return" (no-else-return)
+lambdas/github_webhook_api/github_webhook_bak.py:36:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook_bak.py:37:4: W0612: Unused variable 'caculation' (unused-variable)
+lambdas/github_webhook_api/github_webhook_bak.py:43:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook_bak.py:64:4: R1705: Unnecessary "else" after "return" (no-else-return)
+lambdas/github_webhook_api/github_webhook_bak.py:101:26: C0209: Formatting a regular string which could be a f-string (consider-using-f-string)
+lambdas/github_webhook_api/github_webhook_bak.py:103:26: C0209: Formatting a regular string which could be a f-string (consider-using-f-string)
+lambdas/github_webhook_api/github_webhook_bak.py:114:26: C0209: Formatting a regular string which could be a f-string (consider-using-f-string)
+lambdas/github_webhook_api/github_webhook_bak.py:116:26: C0209: Formatting a regular string which could be a f-string (consider-using-f-string)
+lambdas/github_webhook_api/github_webhook_bak.py:43:19: W0613: Unused argument 'context' (unused-argument)
+lambdas/github_webhook_api/github_webhook_bak.py:132:16: C0103: Argument name "d" doesn't conform to snake_case naming style (invalid-name)
+lambdas/github_webhook_api/github_webhook_bak.py:132:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook_bak.py:133:4: R1703: The if statement can be replaced with 'return bool(test)' (simplifiable-if-statement)
+lambdas/github_webhook_api/github_webhook_bak.py:133:4: R1705: Unnecessary "else" after "return" (no-else-return)
+lambdas/github_webhook_api/github_webhook_bak.py:156:55: W0621: Redefining name 'pipeline_template' from outer scope (line 16) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook_bak.py:157:4: W0621: Redefining name 'codepipeline_client' from outer scope (line 25) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook_bak.py:156:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook_bak.py:174:4: W0621: Redefining name 'codepipeline_client' from outer scope (line 25) (redefined-outer-name)
+lambdas/github_webhook_api/github_webhook_bak.py:173:0: C0116: Missing function or method docstring (missing-function-docstring)
+lambdas/github_webhook_api/github_webhook_bak.py:4:0: W0611: Unused import base64 (unused-import)
+lambdas/github_webhook_api/github_webhook_bak.py:7:0: C0411: standard import "import os" should be placed before "import boto3" (wrong-import-order)
+************* Module other_tests.s
+other_tests/s.py:5:0: C0304: Final newline missing (missing-final-newline)
+other_tests/s.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/s.py:4:8: C0103: Argument name "a" doesn't conform to snake_case naming style (invalid-name)
+other_tests/s.py:4:11: C0103: Argument name "b" doesn't conform to snake_case naming style (invalid-name)
+other_tests/s.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+other_tests/s.py:1:0: W0611: Unused import unittest (unused-import)
+************* Module other_tests.r
+other_tests/r.py:5:0: C0304: Final newline missing (missing-final-newline)
+other_tests/r.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/r.py:4:11: C0103: Argument name "a" doesn't conform to snake_case naming style (invalid-name)
+other_tests/r.py:4:14: C0103: Argument name "b" doesn't conform to snake_case naming style (invalid-name)
+other_tests/r.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+other_tests/r.py:1:0: W0611: Unused import unittest (unused-import)
+************* Module other_tests.test_s
+other_tests/test_s.py:10:0: C0304: Final newline missing (missing-final-newline)
+other_tests/test_s.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/test_s.py:5:0: C0115: Missing class docstring (missing-class-docstring)
+other_tests/test_s.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module other_tests.s_nested
+other_tests/s_nested.py:5:0: C0304: Final newline missing (missing-final-newline)
+other_tests/s_nested.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/s_nested.py:4:17: C0103: Argument name "a" doesn't conform to snake_case naming style (invalid-name)
+other_tests/s_nested.py:4:20: C0103: Argument name "b" doesn't conform to snake_case naming style (invalid-name)
+other_tests/s_nested.py:4:23: C0103: Argument name "c" doesn't conform to snake_case naming style (invalid-name)
+other_tests/s_nested.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+other_tests/s_nested.py:1:0: W0611: Unused import unittest (unused-import)
+************* Module other_tests.test_r
+other_tests/test_r.py:10:0: C0304: Final newline missing (missing-final-newline)
+other_tests/test_r.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/test_r.py:5:0: C0115: Missing class docstring (missing-class-docstring)
+other_tests/test_r.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module other_tests.q
+other_tests/q.py:5:0: C0304: Final newline missing (missing-final-newline)
+other_tests/q.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/q.py:4:13: C0103: Argument name "a" doesn't conform to snake_case naming style (invalid-name)
+other_tests/q.py:4:16: C0103: Argument name "b" doesn't conform to snake_case naming style (invalid-name)
+other_tests/q.py:4:19: C0103: Argument name "c" doesn't conform to snake_case naming style (invalid-name)
+other_tests/q.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+other_tests/q.py:1:0: W0611: Unused import unittest (unused-import)
+************* Module other_tests.test_s_nested
+other_tests/test_s_nested.py:10:0: C0304: Final newline missing (missing-final-newline)
+other_tests/test_s_nested.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/test_s_nested.py:5:0: C0115: Missing class docstring (missing-class-docstring)
+other_tests/test_s_nested.py:7:4: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module other_tests.test_fish
+other_tests/test_fish.py:10:0: C0304: Final newline missing (missing-final-newline)
+other_tests/test_fish.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/test_fish.py:5:0: C0115: Missing class docstring (missing-class-docstring)
+other_tests/test_fish.py:6:4: C0116: Missing function or method docstring (missing-function-docstring)
+************* Module other_tests.fish
+other_tests/fish.py:7:0: C0304: Final newline missing (missing-final-newline)
+other_tests/fish.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+other_tests/fish.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
+other_tests/fish.py:1:0: W0611: Unused import unittest (unused-import)
+************* Module out
+out:12:60: E0001: unterminated string literal (detected at line 12) (<unknown>, line 12) (syntax-error)
+************* Module pylint_output
+pylint_output:2:36: E0001: unterminated string literal (detected at line 2) (<unknown>, line 2) (syntax-error)
+************* Module requirements
+requirements.txt:1:22: E0001: invalid syntax (<unknown>, line 1) (syntax-error)
+************* Module requirements_dev
+requirements_dev.txt:1:0: C0114: Missing module docstring (missing-module-docstring)
+requirements_dev.txt:1:0: W0104: Statement seems to have no effect (pointless-statement)
+requirements_dev.txt:1:0: E0602: Undefined variable 'pytest' (undefined-variable)
+requirements_dev.txt:2:0: W0104: Statement seems to have no effect (pointless-statement)
+requirements_dev.txt:2:0: E0602: Undefined variable 'pytest' (undefined-variable)
+requirements_dev.txt:2:7: E0602: Undefined variable 'cov' (undefined-variable)
+requirements_dev.txt:3:0: W0104: Statement seems to have no effect (pointless-statement)
+requirements_dev.txt:3:0: E0602: Undefined variable 'moto' (undefined-variable)
+requirements_dev.txt:4:0: W0104: Statement seems to have no effect (pointless-statement)
+requirements_dev.txt:4:0: E0602: Undefined variable 'pylint' (undefined-variable)
+requirements_dev.txt:5:0: W0104: Statement seems to have no effect (pointless-statement)
+requirements_dev.txt:5:0: E0602: Undefined variable 'pytest' (undefined-variable)
+requirements_dev.txt:5:7: E0602: Undefined variable 'testmon' (undefined-variable)
+************* Module scripts.get_branch_name_from_ssm
+scripts/get_branch_name_from_ssm.py:14:25: W0511: TODO dev, master (fixme)
+scripts/get_branch_name_from_ssm.py:12:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+scripts/get_branch_name_from_ssm.py:13:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/get_branch_name_from_ssm.py:14:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+scripts/get_branch_name_from_ssm.py:15:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/get_branch_name_from_ssm.py:16:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+scripts/get_branch_name_from_ssm.py:25:0: C0305: Trailing newlines (trailing-newlines)
+scripts/get_branch_name_from_ssm.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+scripts/get_branch_name_from_ssm.py:7:0: C0103: Constant name "branch_chars" doesn't conform to UPPER_CASE naming style (invalid-name)
+scripts/get_branch_name_from_ssm.py:8:0: C0103: Constant name "branch_name" doesn't conform to UPPER_CASE naming style (invalid-name)
+scripts/get_branch_name_from_ssm.py:14:3: C0103: Constant name "branch_chars" doesn't conform to UPPER_CASE naming style (invalid-name)
+scripts/get_branch_name_from_ssm.py:2:0: C0411: standard import "import os" should be placed before "import boto3" (wrong-import-order)
+************* Module scripts.not_in_use_json_add_context_pair
+scripts/not_in_use_json_add_context_pair.py:13:0: C0304: Final newline missing (missing-final-newline)
+scripts/not_in_use_json_add_context_pair.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+scripts/not_in_use_json_add_context_pair.py:6:0: C0103: Constant name "json_file" doesn't conform to UPPER_CASE naming style (invalid-name)
+scripts/not_in_use_json_add_context_pair.py:7:5: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+scripts/not_in_use_json_add_context_pair.py:12:5: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+************* Module scripts.get_bucket_name_from_ssm
+scripts/get_bucket_name_from_ssm.py:8:0: W0611: Unused import os (unused-import)
+************* Module scripts.not_in_use_update_pipeline
+scripts/not_in_use_update_pipeline.py:78:0: C0304: Final newline missing (missing-final-newline)
+scripts/not_in_use_update_pipeline.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+scripts/not_in_use_update_pipeline.py:5:0: C0103: Constant name "branch_name" doesn't conform to UPPER_CASE naming style (invalid-name)
+************* Module scripts.download_smart_testing_testmondata_from_s3
+scripts/download_smart_testing_testmondata_from_s3.py:19:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:20:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:22:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:23:0: W0311: Bad indentation. Found 5 spaces, expected 8 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:24:0: W0311: Bad indentation. Found 6 spaces, expected 12 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:26:0: W0311: Bad indentation. Found 5 spaces, expected 8 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:27:0: W0311: Bad indentation. Found 9 spaces, expected 12 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:28:0: C0304: Final newline missing (missing-final-newline)
+scripts/download_smart_testing_testmondata_from_s3.py:28:0: W0311: Bad indentation. Found 9 spaces, expected 12 (bad-indentation)
+scripts/download_smart_testing_testmondata_from_s3.py:24:6: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+scripts/download_smart_testing_testmondata_from_s3.py:27:9: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+scripts/download_smart_testing_testmondata_from_s3.py:10:0: C0411: standard import "import logging" should be placed before "import boto3" (wrong-import-order)
+************* Module scripts.not_in_use_invoke_codebuild_for_generator_stack
+scripts/not_in_use_invoke_codebuild_for_generator_stack.py:24:26: C0303: Trailing whitespace (trailing-whitespace)
+scripts/not_in_use_invoke_codebuild_for_generator_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+scripts/not_in_use_invoke_codebuild_for_generator_stack.py:8:18: W0621: Redefining name 'branch_name' from outer scope (line 21) (redefined-outer-name)
+scripts/not_in_use_invoke_codebuild_for_generator_stack.py:8:0: C0116: Missing function or method docstring (missing-function-docstring)
+scripts/not_in_use_invoke_codebuild_for_generator_stack.py:9:4: W0612: Unused variable 'response' (unused-variable)
+scripts/not_in_use_invoke_codebuild_for_generator_stack.py:21:0: C0103: Constant name "branch_name" doesn't conform to UPPER_CASE naming style (invalid-name)
+scripts/not_in_use_invoke_codebuild_for_generator_stack.py:22:0: C0103: Constant name "branch_name" doesn't conform to UPPER_CASE naming style (invalid-name)
+************* Module scripts.not_in_use_get_branch_name_from_sqs
+scripts/not_in_use_get_branch_name_from_sqs.py:20:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:33:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:34:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:35:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:38:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:43:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:46:0: W0311: Bad indentation. Found 2 spaces, expected 8 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:47:0: W0311: Bad indentation. Found 3 spaces, expected 12 (bad-indentation)
+scripts/not_in_use_get_branch_name_from_sqs.py:51:0: C0305: Trailing newlines (trailing-newlines)
+scripts/not_in_use_get_branch_name_from_sqs.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+scripts/not_in_use_get_branch_name_from_sqs.py:8:22: W0621: Redefining name 'branch_name' from outer scope (line 43) (redefined-outer-name)
+scripts/not_in_use_get_branch_name_from_sqs.py:8:35: W0621: Redefining name 'branch_prefix' from outer scope (line 15) (redefined-outer-name)
+scripts/not_in_use_get_branch_name_from_sqs.py:8:0: C0116: Missing function or method docstring (missing-function-docstring)
+scripts/not_in_use_get_branch_name_from_sqs.py:9:4: R1703: The if statement can be replaced with 'return bool(test)' (simplifiable-if-statement)
+scripts/not_in_use_get_branch_name_from_sqs.py:9:4: R1705: Unnecessary "else" after "return" (no-else-return)
+scripts/not_in_use_get_branch_name_from_sqs.py:15:0: C0103: Constant name "branch_prefix" doesn't conform to UPPER_CASE naming style (invalid-name)
+scripts/not_in_use_get_branch_name_from_sqs.py:2:0: C0411: standard import "import os" should be placed before "import boto3" (wrong-import-order)
+************* Module scripts.not_in_use_send_message_to_sqs
+scripts/not_in_use_send_message_to_sqs.py:7:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+scripts/not_in_use_send_message_to_sqs.py:27:0: W0311: Bad indentation. Found 1 spaces, expected 4 (bad-indentation)
+scripts/not_in_use_send_message_to_sqs.py:31:0: C0301: Line too long (147/100) (line-too-long)
+scripts/not_in_use_send_message_to_sqs.py:33:0: C0304: Final newline missing (missing-final-newline)
+scripts/not_in_use_send_message_to_sqs.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+scripts/not_in_use_send_message_to_sqs.py:5:37: W0621: Redefining name 'branch_name' from outer scope (line 32) (redefined-outer-name)
+scripts/not_in_use_send_message_to_sqs.py:5:0: C0116: Missing function or method docstring (missing-function-docstring)
+scripts/not_in_use_send_message_to_sqs.py:29:24: E0602: Undefined variable 'os' (undefined-variable)
+scripts/not_in_use_send_message_to_sqs.py:30:24: E0602: Undefined variable 'os' (undefined-variable)
+scripts/not_in_use_send_message_to_sqs.py:31:0: C0103: Constant name "branch_creation_queue" doesn't conform to UPPER_CASE naming style (invalid-name)
+scripts/not_in_use_send_message_to_sqs.py:32:0: C0103: Constant name "branch_name" doesn't conform to UPPER_CASE naming style (invalid-name)
+************* Module scripts.invoke_codebuild_for_generator_stack
+scripts/invoke_codebuild_for_generator_stack.py:24:26: C0303: Trailing whitespace (trailing-whitespace)
+scripts/invoke_codebuild_for_generator_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+scripts/invoke_codebuild_for_generator_stack.py:8:18: W0621: Redefining name 'branch_name' from outer scope (line 22) (redefined-outer-name)
+scripts/invoke_codebuild_for_generator_stack.py:8:0: C0116: Missing function or method docstring (missing-function-docstring)
+scripts/invoke_codebuild_for_generator_stack.py:9:4: W0612: Unused variable 'response' (unused-variable)
+scripts/invoke_codebuild_for_generator_stack.py:22:0: C0103: Constant name "branch_name" doesn't conform to UPPER_CASE naming style (invalid-name)
+************* Module source
+source.bat:10:15: E0001: unterminated string literal (detected at line 10) (<unknown>, line 10) (syntax-error)
+************* Module tests.not_in_use_test_pipeline_generator_stack
+tests/not_in_use_test_pipeline_generator_stack.py:14:81: W0511: # TODO (fixme)
+tests/not_in_use_test_pipeline_generator_stack.py:22:85: W0511: #TODO (fixme)
+tests/not_in_use_test_pipeline_generator_stack.py:64:9: W0511: CHECK #TODO False (fixme)
+tests/not_in_use_test_pipeline_generator_stack.py:3:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:9:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:13:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:21:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:25:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:37:82: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:41:52: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:46:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:50:74: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:55:0: C0301: Line too long (109/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:56:0: C0301: Line too long (106/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:57:0: C0301: Line too long (103/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:63:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_pipeline_generator_stack.py:65:0: C0301: Line too long (105/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:69:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_pipeline_generator_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests/not_in_use_test_pipeline_generator_stack.py:18:0: E0401: Unable to import 'pipeline_generator_stack' (import-error)
+tests/not_in_use_test_pipeline_generator_stack.py:18:0: C0413: Import "import pipeline_generator_stack" should be placed at the top of the module (wrong-import-position)
+tests/not_in_use_test_pipeline_generator_stack.py:26:0: C0115: Missing class docstring (missing-class-docstring)
+tests/not_in_use_test_pipeline_generator_stack.py:29:4: C0116: Missing function or method docstring (missing-function-docstring)
+tests/not_in_use_test_pipeline_generator_stack.py:32:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+tests/not_in_use_test_pipeline_generator_stack.py:10:0: W0611: Unused import pytest (unused-import)
+************* Module tests.test_github_webhook_api_stack
+tests/test_github_webhook_api_stack.py:14:81: W0511: # TODO (fixme)
+tests/test_github_webhook_api_stack.py:22:85: W0511: #TODO (fixme)
+tests/test_github_webhook_api_stack.py:3:0: C0301: Line too long (120/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:9:0: C0301: Line too long (120/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:13:0: C0301: Line too long (120/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:21:0: C0301: Line too long (120/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:25:0: C0301: Line too long (120/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:37:82: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:41:52: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:46:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:50:67: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:53:0: C0301: Line too long (109/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:54:0: C0301: Line too long (106/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:55:0: C0301: Line too long (103/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:57:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/test_github_webhook_api_stack.py:67:0: C0301: Line too long (120/100) (line-too-long)
+tests/test_github_webhook_api_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests/test_github_webhook_api_stack.py:18:0: E0401: Unable to import 'github_webhook_api_stack' (import-error)
+tests/test_github_webhook_api_stack.py:18:0: C0413: Import "import github_webhook_api_stack" should be placed at the top of the module (wrong-import-position)
+tests/test_github_webhook_api_stack.py:26:0: C0115: Missing class docstring (missing-class-docstring)
+tests/test_github_webhook_api_stack.py:29:4: C0116: Missing function or method docstring (missing-function-docstring)
+tests/test_github_webhook_api_stack.py:32:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+************* Module tests.not_in_use_test_cdkpipeline_stack
+tests/not_in_use_test_cdkpipeline_stack.py:14:81: W0511: # TODO (fixme)
+tests/not_in_use_test_cdkpipeline_stack.py:22:85: W0511: #TODO (fixme)
+tests/not_in_use_test_cdkpipeline_stack.py:3:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:9:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:13:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:21:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:25:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:37:82: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:41:52: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:46:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:50:55: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:56:0: C0301: Line too long (109/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:57:0: C0301: Line too long (106/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:58:0: C0301: Line too long (103/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:60:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+tests/not_in_use_test_cdkpipeline_stack.py:70:0: C0301: Line too long (120/100) (line-too-long)
+tests/not_in_use_test_cdkpipeline_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests/not_in_use_test_cdkpipeline_stack.py:18:0: E0401: Unable to import 'cdkpipeline_stack' (import-error)
+tests/not_in_use_test_cdkpipeline_stack.py:18:0: C0413: Import "import cdkpipeline_stack" should be placed at the top of the module (wrong-import-position)
+tests/not_in_use_test_cdkpipeline_stack.py:26:0: C0115: Missing class docstring (missing-class-docstring)
+tests/not_in_use_test_cdkpipeline_stack.py:29:4: C0116: Missing function or method docstring (missing-function-docstring)
+tests/not_in_use_test_cdkpipeline_stack.py:32:13: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+************* Module tests.unit.test_cdk_py_stack
+tests/unit/test_cdk_py_stack.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+tests/unit/test_cdk_py_stack.py:1:0: W0611: Unused aws_cdk imported as core (unused-import)
+tests/unit/test_cdk_py_stack.py:4:0: W0611: Unused CdkPyStack imported from cdk_py.cdk_py_stack (unused-import)
+************* Module tests.unit.__init__
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_cdkpipeline_stack:[238:276]
+==cdk_py.pipeline_generator_stack:[130:162]
+        codestar_connection_arn = config.get("connection_arn")
+        repo_owner = config.get("owner")
+        repo = config.get("repo")
+
+        source_artifact = codepipeline.Artifact()
+        cloud_assembly_artifact = codepipeline.Artifact()
+
+        # pipeline = pipelines.CdkPipeline(
+        pipeline = pipelines.CdkPipeline(
+            self,
+            id,
+            #self_mutating=False,
+            cloud_assembly_artifact=cloud_assembly_artifact,
+            pipeline_name=id,
+            source_action=cpactions.CodeStarConnectionsSourceAction(
+                action_name="GitHub",
+                connection_arn=codestar_connection_arn,
+                owner=repo_owner,
+                repo=repo,
+                branch=branch_name,
+                #branch=branch_name.value_as_string,
+                trigger_on_push=True,
+                output=source_artifact,
+            ),
+            # When passing a 'sourceAction' you must also pass a 'synthAction' (or a 'codePipeline' that already has both
+            synth_action=pipelines.SimpleSynthAction.standard_npm_synth(
+                source_artifact=source_artifact,
+                cloud_assembly_artifact=cloud_assembly_artifact,
+                install_command="npm install -g aws-cdk && pip install -r requirements.txt",
+                # install_command="echo $SQS_URL, $BRANCH, $stack_id, $creation_or_deletion",
+                environment=aws_codebuild.BuildEnvironment(
+                    build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                    privileged=True,
+                    # environment_variables={"branch_name": branch_name}
+                ),
+                # build_command='echo synth',
+
+                environment_variables={ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.cdk_py_stack:[97:120]
+==cdk_py.pipeline_generator_stack:[141:161]
+            cloud_assembly_artifact=cloud_assembly_artifact,
+            pipeline_name=id,
+            source_action=cpactions.CodeStarConnectionsSourceAction(
+                action_name="GitHub",
+                connection_arn=codestar_connection_arn,
+                owner=repo_owner,
+                repo=repo,
+                branch=branch_name,
+                #branch=branch_name.value_as_string,
+                trigger_on_push=True,
+                output=source_artifact,
+            ),
+            synth_action=pipelines.SimpleSynthAction.standard_npm_synth(
+                source_artifact=source_artifact,
+                cloud_assembly_artifact=cloud_assembly_artifact,
+                install_command="npm install -g aws-cdk && pip install -r requirements.txt",
+                environment=aws_codebuild.BuildEnvironment(
+                    build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                    privileged=True,
+                    # environment_variables={"branch_name": branch_name}
+                ),
+                ## botocore.errorfactory.ParameterNotFound: An error occurred (ParameterNotFound) when calling the GetParameter operation:
+                # "BRANCH=master" (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==scripts.invoke_codebuild_for_generator_stack:[0:21]
+==scripts.not_in_use_invoke_codebuild_for_generator_stack:[0:20]
+import boto3
+
+
+codebuild_client = boto3.client('codebuild')
+
+
+
+def codebuild_run(branch_name):
+    response = codebuild_client.start_build(
+        projectName='lambda-codebuild',
+        sourceVersion=branch_name,
+        environmentVariablesOverride=[
+            {
+                'name': 'BRANCH',
+                'value': branch_name,
+                'type': 'PLAINTEXT'
+            },
+        ],
+    )
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_cdkpipeline_stack:[32:47]
+==scripts.not_in_use_get_branch_name_from_sqs:[17:42]
+if sqs_url:
+	# Receive message from SQS queue
+	response = sqs_client.receive_message(
+	    QueueUrl=sqs_url,
+	    # AttributeNames=[
+	    #     'SentTimestamp'
+	    # ],
+	    # MaxNumberOfMessages=1,
+	    # MessageAttributeNames=[
+	    #     'All'
+	    # ],
+	    # VisibilityTimeout=0,
+	    # WaitTimeSeconds=0
+	)
+	# print(response)
+	if response.get('Messages', []):
+		message = response['Messages'][0]
+		receipt_handle = message['ReceiptHandle']
+
+		# Delete received message from queue
+		sqs_client.delete_message(
+		    QueueUrl=sqs_url,
+		    ReceiptHandle=receipt_handle
+		)
+		# print('Received and deleted message: %s' % message) (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==lambdas.github_webhook_api.github_webhook:[83:96]
+==lambdas.github_webhook_api.github_webhook_bak:[29:42]
+def branch_name_check(branch_name, branch_prefix):
+    if branch_name.startswith(branch_prefix):
+        return True
+    else:
+        return False
+
+def verify_webhook(data, hmac_header):
+    caculation = hmac.new(SECRET.encode('utf-8'), data.encode('utf-8'), hashlib.sha256)
+    received_hmac = re.sub(r'^sha256=', '', hmac_header)
+    hexdigest = hmac.new(SECRET.encode('utf-8'), data.encode('utf-8'), hashlib.sha256).hexdigest()
+    # print(hexdigest, received_hmac)
+    return hexdigest == received_hmac
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==tests.not_in_use_test_pipeline_generator_stack:[3:17]
+==tests.test_github_webhook_api_stack:[3:17]
+import os
+import sys
+import unittest
+import json
+
+# - Third Party Imports ------------------------------------------------------------------------------------------------
+import pytest
+from aws_cdk import core
+
+# - Local Application/Library Specific Imports -------------------------------------------------------------------------
+FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), r"../cdk_py")) ## TODO
+if FOLDER not in sys.path:
+    sys.path.append(FOLDER)
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==lambdas.github_webhook_api.github_webhook:[0:13]
+==lambdas.github_webhook_api.github_webhook_bak:[0:15]
+import json
+import hmac
+import hashlib
+import base64
+import re
+import boto3
+import os
+
+# Secret Secret Key used for verification
+# TODO: read from secret store
+SECRET = 'abcdefg' #??parameter store manually, how to persistently store? CDK gen, the same, showed in code?
+branch_prefix = 'feature-branch-pipeline-'
+# gen_pipeline = "FeatureBranchPipelineGenerator"
+# branch_creation_pipeline = 'Create-Branch'
+# branch_deletion_pipeline = 'Delete-Branch' (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.cdk_py_stack:[85:96]
+==cdk_py.pipeline_generator_stack:[130:141]
+        codestar_connection_arn = config.get("connection_arn")
+        repo_owner = config.get("owner")
+        repo = config.get("repo")
+
+        source_artifact = codepipeline.Artifact()
+        cloud_assembly_artifact = codepipeline.Artifact()
+
+        # pipeline = pipelines.CdkPipeline(
+        pipeline = pipelines.CdkPipeline(
+            self,
+            id, (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_codebuild_project_stack:[22:44]
+==cdk_py.smart_testing_testmondata_s3:[9:21]
+    def __init__(
+        self,
+        scope: core.Construct,
+        id: str,
+        config: dict,
+        # hosted_zone_id,
+        # hosted_zone_name,
+        # dynamo_table: aws_dynamodb.Table,
+        **kwargs,
+    ) -> None:
+        """
+        Creates the following infrastructure:
+            API Gateway
+            Lambda
+            Lambda Role
+            IAM Role
+            # TODO pipline
+        """
+        super().__init__(scope, id, **kwargs)
+
+
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.cdk_py_stack:[5:16]
+==cdk_py.not_in_use_cdkpipeline_stack:[5:13]
+    aws_iam,
+)
+from aws_cdk import aws_codepipeline as codepipeline
+from aws_cdk import pipelines
+from aws_cdk import aws_codepipeline_actions as cpactions
+from aws_cdk import aws_codebuild
+
+from constructs import Construct (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==lambdas.github_webhook_api.github_webhook:[39:46]
+==lambdas.github_webhook_api.github_webhook_bak:[65:72]
+        print(msg)
+        return {
+            'statusCode': 401,
+            'body': json.dumps(msg)
+        }
+
+    else: (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_cdkpipeline_stack:[18:28]
+==scripts.not_in_use_get_branch_name_from_sqs:[3:14]
+sqs_client = boto3.client('sqs')
+
+#CODEBUILD_INITIATOR=codepipeline/featurebranchpipelinewebhookReadyForFeatureBranchPipeline
+
+def branch_name_check(branch_name, branch_prefix):
+    if branch_name.startswith(branch_prefix):
+        return True
+    else:
+        return False
+
+# branch_name = 'generator2' (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_cdkpipeline_stack:[5:12]
+==cdk_py.pipeline_generator_stack:[5:12]
+    aws_iam,
+)
+from aws_cdk import aws_codepipeline as codepipeline
+from aws_cdk import pipelines
+from aws_cdk import aws_codepipeline_actions as cpactions
+from aws_cdk import aws_codebuild
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==tests.not_in_use_test_cdkpipeline_stack:[27:49]
+==tests.test_github_webhook_api_stack:[27:49]
+    @pytest.mark.skip(reason="not a unit test, requires authenticated API calls")
+    def test_create_stack_ok(self):
+
+        # GIVEN
+        with open(CDK_JSON) as json_file:
+            cdk_json = json.load(json_file)
+        app = core.App()
+
+        # config = cdk_json["context"]["config"]
+        # region: str = cdk_json["context"]["config"]["accounts"]["dev"]["region"]
+        # dev_account: str = cdk_json["context"]["config"]["accounts"]["dev"]["account"]
+        # cdk_json["context"]["config"]["stage"] = "dev"
+
+        # r53stack = route53_stack.Route53Stack(app,
+        #                                       "test-route53-stack",
+        #                                       config=cdk_json["context"]["config"],
+        #                                       env={'account': dev_account,'region': region})
+
+
+        # print(cdk_json)
+
+        # WHEN (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==lambdas.github_webhook_api.github_webhook_bak:[29:35]
+==scripts.not_in_use_get_branch_name_from_sqs:[7:14]
+def branch_name_check(branch_name, branch_prefix):
+    if branch_name.startswith(branch_prefix):
+        return True
+    else:
+        return False
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==lambdas.github_webhook_api.github_webhook:[96:102]
+==lambdas.github_webhook_api.github_webhook_bak:[131:155]
+def dict_haskey(d, k):
+    if k in d.keys():
+        return True
+    else:
+        return False
+
+# def save_branch_name_in_ssm(branch_name):
+#     branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
+
+#     response = ssm_client.put_parameter(
+#         Name = branch_chars,
+#         Value = branch_name,
+#         Type = 'String',
+#         Overwrite = True
+#     )
+
+# def delete_branch_name_in_ssm(branch_name):
+#     branch_chars = re.sub('[^0-9a-zA-Z]+', '', str(branch_name))
+
+#     response = ssm_client.delete_parameter(
+#         Name=branch_chars
+#     )
+
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_cdkpipeline_stack:[22:28]
+==lambdas.github_webhook_api.github_webhook:[83:89]
+def branch_name_check(branch_name, branch_prefix):
+    if branch_name.startswith(branch_prefix):
+        return True
+    else:
+        return False
+ (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_cdkpipeline_stack:[191:196]
+==cdk_py.pipeline_generator_stack:[114:119]
+    def __init__(
+        self,
+        scope: core.Construct,
+        id: str,
+        branch_name: str, (duplicate-code)
+tests/unit/__init__.py:1:0: R0801: Similar lines in 2 files
+==cdk_py.not_in_use_cdkpipeline_stack:[143:148]
+==cdk_py.pipeline_generator_stack:[41:46]
+    def __init__(
+        self,
+        scope: core.Construct,
+        id: str,
+        branch_name: str, (duplicate-code)
+
+--------------------------------------------------------------------
+Your code has been rated at -2.05/10 (previous run: -2.05/10, +0.00)
+
