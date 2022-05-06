@@ -84,8 +84,11 @@ class LambdaStack(core.Stack):
 #LambdaStack(app, "es", config={**config})
 
 
-from cdk_py.batch_job_event_to_es_stack import BatchJobEventToESStack
+from cdk_py.batch_job_event_to_es_stack import BatchJobEventToESStack, S3Bucketstack
 accounts = config.get("accounts")
+
+S3Bucketstack(app, "access-log-bucket", config={**config}, env=accounts.get("test"))
+
 BatchJobEventToESStack(app, "batch-job-ui", config={**config}, env=accounts.get("test"))
 
 # branch_name = "aa"

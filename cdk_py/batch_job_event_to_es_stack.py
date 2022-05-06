@@ -21,6 +21,30 @@ import os
 import random
 import string
 
+class S3Bucketstack(core.Stack):
+    def __init__(
+        self,
+        scope: core.Construct,
+        id: str,
+        # pipeline_template: str,
+        config: dict,
+        **kwargs,
+    ) -> None:
+        """
+        Creates the following infrastructure:
+            EventBridge Rule
+            Lambda
+            Openserch
+        """
+        super().__init__(scope, id, **kwargs)
+
+        central_access_log_bucket = aws_s3.Bucket(self, "central_access_log",
+            encryption=aws_s3.BucketEncryption.S3_MANAGED,
+            )
+        core.CfnOutput(self, "central_access_log_bucket", 
+            value=central_access_log_bucket.bucket_arn,
+            export_name="central-access-log-bucket"
+            )
 
 class BatchJobEventToESStack(core.Stack):
     def __init__(
@@ -43,6 +67,22 @@ class BatchJobEventToESStack(core.Stack):
         key = aws_kms.Key(self, "MyKey",
             pending_window=Duration.days(10)
         )
+
+
+        lifecycle=aws_s3.LifecycleRule(id="life_cycle",
+            expiration=core.Duration.days(365)
+        )
+
+        central_access_log_bucket = aws_s3.Bucket.from_bucket_arn(self, "central_access_log_bucket",
+            core.Fn.import_value("central-access-log-bucket"),
+            )
+        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+            encryption=aws_s3.BucketEncryption.S3_MANAGED,
+            server_access_logs_bucket=central_access_log_bucket,
+            server_access_logs_prefix="encryption_at_rest_s3_kms_logs/",
+            versioned=True,
+            lifecycle_rules=[lifecycle],
+            )
 
         # 01) S3 - KMS
         # from KMS/KMS_MANAGED to S3_MANAGED
@@ -81,9 +121,9 @@ class BatchJobEventToESStack(core.Stack):
 
         # # -----------
 
-        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
-            encryption=aws_s3.BucketEncryption.S3_MANAGED,
-            )
+
+
+
 
         aws_dynamodb.Table(self, "encryption_at_rest_db_kms",
             partition_key=aws_dynamodb.Attribute(name="id", type=aws_dynamodb.AttributeType.STRING),
