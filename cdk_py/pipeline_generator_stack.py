@@ -2,7 +2,7 @@ from aws_cdk import (
     # Duration,
     core,
     # aws_sqs as sqs,
-    # aws_s3 as s3,
+    aws_codebuild as codebuild,
     aws_iam,
 )
 from aws_cdk import aws_codepipeline as codepipeline
@@ -133,89 +133,101 @@ class PipelineGeneratorStack(core.Stack):
         repo_owner = config.get("owner")
         repo = config.get("repo")
 
-        source_artifact = codepipeline.Artifact()
-        cloud_assembly_artifact = codepipeline.Artifact()
+        # source_artifact = codepipeline.Artifact()
+        # cloud_assembly_artifact = codepipeline.Artifact()
 
         # pipeline = pipelines.CdkPipeline(
-        pipeline = pipelines.CdkPipeline(
+        pipeline = pipelines.CodePipeline(
             self,
             id,
-            cloud_assembly_artifact=cloud_assembly_artifact,
-            pipeline_name=id,
-            source_action=cpactions.CodeStarConnectionsSourceAction(
-                action_name="GitHub",
-                connection_arn=codestar_connection_arn,
-                owner=repo_owner,
-                repo=repo,
-                branch=branch_name,
-                # branch=branch_name.value_as_string,
-                trigger_on_push=True,
-                output=source_artifact,
-            ),
-            synth_action=pipelines.SimpleSynthAction.standard_npm_synth(
-                source_artifact=source_artifact,
-                cloud_assembly_artifact=cloud_assembly_artifact,
-                install_command="npm install -g aws-cdk && pip install -r requirements.txt",
-                environment=aws_codebuild.BuildEnvironment(
-                    build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
-                    privileged=True,
+            synth=pipelines.ShellStep("Synth",
+                input=pipelines.CodePipelineSource.connection(repo_owner+"/"+repo, branch_name,
+                    connection_arn=codestar_connection_arn
                 ),
-                environment_variables={
-                    "BRANCH": aws_codebuild.BuildEnvironmentVariable(
-                        value=branch_name,
-                        # the properties below are optional
-                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-                    ),
-                },
-                build_command="echo $BRANCH; cdk list -c branch_name=$BRANCH",
-                synth_command="echo $BRANCH; cdk synth -c branch_name=$BRANCH",
-                # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
-                # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
-                # role_policy_statements=[
-                #     aws_iam.PolicyStatement(
-                #         actions=["ssm:GetParameter"],
-                #         effect=aws_iam.Effect.ALLOW,
-                #         resources=['*'
-                #             # synth_dev_account_role_arn,
-                #             # synth_qa_account_role_arn,
-                #             # synth_prod_account_role_arn,
-                #         ],
-                #     )
-                # ],
-                # role_policy_statements=[
-                #     aws_iam.PolicyStatement(
-                #         actions=["sts:AssumeRole"],
-                #         effect=aws_iam.Effect.ALLOW,
-                #         resources=[
-                #             # synth_dev_account_role_arn,
-                #             # synth_qa_account_role_arn,
-                #             # synth_prod_account_role_arn,
-                #         ],
-                #     )
-                # ],
+                commands=["npm ci", "npm run build", "npx cdk synth"
+                ]
             ),
-            #     # Defaults for all CodeBuild projects
+            # Defaults for all CodeBuild projects
             # code_build_defaults=pipelines.CodeBuildOptions(
             #     # Prepend commands and configuration to all projects
-            #     # partial_build_spec=codebuild.BuildSpec.from_object({
-            #     #     "version": "0.2"
-            #     # }),
+            #     partial_build_spec=codebuild.BuildSpec.from_object({
+            #         "cache": {
+            #             "paths": [
+            #                 "cdk.out/**/*",  # cdk output so it doesn't have to redo all assets
+            #             ]
+            #         }
+            #     }),
+
             #     # Control the build environment
-            #     build_environment=aws_codebuild.BuildEnvironment(
-            #         environment_variables = {"branch_name": branch_name}
-            #     ),
-            #     # Control Elastic Network Interface creation
+            #     # build_environment=codebuild.BuildEnvironment(
+            #     #     compute_type=codebuild.ComputeType.LARGE
+            #     # ),
+
+            #     # # Control Elastic Network Interface creation
             #     # vpc=vpc,
             #     # subnet_selection=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE),
             #     # security_groups=[my_security_group],
+
             #     # # Additional policy statements for the execution role
             #     # role_policy=[
             #     #     iam.PolicyStatement()
             #     # ]
             # ),
-            # synth_code_build_defaults=pipelines.CodeBuildOptions(),
-            # asset_publishing_code_build_defaults=pipelines.CodeBuildOptions(),
-            # self_mutation_code_build_defaults=pipelines.CodeBuildOptions()
+
+            # cloud_assembly_artifact=cloud_assembly_artifact,
+            # pipeline_name=id,
+            # source_action=cpactions.CodeStarConnectionsSourceAction(
+            #     action_name="GitHub",
+            #     connection_arn=codestar_connection_arn,
+            #     owner=repo_owner,
+            #     repo=repo,
+            #     branch=branch_name,
+            #     # branch=branch_name.value_as_string,
+            #     trigger_on_push=True,
+            #     output=source_artifact,
+            # ),
+            # synth_action=pipelines.SimpleSynthAction.standard_npm_synth(
+            #     source_artifact=source_artifact,
+            #     cloud_assembly_artifact=cloud_assembly_artifact,
+            #     install_command="npm install -g aws-cdk && pip install -r requirements.txt",
+            #     environment=aws_codebuild.BuildEnvironment(
+            #         build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+            #         privileged=True,
+            #     ),
+            #     environment_variables={
+            #         "BRANCH": aws_codebuild.BuildEnvironmentVariable(
+            #             value=branch_name,
+            #             # the properties below are optional
+            #             type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            #         ),
+            #     },
+            #     build_command="echo $BRANCH; cdk list -c branch_name=$BRANCH",
+            #     synth_command="echo $BRANCH; cdk synth -c branch_name=$BRANCH",
+            #     # build_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk list -c branch_name=$BRANCH",
+            #     # synth_command="BRANCH=$(python scripts/get_branch_name_from_ssm.py); echo $BRANCH; cdk synth -c branch_name=$BRANCH",
+            #     # role_policy_statements=[
+            #     #     aws_iam.PolicyStatement(
+            #     #         actions=["ssm:GetParameter"],
+            #     #         effect=aws_iam.Effect.ALLOW,
+            #     #         resources=['*'
+            #     #             # synth_dev_account_role_arn,
+            #     #             # synth_qa_account_role_arn,
+            #     #             # synth_prod_account_role_arn,
+            #     #         ],
+            #     #     )
+            #     # ],
+            #     # role_policy_statements=[
+            #     #     aws_iam.PolicyStatement(
+            #     #         actions=["sts:AssumeRole"],
+            #     #         effect=aws_iam.Effect.ALLOW,
+            #     #         resources=[
+            #     #             # synth_dev_account_role_arn,
+            #     #             # synth_qa_account_role_arn,
+            #     #             # synth_prod_account_role_arn,
+            #     #         ],
+            #     #     )
+            #     # ],
+            # ),
         )
 
         # TODO: run in parallel
@@ -265,127 +277,83 @@ class PipelineGeneratorStack(core.Stack):
             #     region="eu-west-1"
             # )
         )
-        pipeline.add_application_stage(pipeline_generator_stage)
+        pipeline.add_stage(pipeline_generator_stage)
 
-        testing_stage = pipeline.add_stage(
-            "Testing"
-        )  # Empty stage since we are going to run tests only, not deploy resources
+        # testing_stage = pipeline.add_stage(
+        #     "Testing"
+        # )  # Empty stage since we are going to run tests only, not deploy resources
 
-        # testing_stage.add_actions(
-        #     pipelines.ShellScriptAction(
-        #         action_name="SmartTesting",
-        #         run_order=testing_stage.next_sequential_run_order(),
-        #         additional_artifacts=[source_artifact],
-        #         # environment_variables={
-        #         #     "BUCKET_NAME": aws_codebuild.BuildEnvironmentVariable(
-        #         #         value=pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_name,
-        #         #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-        #         #     ),
-        #         # },
-        #         commands=[
-        #             "pip install -r requirements.txt",
-        #             "pip install -r requirements_dev.txt",
-        #             "set -e; export BUCKET_NAME=$(python scripts/get_bucket_name_from_ssm.py);ls -al;python scripts/download_smart_testing_testmondata_from_s3.py; ls -al; pytest --testmon; ls -al; python scripts/upload_smart_testing_testmondata_to_s3.py",
-        #         ],
-        #         role_policy_statements=[
-        #             aws_iam.PolicyStatement(
-        #                 actions=["S3:ListBucket", "s3:PutObject", "s3:GetObject"],
-        #                 effect=aws_iam.Effect.ALLOW,
-        #                 resources=["*"]
-        #                 # resources=[pipeline_generator_stage.smarttestingtestmondatas3.smart_testing_testmondata_s3.bucket_arn],
-        #             ),
-        #             aws_iam.PolicyStatement(
-        #                 actions=["ssm:GetParameter"],
-        #                 effect=aws_iam.Effect.ALLOW,
-        #                 resources=["*"],
-        #             ),
-        #         ],
-        #     )
-        # )
-
-        testing_stage.add_actions(
-            pipelines.ShellScriptAction(
-                action_name="StaticCodeAnalysis",
-                run_order=testing_stage.next_sequential_run_order(),
-                additional_artifacts=[source_artifact],
-                environment=aws_codebuild.BuildEnvironment(
-                    build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
-                    privileged=True,
-                ),
-                environment_variables={
-                    "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
-                        value=config.get("smart_testing").get("threshold"),
-                        type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-                    ),
-                    "secret": aws_codebuild.BuildEnvironmentVariable(
-                        value="github_webhook_secret:github_webhook_secret",
-                        type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
-                    ),
-                    "toekn": aws_codebuild.BuildEnvironmentVariable(
-                        value="token",
-                        type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
-                    ),
-                    # NODE_AUTH_TOKEN: {
-                    #     value: secretGithubAccessToken.secretValue,
-                    #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
-                    #   },
-                },
-
-                commands=[
-                    # Not git repo
-                    "echo $secret",
-                    "echo $token"
-                    # "pip install -r requirements.txt",
-                    # "pip install -r requirements_dev.txt",
-                    # "set -e; bash scripts/pylint_check.sh $THRESHOLD"
-                    #     "pylint $(git ls-files '*.py')",
-                    #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
-                    #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
-                    #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
-                ],
-                role_policy_statements=[
-                    aws_iam.PolicyStatement(
-                        actions=["secretsmanager:*"],
-                        effect=aws_iam.Effect.ALLOW,
-                        resources=["*"]
-                    )
-                ],
-
-            )
+        pipeline.build_pipeline() 
+        synth_project: codebuild.CfnProject = pipeline.synth_project.node.default_child
+        synth_project.cache = codebuild.CfnProject.ProjectCacheProperty(
+            # location=f"my-bucket/my-cache-folder",
+            # type="S3",
+            type="LOCAL",  
+            modes=["LOCAL_DOCKER_LAYER_CACHE"]        
         )
 
-        # testing_stage.add_actions(
-        #     pipelines.ShellScriptAction(
-        #         action_name="UnitTests",
-        #         run_order=testing_stage.next_sequential_run_order(),
-        #         additional_artifacts=[source_artifact],
-        #         commands=[
-        #             "pip install -r requirements.txt",
-        #             "pip install -r requirements_dev.txt",
-        #           #  "pytest --cov=dags --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-        #         ],
-        #     )
+        # step = pipelines.CodeBuildStep(
+        #     "StaticCodeAnalysis",
+        #     # run_order=testing_stage.next_sequential_run_order(),
+        #     # additional_artifacts=[source_artifact],
+        #     build_environment=aws_codebuild.BuildEnvironment(
+        #         build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+        #         privileged=True,
+        #     ),
+        #     env={
+        #         "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
+        #             value=config.get("smart_testing").get("threshold"),
+        #             type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+        #         ),
+        #         "secret": aws_codebuild.BuildEnvironmentVariable(
+        #             value="github_webhook_secret:github_webhook_secret",
+        #             type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+        #         ),
+        #         "toekn": aws_codebuild.BuildEnvironmentVariable(
+        #             value="token",
+        #             type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+        #         ),
+        #         # NODE_AUTH_TOKEN: {
+        #         #     value: secretGithubAccessToken.secretValue,
+        #         #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+        #         #   },
+        #     },
+
+        #     commands=[
+        #         # Not git repo
+        #         "echo $secret",
+        #         "echo $token"
+        #         # "pip install -r requirements.txt",
+        #         # "pip install -r requirements_dev.txt",
+        #         # "set -e; bash scripts/pylint_check.sh $THRESHOLD"
+        #         #     "pylint $(git ls-files '*.py')",
+        #         #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
+        #         #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
+        #         #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
+        #     ],
+        #     role_policy_statements=[
+        #         aws_iam.PolicyStatement(
+        #             actions=["secretsmanager:*"],
+        #             effect=aws_iam.Effect.ALLOW,
+        #             resources=["*"]
+        #         )
+        #     ],
+
         # )
 
+        # # synth_project: codebuild.CfnProject = pipeline.step.node.default_child
+        # # synth_project.cache = codebuild.CfnProject.ProjectCacheProperty(
+        # #     # location=f"my-bucket/my-cache-folder",
+        # #     # type="S3",
+        # #     type="LOCAL",          
+        # # )
+
+
+        # testing_stage = pipeline.add_stage(
+        #     step
+        # )  # E
+
         # testing_stage.add_actions(
-        #     pipelines.ShellScriptAction(
-        #         action_name="InfrastructureTests",
-        #         run_order=testing_stage.next_sequential_run_order(),
-        #         additional_artifacts=[source_artifact],
-        #         commands=[
-        #             "pip install -r requirements.txt",
-        #             "pip install -r requirements_dev.txt",
-        #             # when no tests are found, exit code 5 will cause a problem in the pipeline
-        #             # "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s infrastructure/tests",
-        #         #    "pytest --cov=infrastructure --cov-branch --cov-report term-missing -vvvv -s tests", #TODO
-        #         ],
-        #     )
+        #     step
         # )
 
-        # pipeline.add_application_stage(pipeline_generator_stage)
-
-        ## feature_stage = pipeline.add_application_stage(feature_app)
-
-        # 'MyApplication' is defined below. Call `addStage` as many times as
-        # necessary with any account and region (may be different from the
-        # pipeline's).
