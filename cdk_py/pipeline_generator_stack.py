@@ -292,66 +292,68 @@ class PipelineGeneratorStack(core.Stack):
             modes=["LOCAL_DOCKER_LAYER_CACHE"]        
         )
 
-        # step = pipelines.CodeBuildStep(
-        #     "StaticCodeAnalysis",
-        #     # run_order=testing_stage.next_sequential_run_order(),
-        #     # additional_artifacts=[source_artifact],
-        #     build_environment=aws_codebuild.BuildEnvironment(
-        #         build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
-        #         privileged=True,
-        #     ),
-        #     env={
-        #         "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
-        #             value=config.get("smart_testing").get("threshold"),
-        #             type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-        #         ),
-        #         "secret": aws_codebuild.BuildEnvironmentVariable(
-        #             value="github_webhook_secret:github_webhook_secret",
-        #             type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
-        #         ),
-        #         "toekn": aws_codebuild.BuildEnvironmentVariable(
-        #             value="token",
-        #             type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
-        #         ),
-        #         # NODE_AUTH_TOKEN: {
-        #         #     value: secretGithubAccessToken.secretValue,
-        #         #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
-        #         #   },
-        #     },
+        step = pipelines.CodeBuildStep(
+            "StaticCodeAnalysis",
+            # run_order=testing_stage.next_sequential_run_order(),
+            # additional_artifacts=[source_artifact],
+            build_environment=aws_codebuild.BuildEnvironment(
+                build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                privileged=True,
+            ),
+            env={
+                "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
+                    value=config.get("smart_testing").get("threshold"),
+                    type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+                ),
+                "secret": aws_codebuild.BuildEnvironmentVariable(
+                    value="github_webhook_secret:github_webhook_secret",
+                    type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+                ),
+                "toekn": aws_codebuild.BuildEnvironmentVariable(
+                    value="token",
+                    type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+                ),
+                # NODE_AUTH_TOKEN: {
+                #     value: secretGithubAccessToken.secretValue,
+                #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+                #   },
+            },
 
-        #     commands=[
-        #         # Not git repo
-        #         "echo $secret",
-        #         "echo $token"
-        #         # "pip install -r requirements.txt",
-        #         # "pip install -r requirements_dev.txt",
-        #         # "set -e; bash scripts/pylint_check.sh $THRESHOLD"
-        #         #     "pylint $(git ls-files '*.py')",
-        #         #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
-        #         #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
-        #         #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
-        #     ],
-        #     role_policy_statements=[
-        #         aws_iam.PolicyStatement(
-        #             actions=["secretsmanager:*"],
-        #             effect=aws_iam.Effect.ALLOW,
-        #             resources=["*"]
-        #         )
-        #     ],
+            commands=[
+                # Not git repo
+                "echo $secret",
+                "echo $token"
+                # "pip install -r requirements.txt",
+                # "pip install -r requirements_dev.txt",
+                # "set -e; bash scripts/pylint_check.sh $THRESHOLD"
+                #     "pylint $(git ls-files '*.py')",
+                #     "#!bin/bash; set -e; export score=$(pylint * |grep -oE '\-?[0-9]+\.[0-9]+'| sed -n '1p');",
+                #     "#!bin/bash; set -e; echo $score; export ret=$(awk -v score=$score -v threshold=$THRESHOLD 'BEGIN{print(score>threshold)?0:1}'); ",
+                #     "#!bin/bash; set -e; echo $ret;if [[ $ret -eq 0 ]]; then echo $score>$threshold; else echo $score<=$threshold; exit 1 ; fi"
+            ],
+            role_policy_statements=[
+                aws_iam.PolicyStatement(
+                    actions=["secretsmanager:*"],
+                    effect=aws_iam.Effect.ALLOW,
+                    resources=["*"]
+                )
+            ],
 
-        # )
+        )
 
-        # # synth_project: codebuild.CfnProject = pipeline.step.node.default_child
-        # # synth_project.cache = codebuild.CfnProject.ProjectCacheProperty(
-        # #     # location=f"my-bucket/my-cache-folder",
-        # #     # type="S3",
-        # #     type="LOCAL",          
-        # # )
+        project: codebuild.CfnProject = step.node.default_child
+        project.cache = codebuild.CfnProject.ProjectCacheProperty(
+            # location=f"my-bucket/my-cache-folder",
+            # type="S3",
+            type="LOCAL", 
+            modes=["LOCAL_DOCKER_LAYER_CACHE"]         
+
+        )
 
 
-        # testing_stage = pipeline.add_stage(
-        #     step
-        # )  # E
+        testing_stage = pipeline.add_stage(
+            step
+        )  # E
 
         # testing_stage.add_actions(
         #     step
