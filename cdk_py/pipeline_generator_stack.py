@@ -277,47 +277,39 @@ class PipelineGeneratorStack(core.Stack):
             #     region="eu-west-1"
             # )
         )
-        pipeline.add_stage(pipeline_generator_stage)
 
         # testing_stage = pipeline.add_stage(
         #     "Testing"
         # )  # Empty stage since we are going to run tests only, not deploy resources
 
-        pipeline.build_pipeline() 
-        synth_project: codebuild.CfnProject = pipeline.synth_project.node.default_child
-        synth_project.cache = codebuild.CfnProject.ProjectCacheProperty(
-            # location=f"my-bucket/my-cache-folder",
-            # type="S3",
-            type="LOCAL",  
-            modes=["LOCAL_DOCKER_LAYER_CACHE"]        
-        )
+        # pipeline.build_pipeline() 
 
         step = pipelines.CodeBuildStep(
             "StaticCodeAnalysis",
             # run_order=testing_stage.next_sequential_run_order(),
             # additional_artifacts=[source_artifact],
-            build_environment=aws_codebuild.BuildEnvironment(
-                build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
-                privileged=True,
-            ),
-            env={
-                "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
-                    value=config.get("smart_testing").get("threshold"),
-                    type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
-                ),
-                "secret": aws_codebuild.BuildEnvironmentVariable(
-                    value="github_webhook_secret:github_webhook_secret",
-                    type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
-                ),
-                "toekn": aws_codebuild.BuildEnvironmentVariable(
-                    value="token",
-                    type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
-                ),
-                # NODE_AUTH_TOKEN: {
-                #     value: secretGithubAccessToken.secretValue,
-                #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
-                #   },
-            },
+            # build_environment=aws_codebuild.BuildEnvironment(
+            #     build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+            #     privileged=True,
+            # ),
+            # env={
+            #     "THRESHOLD": aws_codebuild.BuildEnvironmentVariable(
+            #         value=config.get("smart_testing").get("threshold"),
+            #         type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            #     ),
+            #     "secret": aws_codebuild.BuildEnvironmentVariable(
+            #         value="github_webhook_secret:github_webhook_secret",
+            #         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+            #     ),
+            #     "toekn": aws_codebuild.BuildEnvironmentVariable(
+            #         value="token",
+            #         type=aws_codebuild.BuildEnvironmentVariableType.SECRETS_MANAGER,
+            #     ),
+            #     # NODE_AUTH_TOKEN: {
+            #     #     value: secretGithubAccessToken.secretValue,
+            #     #     type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+            #     #   },
+            # },
 
             commands=[
                 # Not git repo
@@ -341,7 +333,35 @@ class PipelineGeneratorStack(core.Stack):
 
         )
 
-        project: codebuild.CfnProject = step.node.default_child
+        #AttributeError: 'PipelineGeneratorApplication' object has no attribute 'add_actions'
+        #pipeline_generator_stage.add_actions(step) 
+        pipeline.add_stage(pipeline_generator_stage)
+
+
+        # jsii.errors.JSIIError: Object of type @aws-cdk/pipelines.CodeBuildStep is not convertible to @aws-cdk/core.Stage
+        # testing_stage = pipeline.add_stage(
+        #     step
+        # ) 
+
+        testing_stage = pipeline.add_stage(
+            "Testing"
+        )  # Empty stage since we are going to run tests only, not deploy resources
+        testing_stage.add_actions(
+            step
+        )
+
+        pipeline.build_pipeline() 
+
+        synth_project: codebuild.CfnProject = pipeline.synth_project.node.default_child
+        synth_project.cache = codebuild.CfnProject.ProjectCacheProperty(
+            # location=f"my-bucket/my-cache-folder",
+            # type="S3",
+            type="LOCAL",  
+            modes=["LOCAL_DOCKER_LAYER_CACHE"]        
+        )
+
+
+        project: codebuild.CfnProject = step.project
         project.cache = codebuild.CfnProject.ProjectCacheProperty(
             # location=f"my-bucket/my-cache-folder",
             # type="S3",
@@ -351,11 +371,6 @@ class PipelineGeneratorStack(core.Stack):
         )
 
 
-        testing_stage = pipeline.add_stage(
-            step
-        )  # E
 
-        # testing_stage.add_actions(
-        #     step
         # )
 
