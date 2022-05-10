@@ -14,7 +14,7 @@ from aws_cdk.aws_lambda_python import PythonFunction
 app = core.App()
 
 config = app.node.try_get_context("config")
-
+accounts = config.get("accounts")
 
 # def get_repo_current_branch():
 #     return Repository('.').head.shorthand
@@ -57,6 +57,15 @@ PipelineGeneratorStack(
     config={**config},
 )
 
+from cdk_py.pipeline_stack import PipelineStack
+PipelineStack(
+    app,
+    "BuildCache",
+    branch_name="feature-branch-pipeline-us03-deploy-self-mutating-false-01",  # dev, master
+    config={**config},
+    env=accounts.get("test")
+)
+
 class LambdaStack(core.Stack):
     def __init__(
         self,
@@ -85,11 +94,11 @@ class LambdaStack(core.Stack):
 
 
 from cdk_py.batch_job_event_to_es_stack import BatchJobEventToESStack, S3Bucketstack
-accounts = config.get("accounts")
+
 
 S3Bucketstack(app, "access-log-bucket", config={**config}, env=accounts.get("test"))
 
-BatchJobEventToESStack(app, "batch-job-ui", config={**config}, env=accounts.get("test"))
+# BatchJobEventToESStack(app, "batch-job-ui", config={**config}, env=accounts.get("test"))
 
 # branch_name = "aa"
 # branch_name = core.CfnParameter(self, "branch_name")

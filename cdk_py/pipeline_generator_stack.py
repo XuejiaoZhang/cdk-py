@@ -343,12 +343,14 @@ class PipelineGeneratorStack(core.Stack):
         #     step
         # ) 
 
-        testing_stage = pipeline.add_stage(
-            "Testing"
-        )  # Empty stage since we are going to run tests only, not deploy resources
-        testing_stage.add_actions(
-            step
-        )
+        # jsii.errors.JSIIError: Expected object reference, got "Testing"
+        # Error
+        # testing_stage = pipeline.add_stage(
+        #     "Testing"
+        # )  # Empty stage since we are going to run tests only, not deploy resources
+        # testing_stage.add_actions(
+        #     step
+        # )
 
         pipeline.build_pipeline() 
 
@@ -361,14 +363,14 @@ class PipelineGeneratorStack(core.Stack):
         )
 
 
-        project: codebuild.CfnProject = step.project
-        project.cache = codebuild.CfnProject.ProjectCacheProperty(
-            # location=f"my-bucket/my-cache-folder",
-            # type="S3",
-            type="LOCAL", 
-            modes=["LOCAL_DOCKER_LAYER_CACHE"]         
+        # project: codebuild.CfnProject = step.project
+        # project.cache = codebuild.CfnProject.ProjectCacheProperty(
+        #     # location=f"my-bucket/my-cache-folder",
+        #     # type="S3",
+        #     type="LOCAL", 
+        #     modes=["LOCAL_DOCKER_LAYER_CACHE"]         
 
-        )
+        # )
 
 
 
