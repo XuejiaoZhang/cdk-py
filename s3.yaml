@@ -1,0 +1,22 @@
+Resources:
+  LoggingBucket:
+    Type: 'AWS::S3::Bucket'
+  HelloBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
+        LogFilePrefix: testing-logs
+Type: AWS::S3::BucketPolicy
+Properties:
+  Bucket:
+    Ref: S3BucketImageUploadBuffer
+  PolicyDocument:
+    Version: "2012-10-17"
+    Statement:
+      Action:
+        - s3:PutObject
+        - s3:PutObjectAcl
+      Effect: Allow
+      Resource:
+        - ...

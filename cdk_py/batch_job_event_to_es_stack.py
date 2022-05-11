@@ -10,6 +10,7 @@ from aws_cdk import (
     aws_dynamodb,
     aws_kms
 )
+from aws_cdk import aws_iam as iam
 
 from aws_cdk.aws_lambda_python import PythonFunction
 from aws_cdk.aws_lambda import Function
@@ -46,6 +47,18 @@ class S3Bucketstack(core.Stack):
             export_name="central-access-log-bucket"
             )
 
+        central_access_log_bucket.add_to_resource_policy(
+            iam.PolicyStatement(
+                actions=["s3:PutObject"],
+                effect=iam.Effect.ALLOW,
+                resources=[
+                    central_access_log_bucket.bucket_arn+"/*",
+                ],
+                principals=[ iam.ServicePrincipal('logging.s3.amazonaws.com')],
+            )
+        )
+
+
 class BatchJobEventToESStack(core.Stack):
     def __init__(
         self,
@@ -76,14 +89,14 @@ class BatchJobEventToESStack(core.Stack):
         central_access_log_bucket = aws_s3.Bucket.from_bucket_arn(self, "central_access_log_bucket",
             core.Fn.import_value("central-access-log-bucket"),
             )
-        aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
+        report_bucket = aws_s3.Bucket(self, "encryption_at_rest_s3_kms",
             encryption=aws_s3.BucketEncryption.S3_MANAGED,
             server_access_logs_bucket=central_access_log_bucket,
-            server_access_logs_prefix="encryption_at_rest_s3_kms_logs/",
+           # server_access_logs_prefix="encryption_at_rest_s3_kms_logs/"+report_bucket.bucket_name+"/",
             versioned=True,
             lifecycle_rules=[lifecycle],
             )
-
+        report_bucket.server_access_logs_prefix="encryption_at_rest_s3_kms_logs/"+report_bucket.bucket_name+"/"
         # 01) S3 - KMS
         # from KMS/KMS_MANAGED to S3_MANAGED
 
